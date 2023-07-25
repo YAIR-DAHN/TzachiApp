@@ -26,9 +26,9 @@ public class TfilonActivity extends BaseActivity {
         initCardView("מנחה", view -> tfilahFragment(TfilahFragment.Tfilah.MINCHA));
         initCardView("ערבית", view -> tfilahFragment(TfilahFragment.Tfilah.HARVIT));
         initCardView("ברכת המזון", view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HAMAZON));
-        initCardView("ברכת הלבנה", view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HALEVANA));
         initCardView("תפילת הדרך", view -> tfilahFragment(TfilahFragment.Tfilah.TFILAT_HADEREH));
-        initCardView("קריאת שמע", view -> tfilahFragment(TfilahFragment.Tfilah.KRIAT_SHMAA));
+        initCardView("קריאת שמע על המיטה", view -> tfilahFragment(TfilahFragment.Tfilah.KRIAT_SHMAA));
+        initCardView("ברכת הלבנה", view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HALEVANA));
     }
 
     public void initCardView(String title, View.OnClickListener onClickListener) {
@@ -51,6 +51,7 @@ public class TfilonActivity extends BaseActivity {
         fragmentTransaction.add(R.id.fragment_container, new TfilahFragment(tfilah), "tag");
 //        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.addToBackStack("");
+
 
         fragmentTransaction.commit();
     }

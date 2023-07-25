@@ -30,6 +30,10 @@ public class MainActivity extends BaseActivity {
     static final String ZMANEI_TFILOT_LINK = "https://63863ecdd7031.site123.me/#section-64a56d581a3bc";
 
 
+
+
+
+
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
