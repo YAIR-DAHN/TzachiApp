@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">צח\"י</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_main_website">אתר ראשי</string>
+    <string name="tfilon">סידור תפילה</string>
+    <string name="shachrit">שחרית</string>
+    <string name="mincha">מנחה</string>
+    <string name="harvit">ערבית</string>
+    <string name="birkat_hamazon">ברכת המזון</string>
+    <string name="birkat_halevana">ברכת הלבנה</string>
+    <string name="tfilat_hadereh">תפילת הדרך</string>
+    <string name="kriat_Shmaa">קריאת שמע</string>
+</resources>

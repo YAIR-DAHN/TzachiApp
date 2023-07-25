@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Tzachi App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_main_website">Main Website</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="tfilon">Tfilon</string>
+    <string name="shachrit">Shachrit</string>
+    <string name="mincha">Mincha</string>
+    <string name="harvit">Harvit</string>
+    <string name="birkat_hamazon">Birkat Hamazon</string>
+    <string name="birkat_halevana">Birkat Halevana</string>
+    <string name="tfilat_hadereh">Tfilat Hadereh</string>
+    <string name="kriat_Shmaa">Kriat Shmaa</string>
+</resources>
