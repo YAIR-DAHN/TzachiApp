@@ -3,6 +3,7 @@ package com.shahareinisim.tzachiapp.Fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +24,7 @@ import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
-import com.shahareinisin.tzachiapp.Utils.ShachritUtils;
+import com.shahareinisim.tzachiapp.Utils.ShachritUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,6 +41,8 @@ public class TfilahFragment extends Fragment {
     RecyclerView rvTfilah;
     TextView title;
     PopupNavigator popupNav;
+
+    TfilahAdapter tfilahAdapter;
     public  TfilahFragment(Tfilah tfilah) {
         this.tfilah = tfilah;
     }
@@ -130,7 +133,6 @@ public class TfilahFragment extends Fragment {
         return parent;
     }
 
-    @SuppressLint({"InflateParams", "NotifyDataSetChanged"})
     public TfilahAdapter initTfilahAdapter(BufferedReader bufferedReader) throws IOException {
         ArrayList<TfilahPart> parts = new ArrayList<>();
         ArrayList<TfilahTitlePart> titleParts = new ArrayList<>();
@@ -149,7 +151,7 @@ public class TfilahFragment extends Fragment {
             parts.add(new TfilahPart(key, part));
         }
 
-        TfilahAdapter tfilahAdapter = new TfilahAdapter(parts, ((TfilonActivity) requireActivity()).textSize);
+        tfilahAdapter = new TfilahAdapter(parts, ((TfilonActivity) requireActivity()).textSize);
 
         if (popupNav == null) {
             popupNav = new PopupNavigator(requireContext(), navigator);
@@ -160,16 +162,34 @@ public class TfilahFragment extends Fragment {
                 popupNav.dismiss();
             });
             popupNav.setAdapter(titleAdapter);
-
-            ((TfilonActivity) requireActivity()).changed = () -> {
-                tfilahAdapter.textSize = ((TfilonActivity) requireActivity()).textSize;
-                tfilahAdapter.notifyDataSetChanged();
-            };
         }
 
+        registerTextChangeListener();
         navigator.setOnClickListener(view -> popupNav.show());
 
         return tfilahAdapter;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void registerTextChangeListener() {
+        ((TfilonActivity) requireActivity()).changed = () -> {
+            tfilahAdapter.textSize = ((TfilonActivity) requireActivity()).textSize;
+            tfilahAdapter.notifyDataSetChanged();
+        };
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (tfilahAdapter != null) registerTextChangeListener();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (tfilahAdapter != null) registerTextChangeListener();
     }
 
     @Override
