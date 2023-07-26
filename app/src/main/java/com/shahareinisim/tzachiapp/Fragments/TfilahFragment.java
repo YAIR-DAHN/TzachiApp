@@ -23,6 +23,7 @@ import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
+import com.shahareinisin.tzachiapp.Utils.ShachritUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -141,6 +142,8 @@ public class TfilahFragment extends Fragment {
             else if (part.equals("")) key = "[e]";
             if (key.equals("[t]")) {
                 titleParts.add(new TfilahTitlePart(parts.size(), part));
+            } else if(key.equals("[sod]")) {
+                part = ShachritUtils.getSongOfCurrentDay();
             }
 
             parts.add(new TfilahPart(key, part));
