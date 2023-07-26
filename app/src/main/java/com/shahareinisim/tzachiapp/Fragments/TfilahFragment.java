@@ -140,7 +140,7 @@ public class TfilahFragment extends Fragment {
         String part;
         while ((part = bufferedReader.readLine()) != null) {
             String key = "";
-            if (part.length()>3) key = part.substring(0,3);
+            if (part.startsWith("[")) key = part.substring(part.indexOf("["),part.indexOf("]")+1);
             else if (part.equals("")) key = "[e]";
             if (key.equals("[t]")) {
                 titleParts.add(new TfilahTitlePart(parts.size(), part));

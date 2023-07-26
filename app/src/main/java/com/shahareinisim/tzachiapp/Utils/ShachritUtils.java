@@ -17,7 +17,8 @@ public class ShachritUtils {
     }
 
     public static String getSongFromFile(BufferedReader bufferedReader, int day) {
-        String sod = "", dayKey = "[" + day + "]";
+        StringBuilder sod = new StringBuilder();
+        String dayKey = "[" + day + "]";
         try {
             String part;
             while ((part = bufferedReader.readLine()) != null) {
@@ -25,15 +26,15 @@ public class ShachritUtils {
                 if (part.length() > 3) key = part.substring(0, 3);
                 else if (part.equals("")) continue;
                 if (key.equals(dayKey)) {
-                    if (!sod.equals("")) sod += "\n";
-                    sod += part.replace(dayKey, "");
+                    if (!sod.equals("")) sod.append("\n\n");
+                    sod.append(part.replace(dayKey, ""));
                 }
             }
         } catch (IOException ignored) {}
 
         if (sod.equals("")) return "Unable to determine day of week or it's Shabbat day";
 
-        return sod;
+        return sod.toString();
     }
 
 }

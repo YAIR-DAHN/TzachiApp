@@ -7,7 +7,7 @@ public class TfilahPart {
 
     public TfilahPart(String key, String part) {
         this.key = key;
-        this.part = part.replace("[n]", "").replace("[t]","");
+        this.part = part.replace("[n]", "").replace("[sod]", "").replace("[t]","");
     }
 
     public String getKey() {
