@@ -26,7 +26,7 @@ public class ShachritUtils {
                 if (part.length() > 3) key = part.substring(0, 3);
                 else if (part.equals("")) continue;
                 if (key.equals(dayKey)) {
-                    if (!sod.equals("")) sod.append("\n\n");
+                    if (sod.length() != 0) sod.append("\n\n");
                     sod.append(part.replace(dayKey, ""));
                 }
             }
