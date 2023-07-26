@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -43,6 +42,7 @@ public class TfilahFragment extends Fragment {
     PopupNavigator popupNav;
 
     TfilahAdapter tfilahAdapter;
+
     public  TfilahFragment(Tfilah tfilah) {
         this.tfilah = tfilah;
     }
@@ -56,7 +56,7 @@ public class TfilahFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View parent = inflater.inflate(R.layout.fragment_tfilah, container, false);
         parent.setFocusable(true);
 
@@ -145,7 +145,7 @@ public class TfilahFragment extends Fragment {
             if (key.equals("[t]")) {
                 titleParts.add(new TfilahTitlePart(parts.size(), part));
             } else if(key.equals("[sod]")) {
-                part = ShachritUtils.getSongOfCurrentDay();
+                part = ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day));
             }
 
             parts.add(new TfilahPart(key, part));
