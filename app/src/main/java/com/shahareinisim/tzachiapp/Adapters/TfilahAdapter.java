@@ -22,12 +22,12 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     ArrayList<TfilahPart> tfilahParts;
     Context context;
 
-    float[][] textTypes = {{22,25,20},{25,30,22},{30,38,25}};
+    public static final float[][] textTypes = {{18,22,15},{22,25,20},{25,30,22},{30,38,25}};
     public int textSize;
 
     public TfilahAdapter(ArrayList<TfilahPart> tfilahParts, int textSize) {
         this.tfilahParts = tfilahParts;
-        this.textSize = textSize;
+        this.textSize = (textSize > textTypes.length-1 || textSize < 0) ? 0 : textSize;
     }
 
     @NonNull

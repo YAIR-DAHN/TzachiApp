@@ -22,57 +22,38 @@
         android:background="@color/white"
         >
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/navigator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:layout_margin="15dp"
-            android:src="@drawable/menu"
-            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-            />
-
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="100dp"
+            android:marqueeRepeatLimit="1"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:gravity="start"
             android:text="@string/shachrit"
-            android:layout_margin="20dp"
             android:textSize="25sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/text_size_group"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="90dp"
+            android:layout_height="match_parent"
             android:layout_gravity="top|end"
-            android:gravity="center"
-            >
+            android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/smaller_text"
-                android:layout_width="50dp"
-                android:layout_height="55sp"
-                android:padding="0dp"
-                android:text="A"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/navigator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="15dp"
+                android:src="@drawable/menu"
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/bigger_text"
-                android:layout_width="50dp"
-                android:layout_height="55sp"
-                android:textSize="25sp"
-                android:padding="0dp"
-                android:text="A"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                />
-
-        </com.google.android.material.button.MaterialButtonToggleGroup>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

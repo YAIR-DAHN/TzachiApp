@@ -1,22 +1,20 @@
 package com.shahareinisim.tzachiapp.Adapters;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.res.Resources;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
 import com.shahareinisim.tzachiapp.R;
 import com.shahareinisim.tzachiapp.TfilonActivity;
+import com.shahareinisim.tzachiapp.Views.ViewHolderTPart;
 
 import java.util.ArrayList;
 
-public class TitleAdapter extends BaseAdapter {
+public class TitleAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
     public final ArrayList<TfilahTitlePart> mDataSource;
     private final LayoutInflater layoutInflater;
@@ -29,14 +27,20 @@ public class TitleAdapter extends BaseAdapter {
         this.layoutInflater = activity.getLayoutInflater();
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return mDataSource.size();
+    public ViewHolderTPart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        context = parent.getContext();
+        return new ViewHolderTPart(LayoutInflater.from(parent.getContext()).inflate(R.layout.tfilah_part, parent, false));
     }
 
     @Override
-    public TfilahTitlePart getItem(int position) {
-        return mDataSource.get(position);
+    public void onBindViewHolder(@NonNull ViewHolderTPart holder, int position) {
+
+        holder.itemView.setPadding(convertToPX(10), convertToPX(8), convertToPX(5), convertToPX(8));
+        holder.text.setText(mDataSource.get(position).getTitle());
+
+        holder.itemView.setOnClickListener(v -> clickListener.onPostClick(mDataSource.get(position).getPosition()));
     }
 
     @Override
@@ -44,27 +48,9 @@ public class TitleAdapter extends BaseAdapter {
         return 0;
     }
 
-    @SuppressLint("InflateParams")
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
-        ViewHolder holder;
-        if (convertView == null) {
-            holder = new ViewHolder();
-            convertView = layoutInflater.inflate(R.layout.tfilah_part, null);
-            holder.tvTitle = (TextView) convertView.findViewById(R.id.text);
-            holder.tvTitle.setPadding(convertToPX(10), convertToPX(8), convertToPX(5), convertToPX(8));
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        // bind data
-        holder.tvTitle.setText(getItem(position).getTitle());
-
-        holder.tvTitle.setOnClickListener(v -> clickListener.onPostClick(getItem(position).getPosition()));
-
-        return convertView;
+    public int getItemCount() {
+        return mDataSource.size();
     }
 
     public static class ViewHolder {
