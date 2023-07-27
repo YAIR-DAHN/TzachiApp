@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shahareinisim.tzachiapp.TfilonActivity;
 import com.shahareinisim.tzachiapp.Views.PopupNavigator;
@@ -114,14 +113,14 @@ public class TfilahFragment extends Fragment {
         biggerText.setOnClickListener(view -> {
             int textSize = ((TfilonActivity) requireActivity()).textSize;
             if (textSize < 2) textSize++;
-            ((TfilonActivity) requireActivity()).preferences.edit().putInt("textSize", textSize).apply();
-            biggerText.setChecked(false);
+
+            notifyTextSizeChanged(textSize);
         });
         smallerText.setOnClickListener(view -> {
             int textSize = ((TfilonActivity) requireActivity()).textSize;
             if (textSize > 0) textSize--;
 
-            ((TfilonActivity) requireActivity()).preferences.edit().putInt("textSize", textSize).apply();
+            notifyTextSizeChanged(textSize);
         });
 
 //        MaterialButtonToggleGroup group = parent.findViewById(R.id.text_size_group);
@@ -164,32 +163,16 @@ public class TfilahFragment extends Fragment {
             popupNav.setAdapter(titleAdapter);
         }
 
-        registerTextChangeListener();
         navigator.setOnClickListener(view -> popupNav.show());
 
         return tfilahAdapter;
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void registerTextChangeListener() {
-        ((TfilonActivity) requireActivity()).changed = () -> {
-            tfilahAdapter.textSize = ((TfilonActivity) requireActivity()).textSize;
-            tfilahAdapter.notifyDataSetChanged();
-        };
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (tfilahAdapter != null) registerTextChangeListener();
-    }
-
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-
-        if (tfilahAdapter != null) registerTextChangeListener();
+    public void notifyTextSizeChanged(int textSize) {
+        ((TfilonActivity) requireActivity()).preferences.edit().putInt("textSize", textSize).apply();
+        tfilahAdapter.textSize = textSize;
+        tfilahAdapter.notifyDataSetChanged();
     }
 
     @Override
