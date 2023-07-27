@@ -13,9 +13,8 @@ import android.util.TypedValue;
 public class BaseActivity extends AppCompatActivity {
 
     boolean nightMode;
-    public int textSize;
+    private int textSize;
     public SharedPreferences preferences;
-    public OnTextSizeChanged changed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +23,12 @@ public class BaseActivity extends AppCompatActivity {
         preferences = getPreferences(MODE_PRIVATE);
         preferences.registerOnSharedPreferenceChangeListener((sharedPreferences, s) -> initPreferences());
         initPreferences();
-
-        if (changed!=null)
-            changed = () -> {};
     }
 
     private void initPreferences() {
         nightMode = preferences.getBoolean("nightMode", false);
-        textSize = preferences.getInt("textSize", 0);
+        textSize = preferences.getInt("textSize", 1);
         enableNightMode(nightMode);
-        if (changed != null) changed.changeTextSize();
     }
 
     @Override
@@ -57,5 +52,10 @@ public class BaseActivity extends AppCompatActivity {
         Resources r = getResources();
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dp, r.getDisplayMetrics());
+    }
+
+    public int getTextSize() {
+        return textSize = preferences.getInt("textSize", 1);
+//        return textSize;
     }
 }

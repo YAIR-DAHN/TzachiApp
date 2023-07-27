@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,8 @@ public class TfilahFragment extends Fragment {
                 break;
         }
 
+        title.setSelected(true);
+
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(requireActivity().getResources().openRawResource(tfilahFileRes));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
@@ -107,21 +110,6 @@ public class TfilahFragment extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        MaterialButton biggerText = parent.findViewById(R.id.bigger_text);
-        MaterialButton smallerText = parent.findViewById(R.id.smaller_text);
-        biggerText.setOnClickListener(view -> {
-            int textSize = ((TfilonActivity) requireActivity()).textSize;
-            if (textSize < 2) textSize++;
-
-            notifyTextSizeChanged(textSize);
-        });
-        smallerText.setOnClickListener(view -> {
-            int textSize = ((TfilonActivity) requireActivity()).textSize;
-            if (textSize > 0) textSize--;
-
-            notifyTextSizeChanged(textSize);
-        });
 
 //        MaterialButtonToggleGroup group = parent.findViewById(R.id.text_size_group);
 //        group.addOnButtonCheckedListener((group1, checkedId, isChecked) -> {
@@ -150,22 +138,44 @@ public class TfilahFragment extends Fragment {
             parts.add(new TfilahPart(key, part));
         }
 
-        tfilahAdapter = new TfilahAdapter(parts, ((TfilonActivity) requireActivity()).textSize);
+        tfilahAdapter = new TfilahAdapter(parts, getTextSize());
 
         if (popupNav == null) {
-            popupNav = new PopupNavigator(requireContext(), navigator);
+            popupNav = new PopupNavigator(requireContext());
+            popupNav.setBiggerTextClickListener(getTextSize(),() -> {
+                Log.d("##### onclickBig #####", "textSize = " + getTextSize());
+                int textSize = getTextSize();
+                if (textSize != TfilahAdapter.textTypes.length-1) textSize++;
+
+                notifyTextSizeChanged(textSize);
+            });
+
+            popupNav.setSmallerTextClickListener(getTextSize(),() -> {
+                Log.d("##### onClickSmall #####", "textSize = " + getTextSize());
+                int textSize = getTextSize();
+                if (textSize != 0) textSize--;
+
+                notifyTextSizeChanged(textSize);
+            });
+
             TitleAdapter titleAdapter = new TitleAdapter((TfilonActivity) requireActivity(), titleParts);
             titleAdapter.setPostClickListener(position -> {
-                ((LinearLayoutManager) Objects.requireNonNull(
-                        rvTfilah.getLayoutManager())).scrollToPositionWithOffset(position,0);
+                rvTfilah.post(() -> ((LinearLayoutManager) Objects.requireNonNull(
+                        rvTfilah.getLayoutManager())).scrollToPositionWithOffset(position,0));
                 popupNav.dismiss();
             });
+
             popupNav.setAdapter(titleAdapter);
+//            popupNav.sizeButtonsEnabled(getTextSize());
         }
 
-        navigator.setOnClickListener(view -> popupNav.show());
+        navigator.setOnClickListener(view -> popupNav.showAsDropDown(navigator));
 
         return tfilahAdapter;
+    }
+
+    public int getTextSize() {
+        return ((TfilonActivity) requireActivity()).getTextSize();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -173,6 +183,7 @@ public class TfilahFragment extends Fragment {
         ((TfilonActivity) requireActivity()).preferences.edit().putInt("textSize", textSize).apply();
         tfilahAdapter.textSize = textSize;
         tfilahAdapter.notifyDataSetChanged();
+        Log.d("##### notifyTextSizeChanged #####", "textSize = " + textSize);
     }
 
     @Override
