@@ -32,7 +32,7 @@ public class ShachritUtils {
             }
         } catch (IOException ignored) {}
 
-        if (sod.equals("")) return "Unable to determine day of week or it's Shabbat day";
+        if (sod.length() == 0) return "Unable to determine day of week or it's Shabbat day";
 
         return sod.toString();
     }
