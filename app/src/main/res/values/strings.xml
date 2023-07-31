@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Tzachi App</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_main_website">Main Website</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="tfilon">Tfilon</string>
+    <string name="title_tfilon">Sidur Tfilah</string>
+    <string name="title_zmanei_tfilot">Zmanei Hatfilot</string>
+    <string name="title_donations">Donations</string>
     <string name="shachrit">Shachrit</string>
     <string name="mincha">Mincha</string>
     <string name="harvit">Harvit</string>
     <string name="bircat_hamazon">Bircat Hamazon</string>
     <string name="bircat_halevana">Bircat Halevana</string>
     <string name="tfilat_hadereh">Tfilat Hadereh</string>
-    <string name="kriat_shema">Kriat Sehma</string>
+    <string name="kriat_shema">Kriat Sema</string>
 </resources>

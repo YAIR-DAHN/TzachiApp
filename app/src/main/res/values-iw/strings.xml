@@ -3,7 +3,9 @@
     <string name="app_name">צח\"י</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_main_website">אתר ראשי</string>
-    <string name="tfilon">סידור תפילה</string>
+    <string name="title_tfilon">סידור תפילה</string>
+    <string name="title_zmanei_tfilot">זמני התפילות</string>
+    <string name="title_donations">לתרומות</string>
     <string name="shachrit">שחרית</string>
     <string name="mincha">מנחה</string>
     <string name="harvit">ערבית</string>

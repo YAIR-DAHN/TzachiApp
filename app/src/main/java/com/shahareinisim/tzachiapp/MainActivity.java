@@ -1,20 +1,12 @@
 package com.shahareinisim.tzachiapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,11 +32,11 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initWVCardView("אתר ראשי", R.drawable.banner_main_website, MAIN_WEB_LINK);
-        initCardView(getString(R.string.tfilon), R.drawable.banner_tfhilon, view ->
+        initWVCardView(getString(R.string.title_main_website), R.drawable.banner_main_website, MAIN_WEB_LINK);
+        initCardView(getString(R.string.title_tfilon), R.drawable.banner_tfhilon, view ->
                 startActivity(new Intent(MainActivity.this, TfilonActivity.class)));
-        initWVCardView("זמני התפילות", R.drawable.banner_tfhilot, ZMANEI_TFILOT_LINK);
-        initWVCardView("לתרומות", R.drawable.banner_donations, DONATION_LINK);
+        initWVCardView(getString(R.string.title_zmanei_tfilot), R.drawable.banner_tfhilot, ZMANEI_TFILOT_LINK);
+        initWVCardView(getString(R.string.title_donations), R.drawable.banner_donations, DONATION_LINK);
     }
 
     public void initWVCardView(String title, int bannerImg, String url) {
