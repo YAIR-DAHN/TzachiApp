@@ -17,7 +17,6 @@ import com.shahareinisim.tzachiapp.R;
 
 public class PopupNavigator extends PopupWindow {
 
-    private final Context context;
     RecyclerView rvTitles;
     MaterialButton biggerText, smallerText;
 
@@ -26,7 +25,6 @@ public class PopupNavigator extends PopupWindow {
         super(context);
         setContentView(LayoutInflater.from(context).inflate(R.layout.popup_navigator, null));
 
-        this.context = context;
         setBackgroundDrawable(context.getDrawable(R.color.transparent));
         setOutsideTouchable(true);
 
@@ -51,20 +49,12 @@ public class PopupNavigator extends PopupWindow {
         rvTitles.setAdapter(adapter);
     }
 
-    public void setBiggerTextClickListener(int textSize, Runnable biggerTextClickListener) {
-        biggerText.setOnClickListener(view -> {
-            biggerTextClickListener.run();
-
-            sizeButtonsEnabled(textSize);
-        });
+    public void setBiggerTextClickListener(Runnable biggerTextClickListener) {
+        biggerText.setOnClickListener(view -> biggerTextClickListener.run());
     }
 
-    public void setSmallerTextClickListener(int textSize, Runnable smallerTextClickListener) {
-        smallerText.setOnClickListener(view -> {
-            smallerTextClickListener.run();
-
-            sizeButtonsEnabled(textSize);
-        });
+    public void setSmallerTextClickListener(Runnable smallerTextClickListener) {
+        smallerText.setOnClickListener(view -> smallerTextClickListener.run());
     }
 
     public void sizeButtonsEnabled(int textSize) {

@@ -142,20 +142,22 @@ public class TfilahFragment extends Fragment {
 
         if (popupNav == null) {
             popupNav = new PopupNavigator(requireContext());
-            popupNav.setBiggerTextClickListener(getTextSize(),() -> {
+            popupNav.setBiggerTextClickListener(() -> {
                 Log.d("##### onclickBig #####", "textSize = " + getTextSize());
                 int textSize = getTextSize();
                 if (textSize != TfilahAdapter.textTypes.length-1) textSize++;
 
                 notifyTextSizeChanged(textSize);
+                popupNav.sizeButtonsEnabled(getTextSize());
             });
 
-            popupNav.setSmallerTextClickListener(getTextSize(),() -> {
+            popupNav.setSmallerTextClickListener(() -> {
                 Log.d("##### onClickSmall #####", "textSize = " + getTextSize());
                 int textSize = getTextSize();
                 if (textSize != 0) textSize--;
 
                 notifyTextSizeChanged(textSize);
+                popupNav.sizeButtonsEnabled(getTextSize());
             });
 
             TitleAdapter titleAdapter = new TitleAdapter((TfilonActivity) requireActivity(), titleParts);
@@ -166,7 +168,7 @@ public class TfilahFragment extends Fragment {
             });
 
             popupNav.setAdapter(titleAdapter);
-//            popupNav.sizeButtonsEnabled(getTextSize());
+            popupNav.sizeButtonsEnabled(getTextSize());
         }
 
         navigator.setOnClickListener(view -> popupNav.showAsDropDown(navigator));

@@ -104,7 +104,7 @@ public class WebViewFragment extends Fragment {
         webView.setWebViewClient(IntentFilter());
         webView.loadUrl(mParam1);
 
-        ((TextView) root.findViewById(R.id.ad_text)).setSelected(true);
+        root.findViewById(R.id.ad_text).setSelected(true);
         adButton.setOnClickListener(view -> {
             if (!mParam1.equals(DONATION_LINK)) webView.loadUrl(DONATION_LINK);
         });
