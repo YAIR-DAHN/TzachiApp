@@ -12,8 +12,6 @@ import android.util.TypedValue;
 
 public class BaseActivity extends AppCompatActivity {
 
-    boolean nightMode;
-    private int textSize;
     public SharedPreferences preferences;
 
     @Override
@@ -21,20 +19,14 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         preferences = getPreferences(MODE_PRIVATE);
-        preferences.registerOnSharedPreferenceChangeListener((sharedPreferences, s) -> initPreferences());
-        initPreferences();
-    }
 
-    private void initPreferences() {
-        nightMode = preferences.getBoolean("nightMode", false);
-        textSize = preferences.getInt("textSize", 1);
-        enableNightMode(nightMode);
+        enableNightMode(getNightMode());
     }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
 
-        if (newConfig.uiMode == isNightMode()) enableNightMode(nightMode);
+        if (newConfig.uiMode == isNightMode()) enableNightMode(getNightMode());
         newConfig.uiMode = isNightMode();
         super.onConfigurationChanged(newConfig);
     }
@@ -45,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private int isNightMode(){
-        return nightMode ? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
+        return getNightMode() ? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
     }
 
     public int convertToPX(int dp) {
@@ -54,8 +46,11 @@ public class BaseActivity extends AppCompatActivity {
                 dp, r.getDisplayMetrics());
     }
 
+    public boolean getNightMode() {
+        return preferences.getBoolean("nightMode", false);
+    }
+
     public int getTextSize() {
-        return textSize = preferences.getInt("textSize", 1);
-//        return textSize;
+        return preferences.getInt("textSize", 1);
     }
 }
