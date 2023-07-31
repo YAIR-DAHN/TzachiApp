@@ -17,20 +17,17 @@ import java.util.ArrayList;
 public class TitleAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
     public final ArrayList<TfilahTitlePart> mDataSource;
-    private final LayoutInflater layoutInflater;
     ClickListener clickListener;
     TfilonActivity activity;
 
     public TitleAdapter(TfilonActivity activity, ArrayList<TfilahTitlePart> dataSource) {
         this.activity = activity;
         this.mDataSource = dataSource;
-        this.layoutInflater = activity.getLayoutInflater();
     }
 
     @NonNull
     @Override
     public ViewHolderTPart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        context = parent.getContext();
         return new ViewHolderTPart(LayoutInflater.from(parent.getContext()).inflate(R.layout.tfilah_part, parent, false));
     }
 
@@ -51,10 +48,6 @@ public class TitleAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     @Override
     public int getItemCount() {
         return mDataSource.size();
-    }
-
-    public static class ViewHolder {
-        private TextView tvTitle;
     }
 
     public interface ClickListener {
