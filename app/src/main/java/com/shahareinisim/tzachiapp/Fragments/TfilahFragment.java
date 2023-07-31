@@ -2,28 +2,25 @@ package com.shahareinisim.tzachiapp.Fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.shahareinisim.tzachiapp.TfilonActivity;
-import com.shahareinisim.tzachiapp.Views.PopupNavigator;
-import com.shahareinisim.tzachiapp.R;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
+import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
-import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
+import com.shahareinisim.tzachiapp.R;
+import com.shahareinisim.tzachiapp.TfilonActivity;
 import com.shahareinisim.tzachiapp.Utils.ShachritUtils;
+import com.shahareinisim.tzachiapp.Views.PopupNavigator;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,7 +30,7 @@ import java.util.Objects;
 
 public class TfilahFragment extends Fragment {
 
-    public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH, KRIAT_SHMAA}
+    public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH, KRIAT_SHEMA}
 
     Tfilah tfilah;
     FloatingActionButton navigator;
@@ -84,19 +81,19 @@ public class TfilahFragment extends Fragment {
                 break;
             case BIRCAT_HAMAZON:
                 tfilahFileRes = R.raw.bircat_hamazon;
-                title.setText(R.string.birkat_hamazon);
+                title.setText(R.string.bircat_hamazon);
                 break;
             case BIRCAT_HALEVANA:
                 tfilahFileRes = R.raw.bircat_halevana;
-                title.setText(R.string.birkat_halevana);
+                title.setText(R.string.bircat_halevana);
                 break;
             case TFILAT_HADEREH:
                 tfilahFileRes = R.raw.tfilat_hadereh;
                 title.setText(R.string.tfilat_hadereh);
                 break;
-            case KRIAT_SHMAA:
+            case KRIAT_SHEMA:
                 tfilahFileRes = R.raw.kriat_shmaa;
-                title.setText(R.string.kriat_Shmaa);
+                title.setText(R.string.kriat_shema);
                 break;
         }
 
@@ -110,12 +107,6 @@ public class TfilahFragment extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-//        MaterialButtonToggleGroup group = parent.findViewById(R.id.text_size_group);
-//        group.addOnButtonCheckedListener((group1, checkedId, isChecked) -> {
-//            MaterialButton button = parent.findViewById(checkedId);
-//            button.setChecked(false);
-//        });
 
         return parent;
     }

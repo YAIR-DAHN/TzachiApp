@@ -1,18 +1,14 @@
 package com.shahareinisim.tzachiapp;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.shahareinisim.tzachiapp.Fragments.TfilahFragment;
-import com.shahareinisim.tzachiapp.Views.MainItem;
 import com.shahareinisim.tzachiapp.Views.TfilonItem;
 
 public class TfilonActivity extends BaseActivity {
@@ -22,13 +18,13 @@ public class TfilonActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tfilon);
 
-        initCardView("שחרית", view -> tfilahFragment(TfilahFragment.Tfilah.SHACHRIT));
-        initCardView("מנחה", view -> tfilahFragment(TfilahFragment.Tfilah.MINCHA));
-        initCardView("ערבית", view -> tfilahFragment(TfilahFragment.Tfilah.HARVIT));
-        initCardView("ברכת המזון", view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HAMAZON));
-        initCardView("תפילת הדרך", view -> tfilahFragment(TfilahFragment.Tfilah.TFILAT_HADEREH));
-        initCardView("קריאת שמע על המיטה", view -> tfilahFragment(TfilahFragment.Tfilah.KRIAT_SHMAA));
-        initCardView("ברכת הלבנה", view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HALEVANA));
+        initCardView(getString(R.string.shachrit), view -> tfilahFragment(TfilahFragment.Tfilah.SHACHRIT));
+        initCardView(getString(R.string.mincha), view -> tfilahFragment(TfilahFragment.Tfilah.MINCHA));
+        initCardView(getString(R.string.harvit), view -> tfilahFragment(TfilahFragment.Tfilah.HARVIT));
+        initCardView(getString(R.string.bircat_hamazon), view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HAMAZON));
+        initCardView(getString(R.string.tfilat_hadereh), view -> tfilahFragment(TfilahFragment.Tfilah.TFILAT_HADEREH));
+        initCardView(getString(R.string.kriat_shema), view -> tfilahFragment(TfilahFragment.Tfilah.KRIAT_SHEMA));
+        initCardView(getString(R.string.bircat_halevana), view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HALEVANA));
     }
 
     public void initCardView(String title, View.OnClickListener onClickListener) {

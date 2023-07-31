@@ -20,7 +20,7 @@ public class PopupNavigator extends PopupWindow {
     RecyclerView rvTitles;
     MaterialButton biggerText, smallerText;
 
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "InflateParams"})
     public PopupNavigator(@NonNull Context context) {
         super(context);
         setContentView(LayoutInflater.from(context).inflate(R.layout.popup_navigator, null));
@@ -39,10 +39,6 @@ public class PopupNavigator extends PopupWindow {
 
         biggerText.setWidth(width / 5);
         smallerText.setWidth(width / 5);
-
-//        MaterialButtonToggleGroup group = getContentView().findViewById(R.id.text_size_group);
-//        group.setOnClickListener(null);
-//        group.addOnButtonCheckedListener((group1, checkedId, isChecked) -> {});
     }
 
     public void setAdapter(TitleAdapter adapter) {

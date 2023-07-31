@@ -7,8 +7,8 @@
     <string name="shachrit">שחרית</string>
     <string name="mincha">מנחה</string>
     <string name="harvit">ערבית</string>
-    <string name="birkat_hamazon">ברכת המזון</string>
-    <string name="birkat_halevana">ברכת הלבנה</string>
+    <string name="bircat_hamazon">ברכת המזון</string>
+    <string name="bircat_halevana">ברכת הלבנה</string>
     <string name="tfilat_hadereh">תפילת הדרך</string>
-    <string name="kriat_Shmaa">קריאת שמע שעל המיטה</string>
+    <string name="kriat_shema">קריאת שמע שעל המיטה</string>
 </resources>

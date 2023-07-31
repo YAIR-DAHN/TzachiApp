@@ -7,8 +7,8 @@
     <string name="shachrit">Shachrit</string>
     <string name="mincha">Mincha</string>
     <string name="harvit">Harvit</string>
-    <string name="birkat_hamazon">Birkat Hamazon</string>
-    <string name="birkat_halevana">Birkat Halevana</string>
+    <string name="bircat_hamazon">Birkat Hamazon</string>
+    <string name="bircat_halevana">Birkat Halevana</string>
     <string name="tfilat_hadereh">Tfilat Hadereh</string>
-    <string name="kriat_Shmaa">Kriat Shmaa</string>
+    <string name="kriat_shema">Kriat Shmaa</string>
 </resources>
