@@ -13,5 +13,11 @@
     <string name="bircat_halevana">ברכת הלבנה</string>
     <string name="tfilat_hadereh">תפילת הדרך</string>
     <string name="kriat_shema">קריאת שמע שעל המיטה</string>
+    <string name="birkat_men_shalosh">ברכת מעין שלוש ונפשות</string>
+    <string name="perek_shira">פרק שירה</string>
+    <string name="trumot_vmeasrot">הפרשת תרומות ומעשרות</string>
+    <string name="asher_yatzar">ברכת אשר יצר</string>
+    <string name="tikun_haklali">תיקון הכללי</string>
     <string name="text_size_indicator">א</string>
+
 </resources>

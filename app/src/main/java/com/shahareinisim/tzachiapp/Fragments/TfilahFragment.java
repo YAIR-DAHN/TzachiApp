@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public class TfilahFragment extends Fragment {
 
-    public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH, KRIAT_SHEMA}
+    public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH, KRIAT_SHEMA, BIRCAT_MEN_SHALOSH, ASHER_YATZAR, TRUMOT_VMEASROT, PEREK_SHIRA, TIKUN_HAKLALI}
 
     Tfilah tfilah;
     FloatingActionButton navigator;
@@ -96,6 +96,26 @@ public class TfilahFragment extends Fragment {
             case KRIAT_SHEMA:
                 tfilahFileRes = R.raw.kriat_shmaa;
                 title.setText(R.string.kriat_shema);
+                break;
+            case BIRCAT_MEN_SHALOSH:
+                tfilahFileRes = R.raw.birkat_men_shalosh;
+                title.setText(R.string.birkat_men_shalosh);
+                break;
+            case ASHER_YATZAR:
+                tfilahFileRes = R.raw.asher_yatzar;
+                title.setText(R.string.asher_yatzar);
+                break;
+            case TRUMOT_VMEASROT:
+                tfilahFileRes = R.raw.trumot_vmeasrot;
+                title.setText(R.string.trumot_vmeasrot);
+                break;
+            case PEREK_SHIRA:
+                tfilahFileRes = R.raw.perek_shira;
+                title.setText(R.string.perek_shira);
+                break;
+            case TIKUN_HAKLALI:
+                tfilahFileRes = R.raw.tikun_haklali;
+                title.setText(R.string.tikun_haklali);
                 break;
         }
 
