@@ -171,7 +171,7 @@ public class TfilahFragment extends Fragment {
             popupNav.sizeButtonsEnabled(getTextSize());
         }
 
-        navigator.setOnClickListener(view -> popupNav.showAsDropDown(navigator));
+        navigator.setOnClickListener(view -> popupNav.showAsDropDown(navigator, 0, 10));
 
         return tfilahAdapter;
     }
