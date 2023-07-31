@@ -2,8 +2,12 @@ package com.shahareinisim.tzachiapp.Views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
@@ -24,9 +28,16 @@ public class PopupNavigator extends PopupWindow {
     public PopupNavigator(@NonNull Context context) {
         super(context);
         setContentView(LayoutInflater.from(context).inflate(R.layout.popup_navigator, null));
+        getContentView().setClipToOutline(true);
 
         setBackgroundDrawable(context.getDrawable(R.color.transparent));
         setOutsideTouchable(true);
+
+        getContentView().post(() -> {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) getContentView().getLayoutParams();
+            params.setMargins(convertToPX(5), convertToPX(5), convertToPX(5), convertToPX(5));
+            getContentView().setLayoutParams(params);
+        });
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         int width = dm.widthPixels;
@@ -36,9 +47,12 @@ public class PopupNavigator extends PopupWindow {
         rvTitles.setLayoutManager(new LinearLayoutManager(context));
         biggerText = getContentView().findViewById(R.id.bigger_text);
         smallerText = getContentView().findViewById(R.id.smaller_text);
+    }
 
-        biggerText.setWidth(width / 5);
-        smallerText.setWidth(width / 5);
+    public int convertToPX(int dp) {
+        Resources r = getContentView().getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dp, r.getDisplayMetrics());
     }
 
     public void setAdapter(TitleAdapter adapter) {

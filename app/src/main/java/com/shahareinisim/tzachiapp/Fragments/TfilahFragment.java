@@ -40,6 +40,8 @@ public class TfilahFragment extends Fragment {
 
     TfilahAdapter tfilahAdapter;
 
+    TfilahFragment() {}
+
     public  TfilahFragment(Tfilah tfilah) {
         this.tfilah = tfilah;
     }

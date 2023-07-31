@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:focusable="true"
+    android:keepScreenOn="true"
     android:background="@color/white"
     tools:context=".Fragments.TfilahFragment">
 
@@ -50,11 +53,12 @@
                 android:layout_gravity="center_vertical|end"
                 android:layout_margin="15dp"
                 android:src="@drawable/menu"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                />
+                android:backgroundTint="@color/white"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:importantForAccessibility="no" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
