@@ -6,7 +6,7 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 
@@ -33,11 +33,7 @@ public class PopupNavigator extends PopupWindow {
         setBackgroundDrawable(context.getDrawable(R.color.transparent));
         setOutsideTouchable(true);
 
-        getContentView().post(() -> {
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) getContentView().getLayoutParams();
-            params.setMargins(convertToPX(5), convertToPX(5), convertToPX(5), convertToPX(5));
-            getContentView().setLayoutParams(params);
-        });
+        fixWindowMargins();
 
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         int width = dm.widthPixels;
@@ -72,9 +68,23 @@ public class PopupNavigator extends PopupWindow {
         smallerText.setEnabled(textSize != 0);
     }
 
+    public void fixWindowMargins() {
+        getContentView().post(() -> {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) getContentView().getLayoutParams();
+            params.setMargins(convertToPX(5), convertToPX(5), convertToPX(5), convertToPX(5));
+            getContentView().setLayoutParams(params);
+        });
+    }
+
     @Override
     public void dismiss() {
         super.dismiss();
+    }
+
+    @Override
+    public void showAsDropDown(View anchor, int xoff, int yoff) {
+        fixWindowMargins();
+        super.showAsDropDown(anchor, xoff, yoff);
     }
 }
 
