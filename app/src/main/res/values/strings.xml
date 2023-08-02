@@ -17,4 +17,7 @@
     <string name="asher_yatzar">Asher Yatzar</string>
     <string name="tikun_haklali">Tikun Haklali</string>
     <string name="text_size_indicator">A</string>
+
+    <!-- none translatable -->
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>
