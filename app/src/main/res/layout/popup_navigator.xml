@@ -5,9 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:cardElevation="1dp"
-    app:strokeColor="@color/transparent"
+    style="@style/Widget.Material3.CardView.Elevated"
     >
 
     <com.google.android.material.button.MaterialButtonToggleGroup
