@@ -10,8 +10,8 @@ android {
         applicationId "com.shahareinisim.tzachiapp"
         minSdk 24
         targetSdk 34
-        versionCode 5 // to release an update increase by 1
-        versionName "0.0.5" // to release an update increase by 0.0.1
+        versionCode 5 // to release an update increase it by 1
+        versionName "0.0.5" // to release an update increase it by 0.0.1
 
     }
 
