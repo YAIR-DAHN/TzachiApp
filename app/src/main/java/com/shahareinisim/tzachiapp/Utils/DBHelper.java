@@ -8,7 +8,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "tfilot.db";
     private static final int DATABASE_VERSION = 1;
 
-    public static final String TABLE_TFILOT = "visitors";
+    public static final String TABLE_TFILOT = "tfilot";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_OPEN_COUNT = "open_count";
