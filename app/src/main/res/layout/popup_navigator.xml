@@ -8,48 +8,73 @@
     style="@style/Widget.Material3.CardView.Elevated"
     >
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/background"
-        android:layout_margin="5dp">
+        android:orientation="vertical"
+        android:gravity="center"
+        >
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/smaller_text"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
+            android:id="@+id/shortcut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/create_shortcut"
+            android:textColor="@color/text"
             android:backgroundTint="@color/white"
-            android:textSize="15sp"
-            android:text="@string/text_size_indicator"
-            android:textStyle="bold"
-            android:fontFamily="@font/times"
+            app:iconTint="@color/text"
+            app:icon="@drawable/create_shortcut"
             app:cornerRadius="12dp"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/bigger_text"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:backgroundTint="@color/white"
-            android:textSize="25sp"
-            android:text="@string/text_size_indicator"
-            android:textStyle="bold"
-            android:fontFamily="@font/times"
-            app:cornerRadius="12dp"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/background"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/smaller_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white"
+                android:textSize="15sp"
+                android:text="@string/text_size_indicator"
+                android:textStyle="bold"
+                android:fontFamily="@font/times"
+                app:cornerRadius="12dp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/bigger_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white"
+                android:textSize="25sp"
+                android:text="@string/text_size_indicator"
+                android:textStyle="bold"
+                android:fontFamily="@font/times"
+                app:cornerRadius="12dp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_titles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/tfilah_part"
             />
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_titles"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/tfilah_part"
-        android:layout_marginTop="65dp"
-        />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </com.google.android.material.card.MaterialCardView>

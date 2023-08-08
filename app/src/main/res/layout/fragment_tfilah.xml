@@ -1,58 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            app:layout_scrollFlags="scroll|enterAlways|snap|snapMargins">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="100dp"
-                android:marqueeRepeatLimit="1"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:gravity="start"
-                android:text="@string/shachrit"
-                android:textSize="25sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/navigator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:layout_margin="15dp"
-                android:src="@drawable/menu"
-                android:backgroundTint="@color/transparent"
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                android:importantForAccessibility="no" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tfilah"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-15dp"
+        android:paddingTop="80dp"
+        android:clipToPadding="false"
         tools:listitem="@layout/tfilah_part"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:nestedScrollingEnabled="false"
+        />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="100dp"
+            android:ellipsize="marquee"
+            android:gravity="start"
+            android:marqueeRepeatLimit="1"
+            android:singleLine="true"
+            android:text="@string/shachrit"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/navigator"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/transparent"
+            android:importantForAccessibility="no"
+            android:src="@drawable/menu"
+            />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 
@@ -53,6 +54,10 @@ public class PopupNavigator extends PopupWindow {
 
     public void setAdapter(TitleAdapter adapter) {
         rvTitles.setAdapter(adapter);
+    }
+
+    public void onShortcutClick(View.OnClickListener onClickListener) {
+        ((Button) this.getContentView().findViewById(R.id.shortcut)).setOnClickListener(onClickListener);
     }
 
     public void setBiggerTextClickListener(Runnable biggerTextClickListener) {

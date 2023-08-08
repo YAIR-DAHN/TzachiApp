@@ -16,11 +16,11 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
         preferences = getPreferences(MODE_PRIVATE);
-
         enableNightMode(getNightMode());
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -28,6 +28,7 @@ public class BaseActivity extends AppCompatActivity {
 
         if (newConfig.uiMode == isNightMode()) enableNightMode(getNightMode());
         newConfig.uiMode = isNightMode();
+
         super.onConfigurationChanged(newConfig);
     }
 

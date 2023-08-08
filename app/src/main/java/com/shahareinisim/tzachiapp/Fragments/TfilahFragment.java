@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +21,8 @@ import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
 import com.shahareinisim.tzachiapp.R;
 import com.shahareinisim.tzachiapp.TfilonActivity;
+import com.shahareinisim.tzachiapp.Utils.Animations;
+import com.shahareinisim.tzachiapp.Utils.DataManager;
 import com.shahareinisim.tzachiapp.Utils.ShachritUtils;
 import com.shahareinisim.tzachiapp.Views.PopupNavigator;
 
@@ -40,16 +44,15 @@ public class TfilahFragment extends Fragment {
 
     TfilahAdapter tfilahAdapter;
 
-    TfilahFragment() {}
+    public TfilahFragment() {}
 
-    public  TfilahFragment(Tfilah tfilah) {
+    public TfilahFragment(Tfilah tfilah) {
         this.tfilah = tfilah;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -59,8 +62,23 @@ public class TfilahFragment extends Fragment {
         View parent = inflater.inflate(R.layout.fragment_tfilah, container, false);
         parent.setFocusable(true);
 
+        CoordinatorLayout topBar = parent.findViewById(R.id.top_bar);
+
         rvTfilah = parent.findViewById(R.id.rv_tfilah);
         rvTfilah.setLayoutManager(new LinearLayoutManager(requireContext()));
+
+        rvTfilah.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy > 10) {
+                    if (topBar.getVisibility() == View.VISIBLE) Animations.hide(topBar);
+                } else if (dy < -10) {
+                    if (topBar.getVisibility() == View.GONE) Animations.show(topBar);
+                }
+            }
+        });
 
         navigator = parent.findViewById(R.id.navigator);
 
@@ -119,6 +137,16 @@ public class TfilahFragment extends Fragment {
                 break;
         }
 
+        DataManager dataManager = new DataManager(requireContext());
+        dataManager.open();
+        dataManager.openedTfilah(tfilah.toString());
+
+        if (dataManager.getMostUsedTfilah().equals(tfilah.toString())) {
+            ((TfilonActivity) requireActivity()).addMostUsedTfilah(tfilah, title.getText().toString());
+        }
+
+        dataManager.close();
+
         title.setSelected(true);
 
         try {
@@ -155,6 +183,10 @@ public class TfilahFragment extends Fragment {
 
         if (popupNav == null) {
             popupNav = new PopupNavigator(requireContext());
+
+            popupNav.onShortcutClick(view -> ((TfilonActivity) requireActivity())
+                    .createShortcut(tfilah, title.getText().toString()));
+
             popupNav.setBiggerTextClickListener(() -> {
                 Log.d("##### onclickBig #####", "textSize = " + getTextSize());
                 int textSize = getTextSize();
