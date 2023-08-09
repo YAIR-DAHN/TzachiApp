@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="80dp"
+        android:paddingBottom="20dp"
         android:clipToPadding="false"
         tools:listitem="@layout/tfilah_part"
         android:nestedScrollingEnabled="false"
