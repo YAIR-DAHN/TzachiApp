@@ -10,8 +10,8 @@ android {
         applicationId "com.shahareinisim.tzachiapp"
         minSdk 24
         targetSdk 34
-        versionCode 5 // to release an update increase it by 1
-        versionName "0.0.5" // to release an update increase it by 0.0.1
+        versionCode 6 // to release an update increase it by 1
+        versionName "0.0.6" // to release an update increase it by 0.0.1
 
     }
 
@@ -37,6 +37,4 @@ dependencies {
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'com.github.bluejamesbond:textjustify-android:2.1.6'
-    testImplementation 'junit:junit:4.13.2'
 }
