@@ -3,10 +3,16 @@ package com.shahareinisim.tzachiapp.Adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +28,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     ArrayList<TfilahPart> tfilahParts;
     Context context;
 
-    public static final float[][] textTypes = {{18,22,15},{22,25,20},{25,30,22},{30,38,25}};
+    public static final float[][] textTypes = {{18,21,16},{22,25,20},{25,29,22},{30,34,27}};
     public int textSize;
 
     public TfilahAdapter(ArrayList<TfilahPart> tfilahParts, int textSize) {
@@ -40,21 +46,31 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolderTPart holder, int position) {
 
+        TfilahPart tfilahPart = tfilahParts.get(position);
 
-        holder.text.setText(tfilahParts.get(position).getPart());
+        holder.text.setText(tfilahPart.getPart());
 
-        switch (tfilahParts.get(position).getKey()) {
-            case "[t]":
+        switch (tfilahPart.getKey()) {
+            case TITLE:
                 titleDesign(holder);
                 break;
-            case "[n]":
+            case NOTE:
                 noteDesign(holder);
                 break;
-            case "[e]":
+            case INSIDE_NOTE:
+            case INLINE_NOTE:
+                regularDesign(holder, true);
+                SpannableString wordToSpan = new SpannableString(holder.text.getText());
+                for (String note : tfilahPart.getNote()) {
+                    setHighLightedText(wordToSpan, note);
+                }
+                holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
+                break;
+            case EMPTY:
                 emptyLineDesign(holder);
                 break;
             default:
-                regularDesign(holder);
+                regularDesign(holder, false);
         }
     }
 
@@ -62,15 +78,15 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
         part.text.setTextColor(Color.BLACK);
         part.text.setTextSize(0);
         part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(0), convertToPX(0), convertToPX(0), convertToPX(0));
+        part.itemView.setPadding(convertToPX(0), convertToPX(7), convertToPX(0), convertToPX(7));
         part.indicator.setVisibility(View.GONE);
     }
 
-    public void regularDesign(ViewHolderTPart part) {
+    public void regularDesign(ViewHolderTPart part, boolean insideNote) {
         part.text.setTextColor(Color.BLACK);
         part.text.setTextSize(textTypes[textSize][0]);
         part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(0), convertToPX(20), convertToPX(20));
+        part.itemView.setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));
         part.indicator.setVisibility(View.GONE);
     }
 
@@ -78,7 +94,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
         part.text.setTextColor(Color.BLUE);
         part.text.setTextSize(textTypes[textSize][1]);
         part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(40), convertToPX(0), convertToPX(25));
+        part.itemView.setPadding(convertToPX(20), convertToPX(30), convertToPX(0), convertToPX(15));
         part.indicator.setVisibility(View.VISIBLE);
     }
 
@@ -86,8 +102,23 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
         part.text.setTextColor(Color.GRAY);
         part.text.setTextSize(textTypes[textSize][2]);
         part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(10), convertToPX(20), convertToPX(0));
+        part.itemView.setPadding(convertToPX(20), convertToPX(5), convertToPX(20), convertToPX(0));
         part.indicator.setVisibility(View.GONE);
+    }
+
+    public void setHighLightedText(SpannableString wordToSpan, String textToHighlight) {
+        String tvt = wordToSpan.toString().toLowerCase();
+        int ofe = tvt.indexOf(textToHighlight);
+
+        for (int ofs = 0; ofs < tvt.length() && ofe != -1; ofs = ofe + 1) {
+            ofe = tvt.indexOf(textToHighlight, ofs);
+            if (ofe == -1) break;
+            else {
+                wordToSpan.setSpan(new RelativeSizeSpan(0.9f), ofe, ofe + textToHighlight.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                wordToSpan.setSpan(new ForegroundColorSpan(Color.GRAY), ofe, ofe + textToHighlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+
     }
 
     public int convertToPX(int dp) {

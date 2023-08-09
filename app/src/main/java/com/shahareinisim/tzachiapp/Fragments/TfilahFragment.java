@@ -167,16 +167,13 @@ public class TfilahFragment extends Fragment {
 
         String part;
         while ((part = bufferedReader.readLine()) != null) {
-            String key = "";
-            if (part.startsWith("[")) key = part.substring(part.indexOf("["),part.indexOf("]")+1);
-            else if (part.equals("")) key = "[e]";
-            if (key.equals("[t]")) {
-                titleParts.add(new TfilahTitlePart(parts.size(), part));
-            } else if(key.equals("[sod]")) {
-                part = ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day));
+            TfilahPart tfilahPart = new TfilahPart(part);
+            if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
+            else if (tfilahPart.getKey().equals(TfilahPart.Key.SOD)) {
+                tfilahPart.setPart(ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)));
             }
 
-            parts.add(new TfilahPart(key, part));
+            parts.add(tfilahPart);
         }
 
         tfilahAdapter = new TfilahAdapter(parts, getTextSize());
