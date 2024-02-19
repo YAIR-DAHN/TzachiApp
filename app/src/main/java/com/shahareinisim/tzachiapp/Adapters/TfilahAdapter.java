@@ -69,6 +69,10 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
                 holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
                 break;
             case HOLIDAY:
+                if (tfilahPart.isTitle()) {
+                    noteDesign(holder);
+                    break;
+                }
                 holidayDesign(holder, true);
                 wordToSpan = new SpannableString(holder.text.getText());
                 for (String note : tfilahPart.getNotes()) {
