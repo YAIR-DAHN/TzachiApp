@@ -37,10 +37,12 @@ public class TfilahPart {
 
     // pull key from part
     private String initTempKey(String part) {
+        // avoid looping on empty line...
+        if (keys.contains(Key.EMPTY)) return "";
         if (part.equals("")) return "[e]";
         return (part.contains("[") && part.contains("]"))
                 ? part.substring(part.indexOf("["),part.indexOf("]")+1) :
-                part.contains("*")
+                part.contains("*") && !keys.contains(Key.INLINE_NOTE)
                 ? "[iln]" : "";
     }
 
@@ -65,6 +67,8 @@ public class TfilahPart {
         }
     }
 
+    // TODO organize notes by {startIndex, endIndex} instead of just Strings
+    // ...it could be buggy if part has 2 words and one is 'note' and the other 'normal'
     private void initNote() {
         if (this.part.contains("*")) {
             int firstIndex = part.indexOf("*")+1;
