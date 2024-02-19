@@ -9,12 +9,10 @@ public class TfilahPart {
 
     String part;
     Key primaryKey;
-    ArrayList<Key> keys;
+    ArrayList<Key> keys = new ArrayList<>();
     List<String> notes = new ArrayList<>();
 
     public TfilahPart(String part) {
-
-        this.keys = new ArrayList<>();
 
         // get the primary key
         String tempKey = initTempKey(part);
