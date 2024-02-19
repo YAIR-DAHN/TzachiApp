@@ -19,6 +19,7 @@ public class ShachritUtils {
     public static String getSongFromFile(BufferedReader bufferedReader, int day) {
         StringBuilder sod = new StringBuilder();
         String dayKey = "[" + day + "]";
+        String yahalehVeyavo = "[yv]";
         try {
             String part;
             while ((part = bufferedReader.readLine()) != null) {

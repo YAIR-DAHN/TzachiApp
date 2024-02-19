@@ -23,6 +23,7 @@ import com.shahareinisim.tzachiapp.R;
 import com.shahareinisim.tzachiapp.TfilonActivity;
 import com.shahareinisim.tzachiapp.Utils.Animations;
 import com.shahareinisim.tzachiapp.Utils.DataManager;
+import com.shahareinisim.tzachiapp.Utils.HolidaysFinder;
 import com.shahareinisim.tzachiapp.Utils.ShachritUtils;
 import com.shahareinisim.tzachiapp.Views.PopupNavigator;
 
@@ -164,6 +165,8 @@ public class TfilahFragment extends Fragment {
     public TfilahAdapter initTfilahAdapter(BufferedReader bufferedReader) throws IOException {
         ArrayList<TfilahPart> parts = new ArrayList<>();
         ArrayList<TfilahTitlePart> titleParts = new ArrayList<>();
+        HolidaysFinder holidaysFinder = new HolidaysFinder();
+        Log.d("##### initTfilahAdapter #####", "is holiday: " + holidaysFinder.jewishCalendar.getParshah());
 
         String part;
         while ((part = bufferedReader.readLine()) != null) {
@@ -171,6 +174,8 @@ public class TfilahFragment extends Fragment {
             if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
             else if (tfilahPart.getKey().equals(TfilahPart.Key.SOD)) {
                 tfilahPart.setPart(ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)));
+            } else if (tfilahPart.getKey().equals(TfilahPart.Key.HOLIDAY)) {
+                if (!holidaysFinder.isHoliday()) continue;
             }
 
             parts.add(tfilahPart);

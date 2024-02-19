@@ -10,7 +10,7 @@ public class HolidaysFinder {
 
     ZmanimCalendar jewCal;
     TefilaRules tr;
-    JewishCalendar jewishCalendar;
+    public JewishCalendar jewishCalendar;
     HebrewDateFormatter hdf;
     public HolidaysFinder() {
         jewCal = new ZmanimCalendar();
@@ -18,12 +18,12 @@ public class HolidaysFinder {
         tr = new TefilaRules();
         jewishCalendar = new JewishCalendar();
         hdf = new HebrewDateFormatter();
-        jewishCalendar.setJewishDate(5783, JewishDate.TISHREI, 1); // Rosh Hashana
-        System.out.println(hdf.format(jewishCalendar) + ": " + tr.isTachanunRecitedShacharis(jewishCalendar));
-        jewishCalendar.setJewishDate(5783, JewishDate.ADAR, 17);
-        System.out.println(hdf.format(jewishCalendar) + ": " + tr.isTachanunRecitedShacharis(jewishCalendar));
-        tr.setTachanunRecitedWeekOfPurim(false);
-        System.out.println(hdf.format(jewishCalendar) + ": " + tr.isTachanunRecitedShacharis(jewishCalendar));
+//        jewishCalendar.setJewishDate(5783, JewishDate.TISHREI, 1); // Rosh Hashana
+//        System.out.println(hdf.format(jewishCalendar) + ": " + tr.isTachanunRecitedShacharis(jewishCalendar));
+//        jewishCalendar.setJewishDate(5783, JewishDate.ADAR, 17);
+//        System.out.println(hdf.format(jewishCalendar) + ": " + tr.isTachanunRecitedShacharis(jewishCalendar));
+//        tr.setTachanunRecitedWeekOfPurim(false);
+//        System.out.println(hdf.format(jewishCalendar) + ": " + tr.isTachanunRecitedShacharis(jewishCalendar));
 
 
     }
@@ -42,6 +42,17 @@ public class HolidaysFinder {
         else if (jewishCalendar.isShminiAtzeres()) return YahalehVeyavoh.SHMINI_HATZERES;
         else if (jewishCalendar.isSimchasTorah()) return YahalehVeyavoh.SIMCHAS_TORAH;
         else return YahalehVeyavoh.NONE;
+    }
+
+    public boolean isHoliday() {
+        return jewishCalendar.isRoshChodesh() ||
+        jewishCalendar.isPesach() ||
+        jewishCalendar.isShavuos() ||
+        jewishCalendar.isRoshHashana() ||
+        jewishCalendar.isYomKippur() ||
+        jewishCalendar.isSuccos() ||
+        jewishCalendar.isShminiAtzeres() ||
+        jewishCalendar.isSimchasTorah();
     }
 
     public YahalehVeyavoh getYomTov() {

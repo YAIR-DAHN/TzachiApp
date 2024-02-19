@@ -50,6 +50,8 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
         holder.text.setText(tfilahPart.getPart());
 
+        SpannableString wordToSpan;
+
         switch (tfilahPart.getKey()) {
             case TITLE:
                 titleDesign(holder);
@@ -60,8 +62,16 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
             case INSIDE_NOTE:
             case INLINE_NOTE:
                 regularDesign(holder, true);
-                SpannableString wordToSpan = new SpannableString(holder.text.getText());
-                for (String note : tfilahPart.getNote()) {
+                wordToSpan = new SpannableString(holder.text.getText());
+                for (String note : tfilahPart.getNotes()) {
+                    setHighLightedText(wordToSpan, note);
+                }
+                holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
+                break;
+            case HOLIDAY:
+                holidayDesign(holder, true);
+                wordToSpan = new SpannableString(holder.text.getText());
+                for (String note : tfilahPart.getNotes()) {
                     setHighLightedText(wordToSpan, note);
                 }
                 holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
@@ -75,7 +85,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     }
 
     private void emptyLineDesign(ViewHolderTPart part) {
-        part.text.setTextColor(Color.BLACK);
+        part.text.setTextColor(Color.RED);
         part.text.setTextSize(0);
         part.text.setGravity(View.FOCUS_RIGHT);
         part.itemView.setPadding(convertToPX(0), convertToPX(7), convertToPX(0), convertToPX(7));
@@ -84,6 +94,14 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
     public void regularDesign(ViewHolderTPart part, boolean insideNote) {
         part.text.setTextColor(Color.BLACK);
+        part.text.setTextSize(textTypes[textSize][0]);
+        part.text.setGravity(View.FOCUS_RIGHT);
+        part.itemView.setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));
+        part.indicator.setVisibility(View.GONE);
+    }
+
+    private void holidayDesign(ViewHolderTPart part, boolean insideNote) {
+        part.text.setTextColor(Color.RED);
         part.text.setTextSize(textTypes[textSize][0]);
         part.text.setGravity(View.FOCUS_RIGHT);
         part.itemView.setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));

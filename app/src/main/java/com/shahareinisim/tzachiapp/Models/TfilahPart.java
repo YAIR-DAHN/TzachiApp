@@ -5,11 +5,11 @@ import java.util.List;
 
 public class TfilahPart {
 
-    public enum Key {NORMAL, TITLE, NOTE, SOD, INSIDE_NOTE, INLINE_NOTE, EMPTY}
+    public enum Key {NORMAL, TITLE, NOTE, SOD, HOLIDAY, INSIDE_NOTE, INLINE_NOTE, EMPTY}
     Key key;
     String part;
 
-    List<String> note = new ArrayList<>();
+    List<String> notes = new ArrayList<>();
 
     public TfilahPart(String part) {
         String tempKey = initTempKey(part);
@@ -35,6 +35,8 @@ public class TfilahPart {
                 return Key.NOTE;
             case "[sod]":
                 return Key.SOD;
+            case "[h]":
+                return Key.HOLIDAY;
             case "[in]":
                 return Key.INSIDE_NOTE;
             case "[iln]":
@@ -50,18 +52,18 @@ public class TfilahPart {
         if (this.part.contains("*")) {
             int firstIndex = part.indexOf("*")+1;
             int secondIndex = part.indexOf("*", firstIndex+1);
-            this.note.add(part.substring(firstIndex, secondIndex));
+            this.notes.add(part.substring(firstIndex, secondIndex));
             this.part = part.replaceFirst("\\*", "").replaceFirst("\\*", "");
-            if (key.equals(Key.INSIDE_NOTE) && note.size() == 1) addLine();
+            if (key.equals(Key.INSIDE_NOTE) && notes.size() == 1) addLine();
         }
         if (this.part.contains("*")) initNote();
     }
 
     private void addLine() {
         int lastIndex;
-        if (part.length() > note.get(note.size()-1).length()) {
-            lastIndex = note.get(note.size() - 1).length() + 1;
-        } else lastIndex = note.get(note.size()-1).length();
+        if (part.length() > notes.get(notes.size()-1).length()) {
+            lastIndex = notes.get(notes.size() - 1).length() + 1;
+        } else lastIndex = notes.get(notes.size()-1).length();
 
         String part1 = part.substring(0, lastIndex);
         String part2 = part.substring(lastIndex);
@@ -76,8 +78,8 @@ public class TfilahPart {
         return part;
     }
 
-    public List<String> getNote() {
-        return note;
+    public List<String> getNotes() {
+        return notes;
     }
 
     public void setPart(String part) {
@@ -89,6 +91,6 @@ public class TfilahPart {
     }
 
     private boolean isInsideNote() {
-        return key.equals(Key.INSIDE_NOTE) || key.equals(Key.INLINE_NOTE);
+        return key.equals(Key.INSIDE_NOTE) || key.equals(Key.INLINE_NOTE) || part.contains("*");
     }
 }
