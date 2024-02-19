@@ -6,10 +6,10 @@ import java.util.List;
 public class TfilahPart {
 
     public enum Key {NORMAL, TITLE, NOTE, SOD, HOLIDAY, INSIDE_NOTE, INLINE_NOTE, EMPTY}
+
+    String part;
     Key primaryKey;
     ArrayList<Key> keys;
-    String part;
-
     List<String> notes = new ArrayList<>();
 
     public TfilahPart(String part) {
@@ -37,6 +37,7 @@ public class TfilahPart {
         if (isInsideNote()) initNote();
     }
 
+    // pull key from part
     private String initTempKey(String part) {
         if (part.equals("")) return "[e]";
         return (part.contains("[") && part.contains("]"))
