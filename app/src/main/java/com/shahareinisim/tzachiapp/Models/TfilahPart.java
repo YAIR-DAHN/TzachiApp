@@ -6,15 +6,33 @@ import java.util.List;
 public class TfilahPart {
 
     public enum Key {NORMAL, TITLE, NOTE, SOD, HOLIDAY, INSIDE_NOTE, INLINE_NOTE, EMPTY}
-    Key key;
+    Key primaryKey;
+    ArrayList<Key> keys;
     String part;
 
     List<String> notes = new ArrayList<>();
 
     public TfilahPart(String part) {
+
+        this.keys = new ArrayList<>();
+
+        // get the primary key
         String tempKey = initTempKey(part);
+        // init temp key
+        this.primaryKey = initType(tempKey);
+        // remove key text from part
         this.part = part.replace(tempKey,"");
-        this.key = initType(tempKey);
+
+        // add every key to ArrayList<Key>
+        while (!tempKey.equals("")) {
+            // add key to the list
+            keys.add(initType(tempKey));
+            // get the next key from part (if exist...)
+            tempKey = initTempKey(part);
+
+            // remove key text from part
+            this.part = part.replace(tempKey,"");
+        }
 
         if (isInsideNote()) initNote();
     }
@@ -54,7 +72,7 @@ public class TfilahPart {
             int secondIndex = part.indexOf("*", firstIndex+1);
             this.notes.add(part.substring(firstIndex, secondIndex));
             this.part = part.replaceFirst("\\*", "").replaceFirst("\\*", "");
-            if (key.equals(Key.INSIDE_NOTE) && notes.size() == 1) addLine();
+            if (keys.contains(Key.INSIDE_NOTE) && notes.size() == 1) addLine();
         }
         if (this.part.contains("*")) initNote();
     }
@@ -70,8 +88,12 @@ public class TfilahPart {
         this.part = part1.concat("\n").concat(part2);
     }
 
-    public Key getKey() {
-        return key;
+    public Key getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public ArrayList<Key> getKeys() {
+        return keys;
     }
 
     public String getPart() {
@@ -87,10 +109,10 @@ public class TfilahPart {
     }
 
     public boolean isTitle() {
-        return key.equals(Key.TITLE);
+        return keys.contains(Key.TITLE);
     }
 
     private boolean isInsideNote() {
-        return key.equals(Key.INSIDE_NOTE) || key.equals(Key.INLINE_NOTE) || part.contains("*");
+        return keys.contains(Key.INSIDE_NOTE) || keys.contains(Key.INLINE_NOTE) || part.contains("*");
     }
 }

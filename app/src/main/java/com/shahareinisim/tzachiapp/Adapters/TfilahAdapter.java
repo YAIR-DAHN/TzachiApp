@@ -52,7 +52,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
         SpannableString wordToSpan;
 
-        switch (tfilahPart.getKey()) {
+        switch (tfilahPart.getPrimaryKey()) {
             case TITLE:
                 titleDesign(holder);
                 break;

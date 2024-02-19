@@ -166,17 +166,19 @@ public class TfilahFragment extends Fragment {
         ArrayList<TfilahPart> parts = new ArrayList<>();
         ArrayList<TfilahTitlePart> titleParts = new ArrayList<>();
         HolidaysFinder holidaysFinder = new HolidaysFinder();
-        Log.d("##### initTfilahAdapter #####", "is holiday: " + holidaysFinder.jewishCalendar.getParshah());
+        Log.d("##### initTfilahAdapter #####", "is holiday: " + (holidaysFinder.isHoliday() ? "Yes" : "No"));
 
         String part;
         while ((part = bufferedReader.readLine()) != null) {
             TfilahPart tfilahPart = new TfilahPart(part);
-            if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
-            else if (tfilahPart.getKey().equals(TfilahPart.Key.SOD)) {
+
+            if (tfilahPart.getKeys().contains(TfilahPart.Key.SOD)) {
                 tfilahPart.setPart(ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)));
-            } else if (tfilahPart.getKey().equals(TfilahPart.Key.HOLIDAY)) {
+            } else if (tfilahPart.getKeys().contains(TfilahPart.Key.HOLIDAY)) {
                 if (!holidaysFinder.isHoliday()) continue;
             }
+
+            if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
 
             parts.add(tfilahPart);
         }
