@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.shahareinisim.tzachiapp.Models.Note;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.R;
 import com.shahareinisim.tzachiapp.Views.ViewHolderTPart;
@@ -60,31 +62,25 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
                 noteDesign(holder);
                 break;
             case INSIDE_NOTE:
-            case INLINE_NOTE:
                 regularDesign(holder, true);
-                wordToSpan = new SpannableString(holder.text.getText());
-                for (String note : tfilahPart.getNotes()) {
-                    setHighLightedText(wordToSpan, note);
-                }
-                holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
                 break;
             case HOLIDAY:
-                if (tfilahPart.isTitle()) {
-                    noteDesign(holder);
-                    break;
-                }
-                holidayDesign(holder, true);
-                wordToSpan = new SpannableString(holder.text.getText());
-                for (String note : tfilahPart.getNotes()) {
-                    setHighLightedText(wordToSpan, note);
-                }
-                holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
+                if (tfilahPart.isTitle()) noteDesign(holder);
+                else holidayDesign(holder, true);
                 break;
             case EMPTY:
                 emptyLineDesign(holder);
                 break;
             default:
                 regularDesign(holder, false);
+        }
+
+        if (tfilahPart.isInsideNote()) {
+            wordToSpan = new SpannableString(holder.text.getText());
+            for (Note note : tfilahPart.getNotes()) {
+                setTextToComment(wordToSpan, note);
+            }
+            holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
         }
     }
 
@@ -128,19 +124,13 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
         part.indicator.setVisibility(View.GONE);
     }
 
-    public void setHighLightedText(SpannableString wordToSpan, String textToHighlight) {
-        String tvt = wordToSpan.toString().toLowerCase();
-        int ofe = tvt.indexOf(textToHighlight);
-
-        for (int ofs = 0; ofs < tvt.length() && ofe != -1; ofs = ofe + 1) {
-            ofe = tvt.indexOf(textToHighlight, ofs);
-            if (ofe == -1) break;
-            else {
-                wordToSpan.setSpan(new RelativeSizeSpan(0.9f), ofe, ofe + textToHighlight.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                wordToSpan.setSpan(new ForegroundColorSpan(Color.GRAY), ofe, ofe + textToHighlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
+    public void setTextToComment(SpannableString wordToSpan, Note note) {
+        if (note.getEndIndex() > wordToSpan.length()/* || note.getStartIndex() > 0*/) {
+            Log.d("# Note #", String.format("setHighLightedText: error: endIndex = %s, length = %s", note.getEndIndex(), wordToSpan.length()));
+            return;
         }
-
+        wordToSpan.setSpan(new RelativeSizeSpan(0.9f), note.getStartIndex()-1, note.getEndIndex(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        wordToSpan.setSpan(new ForegroundColorSpan(Color.GRAY), note.getStartIndex()-1, note.getEndIndex(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     public int convertToPX(int dp) {

@@ -1,5 +1,12 @@
 package com.shahareinisim.tzachiapp.Fragments;
 
+import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.HANUKKAH;
+import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.HOLIDAY;
+import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.PURIM;
+import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.ROSH_CHODESH;
+import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.TACHNUN;
+import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.YAHALEH_VEYAVO;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,6 +51,8 @@ public class TfilahFragment extends Fragment {
     PopupNavigator popupNav;
 
     TfilahAdapter tfilahAdapter;
+
+    TfilahPart.Key[] timesKeys = {HOLIDAY, YAHALEH_VEYAVO, ROSH_CHODESH, TACHNUN, HANUKKAH, PURIM};
 
     public TfilahFragment() {}
 
@@ -169,17 +178,49 @@ public class TfilahFragment extends Fragment {
         Log.d("##### initTfilahAdapter #####", "is holiday: " + (holidaysFinder.isHoliday() ? "Yes" : "No"));
 
         String part;
+        TfilahPart.Key currentKey = null;
         while ((part = bufferedReader.readLine()) != null) {
             TfilahPart tfilahPart = new TfilahPart(part);
 
             if (tfilahPart.getKeys().contains(TfilahPart.Key.SOD)) {
                 tfilahPart.setPart(ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)));
-            } else if (tfilahPart.getKeys().contains(TfilahPart.Key.HOLIDAY)) {
-                if (!holidaysFinder.isHoliday()) continue;
+            } else {
+
+                for (TfilahPart.Key key : timesKeys) {
+                    if (tfilahPart.getKeys().contains(key)) {
+                        if (currentKey == key) currentKey = null;
+                        else currentKey = key;
+                    }
+                }
+
+                if (currentKey != null) {
+                    switch (currentKey) {
+                        case HANUKKAH:
+                            if (!holidaysFinder.jewishCalendar.isChanukah()) continue;
+                            break;
+                        case PURIM:
+                            if (!holidaysFinder.jewishCalendar.isPurim()) continue;
+                            break;
+                        case HOLIDAY:
+                            if (!holidaysFinder.isHoliday()) continue;
+                            break;
+                        case YAHALEH_VEYAVO:
+                        case ROSH_CHODESH:
+                            if (!holidaysFinder.jewishCalendar.isRoshChodesh()) continue;
+                            break;
+                        case TACHNUN:
+                            if (holidaysFinder.isNoTachnunRecited()) continue;
+                    }
+                }
+
             }
 
             if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
 
+            if (tfilahPart.isEmpty()) {
+                //if crashing here delete empty line at the top of current tfilah
+                if (parts.get(parts.size()-1).isEmpty()) continue;
+            }
             parts.add(tfilahPart);
         }
 

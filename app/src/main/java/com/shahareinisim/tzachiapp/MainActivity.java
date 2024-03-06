@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.shahareinisim.tzachiapp.Fragments.TfilahFragment;
 import com.shahareinisim.tzachiapp.Fragments.WebViewFragment;
 import com.shahareinisim.tzachiapp.Views.MainItem;
 

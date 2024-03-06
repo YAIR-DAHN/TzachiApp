@@ -44,6 +44,17 @@ public class HolidaysFinder {
         else return YahalehVeyavoh.NONE;
     }
 
+    public boolean isNoTachnunRecited() {
+        return jewishCalendar.isRoshChodesh() ||
+                jewishCalendar.isPesach() ||
+                jewishCalendar.isShavuos() ||
+                jewishCalendar.isRoshHashana() ||
+                jewishCalendar.isYomKippur() ||
+                jewishCalendar.isSuccos() ||
+                jewishCalendar.isShminiAtzeres() ||
+                jewishCalendar.isSimchasTorah();
+    }
+
     public boolean isHoliday() {
         return jewishCalendar.isRoshChodesh() ||
         jewishCalendar.isPesach() ||

@@ -1,16 +1,18 @@
 package com.shahareinisim.tzachiapp.Models;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TfilahPart {
 
-    public enum Key {NORMAL, TITLE, NOTE, SOD, HOLIDAY, INSIDE_NOTE, INLINE_NOTE, EMPTY}
+    public enum Key {NORMAL, TITLE, NOTE, SOD, HOLIDAY, PURIM, HANUKKAH, YAHALEH_VEYAVO, ROSH_CHODESH, TACHNUN, INSIDE_NOTE, INLINE_NOTE, EMPTY}
 
     String part;
     Key primaryKey;
     ArrayList<Key> keys = new ArrayList<>();
-    List<String> notes = new ArrayList<>();
+    ArrayList<Note> notes = new ArrayList<>();
 
     public TfilahPart(String part) {
 
@@ -18,66 +20,78 @@ public class TfilahPart {
         String tempKey = initTempKey(part);
         // init temp key
         this.primaryKey = initType(tempKey);
-        // remove key text from part
+        // init this.part and remove key text from part
         this.part = part.replace(tempKey,"");
 
+        int count = 0;
         // add every key to ArrayList<Key>
         while (!tempKey.equals("")) {
+            count++;
             // add key to the list
             keys.add(initType(tempKey));
             // get the next key from part (if exist...)
-            tempKey = initTempKey(part);
+            tempKey = initTempKey(this.part);
 
             // remove key text from part
-            this.part = part.replace(tempKey,"");
+            this.part = this.part.replace(tempKey,"");
+
         }
+        if (this.part.isEmpty()) keys.add(Key.EMPTY);
 
         if (isInsideNote()) initNote();
     }
 
-    // pull key from part
     private String initTempKey(String part) {
         // avoid looping on empty line...
         if (keys.contains(Key.EMPTY)) return "";
         if (part.equals("")) return "[e]";
         return (part.contains("[") && part.contains("]"))
-                ? part.substring(part.indexOf("["),part.indexOf("]")+1) :
-                part.contains("*") && !keys.contains(Key.INLINE_NOTE)
-                ? "[iln]" : "";
+                ? part.substring(part.indexOf("["), part.indexOf("]")+1) : "";
     }
 
-    private Key initType(String tempKey) {
-        switch (tempKey) {
-            case "[t]":
-               return Key.TITLE;
-            case "[n]":
-                return Key.NOTE;
-            case "[sod]":
-                return Key.SOD;
-            case "[h]":
-                return Key.HOLIDAY;
-            case "[in]":
-                return Key.INSIDE_NOTE;
-            case "[iln]":
-                return Key.INLINE_NOTE;
-            case "[e]":
-                return Key.EMPTY;
-            default:
-                return Key.NORMAL;
-        }
-    }
-
+    // pull key from part
     // TODO organize notes by {startIndex, endIndex} instead of just Strings
     // ...it could be buggy if part has 2 words and one is 'note' and the other 'normal'
     private void initNote() {
         if (this.part.contains("*")) {
             int firstIndex = part.indexOf("*")+1;
             int secondIndex = part.indexOf("*", firstIndex+1);
-            this.notes.add(part.substring(firstIndex, secondIndex));
+            this.notes.add(new Note(firstIndex, secondIndex));
             this.part = part.replaceFirst("\\*", "").replaceFirst("\\*", "");
-            if (keys.contains(Key.INSIDE_NOTE) && notes.size() == 1) addLine();
+//            if (keys.contains(Key.INSIDE_NOTE) && notes.size() == 1) addLine();
         }
+
         if (this.part.contains("*")) initNote();
+    }
+
+    private Key initType(String tempKey) {
+        switch (tempKey) {
+            case "[t]":
+                return Key.TITLE;
+            case "[n]":
+                return Key.NOTE;
+            case "[sod]":
+                return Key.SOD;
+            case "[h]":
+                return Key.HOLIDAY;
+            case "[c]":
+                return Key.HANUKKAH;
+            case "[p]":
+                return Key.PURIM;
+            case "[yv]":
+                return Key.YAHALEH_VEYAVO;
+            case "[rc]":
+            case "[halel]":
+                return Key.ROSH_CHODESH;
+            case "[tachnun]":
+                return Key.TACHNUN;
+            case "[in]":
+                return Key.INSIDE_NOTE;
+            case "[e]":
+                return Key.EMPTY;
+            default:
+                return Key.NORMAL;
+        }
     }
 
     private void addLine() {
@@ -99,11 +113,15 @@ public class TfilahPart {
         return keys;
     }
 
+    public void addKey(Key key) {
+        keys.add(key);
+    }
+
     public String getPart() {
         return part;
     }
 
-    public List<String> getNotes() {
+    public ArrayList<Note> getNotes() {
         return notes;
     }
 
@@ -115,7 +133,12 @@ public class TfilahPart {
         return keys.contains(Key.TITLE);
     }
 
-    private boolean isInsideNote() {
-        return keys.contains(Key.INSIDE_NOTE) || keys.contains(Key.INLINE_NOTE) || part.contains("*");
+    public boolean isInsideNote() {
+        if (part.contains("*") && !keys.contains(Key.INSIDE_NOTE)) keys.add(Key.INSIDE_NOTE);
+        return keys.contains(Key.INSIDE_NOTE);
+    }
+
+    public boolean isEmpty() {
+        return keys.contains(Key.EMPTY);
     }
 }

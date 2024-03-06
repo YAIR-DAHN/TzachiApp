@@ -66,7 +66,7 @@ public class TfilonActivity extends BaseActivity {
         fragmentTransaction.commit();
     }
 
-    public void createShortcut(TfilahFragment.Tfilah tfilah, String lable) {
+    public void createShortcut(TfilahFragment.Tfilah tfilah, String label) {
 
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
@@ -79,8 +79,8 @@ public class TfilonActivity extends BaseActivity {
                 if (shortcutManager.isRequestPinShortcutSupported()) {
                     // Assumes there's already a shortcut with the ID "my-shortcut".
                     // The shortcut must be enabled.
-                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(this, tfilah + "-shortcut").setShortLabel(lable)
-                            .setLongLabel("פתח את תפילת " + lable.replace("תפילת ", ""))
+                    ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(this, tfilah + "-shortcut").setShortLabel(label)
+                            .setLongLabel("פתח את תפילת " + label.replace("תפילת ", ""))
                             .setIcon(IconCompat.createWithResource(getApplicationContext(), R.drawable.banner_tfhilot))
                             .setIntent(shortcutIntent)
                             .build();
@@ -96,7 +96,7 @@ public class TfilonActivity extends BaseActivity {
         } else {
             Intent addIntent = new Intent();
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, lable);
+            addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, label);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
                     Intent.ShortcutIconResource.fromContext(this, R.drawable.banner_tfhilot));
 
