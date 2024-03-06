@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
+import com.shahareinisim.tzachiapp.Models.Note;
+import com.shahareinisim.tzachiapp.Models.PartIndexes;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
 import com.shahareinisim.tzachiapp.R;
@@ -177,42 +179,43 @@ public class TfilahFragment extends Fragment {
         HolidaysFinder holidaysFinder = new HolidaysFinder();
         Log.d("##### initTfilahAdapter #####", "is holiday: " + (holidaysFinder.isHoliday() ? "Yes" : "No"));
 
-        String part;
         TfilahPart.Key currentKey = null;
-        while ((part = bufferedReader.readLine()) != null) {
+
+        String str;
+        StringBuilder stringBuilder = new StringBuilder();
+        while ((str = bufferedReader.readLine()) != null) stringBuilder.append(str).append("\n");
+
+        if (!holidaysFinder.jewishCalendar.isChanukah()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[c]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+        if (!holidaysFinder.jewishCalendar.isPurim()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[p]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+//        if (!holidaysFinder.isHoliday()) {
+//            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[h]");
+//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+//        }
+//        if (!holidaysFinder.jewishCalendar.isRoshChodesh()) {
+//            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
+//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+//            indexes = new PartIndexes(stringBuilder.toString(), "[rc]");
+//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+//            indexes = new PartIndexes(stringBuilder.toString(), "[halel]");
+//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+//        }
+        if (holidaysFinder.isNoTachnunRecited()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[tachnun]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+
+        // iterate over every line in stringBuilder
+        for (String part : stringBuilder.toString().split("\n")) {
             TfilahPart tfilahPart = new TfilahPart(part);
 
             if (tfilahPart.getKeys().contains(TfilahPart.Key.SOD)) {
                 tfilahPart.setPart(ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)));
-            } else {
-
-                for (TfilahPart.Key key : timesKeys) {
-                    if (tfilahPart.getKeys().contains(key)) {
-                        if (currentKey == key) currentKey = null;
-                        else currentKey = key;
-                    }
-                }
-
-                if (currentKey != null) {
-                    switch (currentKey) {
-                        case HANUKKAH:
-                            if (!holidaysFinder.jewishCalendar.isChanukah()) continue;
-                            break;
-                        case PURIM:
-                            if (!holidaysFinder.jewishCalendar.isPurim()) continue;
-                            break;
-                        case HOLIDAY:
-                            if (!holidaysFinder.isHoliday()) continue;
-                            break;
-                        case YAHALEH_VEYAVO:
-                        case ROSH_CHODESH:
-                            if (!holidaysFinder.jewishCalendar.isRoshChodesh()) continue;
-                            break;
-                        case TACHNUN:
-                            if (holidaysFinder.isNoTachnunRecited()) continue;
-                    }
-                }
-
             }
 
             if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
