@@ -21,9 +21,11 @@ public class MainActivity extends BaseActivity {
     public static final String MAIN_WEB_LINK = "https://63863ecdd7031.site123.me/";
     public static final String DONATION_LINK = "https://www.matara.pro/nedarimplus/online/?mosad=7001292";
     static final String ZMANEI_TFILOT_LINK = "https://63863ecdd7031.site123.me/#section-64a56d581a3bc";
+    public static String currentTfilah = "";
 
-
-
+    public static void setCurrentTfilah(String currentTfilah) {
+        MainActivity.currentTfilah = currentTfilah;
+    }
 
 
 

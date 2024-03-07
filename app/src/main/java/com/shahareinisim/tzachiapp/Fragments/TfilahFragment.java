@@ -185,6 +185,15 @@ public class TfilahFragment extends Fragment {
         StringBuilder stringBuilder = new StringBuilder();
         while ((str = bufferedReader.readLine()) != null) stringBuilder.append(str).append("\n");
 
+
+        if (tfilah.equals(Tfilah.SHACHRIT)) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[sod]");
+            stringBuilder = new StringBuilder(
+                    stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()),
+                            ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)))
+            );
+        }
+
         if (!holidaysFinder.jewishCalendar.isChanukah()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[c]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
@@ -193,18 +202,19 @@ public class TfilahFragment extends Fragment {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[p]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
-//        if (!holidaysFinder.isHoliday()) {
-//            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[h]");
-//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-//        }
-//        if (!holidaysFinder.jewishCalendar.isRoshChodesh()) {
-//            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
-//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-//            indexes = new PartIndexes(stringBuilder.toString(), "[rc]");
-//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-//            indexes = new PartIndexes(stringBuilder.toString(), "[halel]");
-//            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-//        }
+        if (!holidaysFinder.isHoliday()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[h]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+            Log.d("# PartIndexes #", String.format("startIndex: %s, endIndex: %s", indexes.getStartIndex(), indexes.getEndIndex()));
+        }
+        if (!holidaysFinder.jewishCalendar.isRoshChodesh()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+            indexes = new PartIndexes(stringBuilder.toString(), "[rc]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+            indexes = new PartIndexes(stringBuilder.toString(), "[halel]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
         if (holidaysFinder.isNoTachnunRecited()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[tachnun]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
@@ -213,10 +223,6 @@ public class TfilahFragment extends Fragment {
         // iterate over every line in stringBuilder
         for (String part : stringBuilder.toString().split("\n")) {
             TfilahPart tfilahPart = new TfilahPart(part);
-
-            if (tfilahPart.getKeys().contains(TfilahPart.Key.SOD)) {
-                tfilahPart.setPart(ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)));
-            }
 
             if (tfilahPart.isTitle()) titleParts.add(new TfilahTitlePart(parts.size(), part));
 
@@ -285,5 +291,9 @@ public class TfilahFragment extends Fragment {
     public void onDestroy() {
         if (popupNav != null) popupNav.dismiss();
         super.onDestroy();
+    }
+
+    public Tfilah getTfilah() {
+        return tfilah;
     }
 }

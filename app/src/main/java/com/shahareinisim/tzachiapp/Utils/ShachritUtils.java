@@ -1,5 +1,7 @@
 package com.shahareinisim.tzachiapp.Utils;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,6 @@ public class ShachritUtils {
     public static String getSongFromFile(BufferedReader bufferedReader, int day) {
         StringBuilder sod = new StringBuilder();
         String dayKey = "[" + day + "]";
-        String yahalehVeyavo = "[yv]";
         try {
             String part;
             while ((part = bufferedReader.readLine()) != null) {
@@ -30,6 +31,7 @@ public class ShachritUtils {
                     if (sod.length() != 0) sod.append("\n\n");
                     sod.append(part.replace(dayKey, ""));
                 }
+                Log.d("TAG", "getSongFromFile: " + part);
             }
         } catch (IOException ignored) {}
 

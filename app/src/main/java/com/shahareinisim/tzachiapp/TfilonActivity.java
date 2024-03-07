@@ -1,5 +1,7 @@
 package com.shahareinisim.tzachiapp;
 
+import static com.shahareinisim.tzachiapp.MainActivity.setCurrentTfilah;
+
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -58,7 +60,7 @@ public class TfilonActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         // replace the FrameLayout with new Fragment
-        fragmentTransaction.add(R.id.fragment_container, new TfilahFragment(tfilah), "tag");
+        fragmentTransaction.add(R.id.fragment_container, new TfilahFragment(tfilah), tfilah.toString());
 //        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.addToBackStack("");
 
@@ -109,6 +111,9 @@ public class TfilonActivity extends BaseActivity {
 
     public void addMostUsedTfilah(TfilahFragment.Tfilah tfilah, String label) {
 
+        setCurrentTfilah(tfilah.toString());
+        if (tfilah.toString().equals(getCurrentTfilah())) return;
+
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
         shortcutIntent.putExtra("TFILAH", tfilah.toString());
@@ -128,8 +133,14 @@ public class TfilonActivity extends BaseActivity {
 
         String tfilahString = getIntent().getStringExtra("TFILAH");
         if (tfilahString != null) {
+            if (tfilahString.equals(MainActivity.currentTfilah)) finish();
             tfilahFragment(TfilahFragment.Tfilah.valueOf(tfilahString));
         }
+    }
+
+    public String getCurrentTfilah() {
+        if (getSupportFragmentManager().getFragments().isEmpty()) return "null";
+        return getSupportFragmentManager().getFragments().get(0).getTag();
     }
 
 }

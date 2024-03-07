@@ -14,11 +14,14 @@ public class PartIndexes {
     }
 
     public PartIndexes(String text, String textToFind) {
-        this.startIndex = text.indexOf(textToFind)+1;
-        this.endIndex = text.indexOf(textToFind, startIndex) + textToFind.length() + 1;
-        Log.d("***", textToFind + "\n"
-                + text + "\n" +
-                "start: " + startIndex + ", end: " + endIndex);
+        if (!text.contains(textToFind)) {
+            this.startIndex = 0;
+            this.endIndex = 0;
+            this.part = "";
+            return;
+        }
+        this.startIndex = text.indexOf(textToFind);
+        this.endIndex = text.indexOf(textToFind, startIndex+1) + textToFind.length() + 1;
         this.part = text.substring(startIndex, endIndex);
     }
 
