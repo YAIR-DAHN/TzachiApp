@@ -64,8 +64,8 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
             case INSIDE_NOTE:
                 regularDesign(holder, true);
                 break;
-            case HOLIDAY:
-                if (tfilahPart.isTitle()) noteDesign(holder);
+            case ADDON:
+                if (tfilahPart.isTitle()) titleDesign(holder);
                 else holidayDesign(holder, true);
                 break;
             case EMPTY:

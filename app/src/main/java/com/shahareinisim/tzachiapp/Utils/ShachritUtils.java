@@ -26,7 +26,7 @@ public class ShachritUtils {
             while ((part = bufferedReader.readLine()) != null) {
                 String key = "";
                 if (part.length() > 3) key = part.substring(0, 3);
-                else if (part.equals("")) continue;
+                else if (part.isEmpty()) continue;
                 if (key.equals(dayKey)) {
                     if (sod.length() != 0) sod.append("\n\n");
                     sod.append(part.replace(dayKey, ""));
@@ -38,6 +38,22 @@ public class ShachritUtils {
         if (sod.length() == 0) return "Unable to determine day of week or it's Shabbat day";
 
         return sod.toString();
+    }
+
+    public static String getMegilatEster(InputStream megilatEsterFile) {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(megilatEsterFile));
+        StringBuilder megilatEster = new StringBuilder();
+        try {
+            String part;
+            while ((part = bufferedReader.readLine()) != null) {
+                if (megilatEster.length() != 0) megilatEster.append("\n\n");
+                megilatEster.append(part);
+            }
+        } catch (IOException ignored) {}
+
+        if (megilatEster.length() == 0) return "Unable to read Megilat Ester";
+
+        return megilatEster.toString();
     }
 
 }

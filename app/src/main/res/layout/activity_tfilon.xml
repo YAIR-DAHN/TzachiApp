@@ -50,19 +50,38 @@
                 app:title="@string/app_name"
                 >
 
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_tfilon"
-                    android:textSize="50sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/times"
+                    android:orientation="vertical"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingTop="20dp"
-                    android:paddingBottom="20dp"
-                    app:layout_collapseMode="parallax"
-                    />
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_tfilon"
+                        android:textSize="50sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/times"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        app:layout_collapseMode="parallax"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/location_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginEnd="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:spinnerMode="dialog"
+                        />
+
+                </LinearLayout>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 

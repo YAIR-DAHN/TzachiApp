@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TfilahPart {
 
-    public enum Key {NORMAL, TITLE, NOTE, SOD, HOLIDAY, PURIM, HANUKKAH, YAHALEH_VEYAVO, ROSH_CHODESH, TACHNUN, INSIDE_NOTE, INLINE_NOTE, EMPTY}
+    public enum Key {NORMAL, TITLE, NOTE, SOD, INSIDE_NOTE, ADDON, EMPTY}
 
     String part;
     Key primaryKey;
@@ -25,7 +25,7 @@ public class TfilahPart {
 
         int count = 0;
         // add every key to ArrayList<Key>
-        while (!tempKey.equals("")) {
+        while (!tempKey.isEmpty()) {
             count++;
             // add key to the list
             keys.add(initType(tempKey));
@@ -44,7 +44,7 @@ public class TfilahPart {
     private String initTempKey(String part) {
         // avoid looping on empty line...
         if (keys.contains(Key.EMPTY)) return "";
-        if (part.equals("")) return "[e]";
+        if (part.isEmpty()) return "[e]";
         return (part.contains("[") && part.contains("]"))
                 ? part.substring(part.indexOf("["), part.indexOf("]")+1) : "";
     }
@@ -73,18 +73,13 @@ public class TfilahPart {
             case "[sod]":
                 return Key.SOD;
             case "[h]":
-                return Key.HOLIDAY;
             case "[c]":
-                return Key.HANUKKAH;
             case "[p]":
-                return Key.PURIM;
             case "[yv]":
-                return Key.YAHALEH_VEYAVO;
             case "[rc]":
             case "[halel]":
-                return Key.ROSH_CHODESH;
-            case "[tachnun]":
-                return Key.TACHNUN;
+            case "[megilat ester]":
+                return Key.ADDON;
             case "[in]":
                 return Key.INSIDE_NOTE;
             case "[e]":

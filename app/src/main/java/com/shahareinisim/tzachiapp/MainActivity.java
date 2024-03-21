@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,6 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.shahareinisim.tzachiapp.Fragments.TfilahFragment;
 import com.shahareinisim.tzachiapp.Fragments.WebViewFragment;
 import com.shahareinisim.tzachiapp.Views.MainItem;
@@ -27,8 +33,6 @@ public class MainActivity extends BaseActivity {
         MainActivity.currentTfilah = currentTfilah;
     }
 
-
-
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,8 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, TfilonActivity.class)));
         initWVCardView(getString(R.string.title_zmanei_tfilot), R.drawable.banner_tfhilot, ZMANEI_TFILOT_LINK);
         initWVCardView(getString(R.string.title_donations), R.drawable.banner_donations, DONATION_LINK);
+
+        checkForUpdate();
     }
 
     public void initWVCardView(String title, int bannerImg, String url) {
@@ -74,6 +80,50 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.addToBackStack("");
 
         fragmentTransaction.commit();
+    }
+
+    // self update check with google play store
+    private void checkForUpdate() {
+        // Create an instance of the AppUpdateManager
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+
+        // Check for updates
+        // Check for updates
+        Log.d("MainActivity", "Update check started!");
+        appUpdateManager.getAppUpdateInfo().addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            AppUpdateType.IMMEDIATE,
+                            this,
+                            100);
+                } catch (IntentSender.SendIntentException e) {
+                    Log.d("MainActivity", "Update check failed!", e);
+                }
+            } else {
+                Log.d("MainActivity", "No update available or update not allowed.");
+            }
+        }).addOnFailureListener(e -> Log.d("MainActivity", "Update check failed!", e));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                Log.d("MainActivity", "Success! Result code: " + resultCode);
+                Snackbar.make(findViewById(R.id.fragment_container), R.string.message_new_version, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.button_update, view -> {
+                            // intent to app on play store
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(android.net.Uri.parse("https://play.google.com/store/apps/details?id=com.shahareinisim.tzachiapp"));
+                            startActivity(intent);
+                        }).show();
+            } else Log.d("MainActivity", "Update flow failed! Result code: " + resultCode);
+        }
     }
 
     @Override

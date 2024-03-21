@@ -16,7 +16,10 @@
     <string name="trumot_vmeasrot">Trumot and Measrot</string>
     <string name="asher_yatzar">Asher Yatzar</string>
     <string name="tikun_haklali">Tikun Haklali</string>
+    <string name="megilat_esther">Megilat Esther</string>
     <string name="text_size_indicator">A</string>
+    <string name="message_new_version">New version available</string>
+    <string name="button_update">Update</string>
 
     <!-- none translatable -->
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>

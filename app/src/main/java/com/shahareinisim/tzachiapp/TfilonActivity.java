@@ -2,31 +2,49 @@ package com.shahareinisim.tzachiapp;
 
 import static com.shahareinisim.tzachiapp.MainActivity.setCurrentTfilah;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ShortcutManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
 import com.shahareinisim.tzachiapp.Fragments.TfilahFragment;
+import com.shahareinisim.tzachiapp.Utils.HolidaysFinder;
 import com.shahareinisim.tzachiapp.Views.TfilonItem;
 
+import java.util.ArrayList;
+
 public class TfilonActivity extends BaseActivity {
+
+    SharedPreferences sp;
+    ArrayList<String> locationsList = getLocationsList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tfilon);
 
+        sp = getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(this), MODE_PRIVATE);
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = sp.edit();
+
+        if (new HolidaysFinder(this).isPurim()) {
+            initCardView(getString(R.string.megilat_esther), view -> tfilahFragment(TfilahFragment.Tfilah.MEGILAT_ESTHER));
+        }
         initCardView(getString(R.string.shachrit), view -> tfilahFragment(TfilahFragment.Tfilah.SHACHRIT));
         initCardView(getString(R.string.mincha), view -> tfilahFragment(TfilahFragment.Tfilah.MINCHA));
         initCardView(getString(R.string.harvit), view -> tfilahFragment(TfilahFragment.Tfilah.HARVIT));
@@ -40,7 +58,70 @@ public class TfilonActivity extends BaseActivity {
         initCardView(getString(R.string.perek_shira), view -> tfilahFragment(TfilahFragment.Tfilah.PEREK_SHIRA));
         initCardView(getString(R.string.tikun_haklali), view -> tfilahFragment(TfilahFragment.Tfilah.TIKUN_HAKLALI));
 
+        ArrayAdapter adapter = new ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, locationsList);
 
+        AppCompatSpinner locations = findViewById(R.id.location_spinner);
+        locations.setAdapter(adapter);
+
+        int savedLocation = getSavedLocation();
+        locations.setSelection(savedLocation);
+
+
+        locations.setOnItemSelectedListener(new AppCompatSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                editor.putString("location", locationsList.get(position));
+                editor.apply();
+                if (getSavedLocation() != savedLocation) recreate();
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private int getSavedLocation() {
+        for (String location : locationsList) {
+            if (location.equals(sp.getString("location", "Tel Aviv"))) return locationsList.indexOf(location);
+        }
+
+        return 0;
+    }
+
+    @NonNull
+    private static ArrayList<String> getLocationsList() {
+        ArrayList<String> locationsList = new ArrayList<>();
+        locationsList.add("Ramat Gan");
+        locationsList.add("Bnei Brak");
+        locationsList.add("Tel Aviv");
+        locationsList.add("Jerusalem");
+//        locationsList.add("Haifa");
+//        locationsList.add("Be'er Sheva");
+//        locationsList.add("Eilat");
+//        locationsList.add("Tiberias");
+//        locationsList.add("Safed");
+//        locationsList.add("Ashdod");
+//        locationsList.add("Netanya");
+//        locationsList.add("Rishon LeZion");
+//        locationsList.add("Petah Tikva");
+//        locationsList.add("Holon");
+//        locationsList.add("Rehovot");
+//        locationsList.add("Bat Yam");
+//        locationsList.add("Ashkelon");
+//        locationsList.add("Jaffa");
+//        locationsList.add("Modi'in-Maccabim-Re'ut");
+//        locationsList.add("Herzliya");
+//        locationsList.add("Kfar Saba");
+//        locationsList.add("Ra'anana");
+//        locationsList.add("Bet Shemesh");
+//        locationsList.add("Lod");
+//        locationsList.add("Ramla");
+//        locationsList.add("Nahariya");
+//        locationsList.add("Kiryat Ata");
+//        locationsList.add("Giv'atayim");
+//        locationsList.add("Hadera");
+        return locationsList;
     }
 
     public void initCardView(String title, View.OnClickListener onClickListener) {

@@ -1,12 +1,5 @@
 package com.shahareinisim.tzachiapp.Fragments;
 
-import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.HANUKKAH;
-import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.HOLIDAY;
-import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.PURIM;
-import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.ROSH_CHODESH;
-import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.TACHNUN;
-import static com.shahareinisim.tzachiapp.Models.TfilahPart.Key.YAHALEH_VEYAVO;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
-import com.shahareinisim.tzachiapp.Models.Note;
 import com.shahareinisim.tzachiapp.Models.PartIndexes;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
 import com.shahareinisim.tzachiapp.Models.TfilahTitlePart;
@@ -44,7 +36,8 @@ import java.util.Objects;
 
 public class TfilahFragment extends Fragment {
 
-    public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH, KRIAT_SHEMA, BIRCAT_MEN_SHALOSH, ASHER_YATZAR, TRUMOT_VMEASROT, PEREK_SHIRA, TIKUN_HAKLALI}
+    public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH,
+        KRIAT_SHEMA, BIRCAT_MEN_SHALOSH, ASHER_YATZAR, TRUMOT_VMEASROT, PEREK_SHIRA, TIKUN_HAKLALI, MEGILAT_ESTHER}
 
     Tfilah tfilah;
     FloatingActionButton navigator;
@@ -53,8 +46,6 @@ public class TfilahFragment extends Fragment {
     PopupNavigator popupNav;
 
     TfilahAdapter tfilahAdapter;
-
-    TfilahPart.Key[] timesKeys = {HOLIDAY, YAHALEH_VEYAVO, ROSH_CHODESH, TACHNUN, HANUKKAH, PURIM};
 
     public TfilahFragment() {}
 
@@ -147,6 +138,10 @@ public class TfilahFragment extends Fragment {
                 tfilahFileRes = R.raw.tikun_haklali;
                 title.setText(R.string.tikun_haklali);
                 break;
+            case MEGILAT_ESTHER:
+                tfilahFileRes = R.raw.megilat_esther;
+                title.setText(R.string.megilat_esther);
+                break;
         }
 
         DataManager dataManager = new DataManager(requireContext());
@@ -176,10 +171,8 @@ public class TfilahFragment extends Fragment {
     public TfilahAdapter initTfilahAdapter(BufferedReader bufferedReader) throws IOException {
         ArrayList<TfilahPart> parts = new ArrayList<>();
         ArrayList<TfilahTitlePart> titleParts = new ArrayList<>();
-        HolidaysFinder holidaysFinder = new HolidaysFinder();
+        HolidaysFinder holidaysFinder = new HolidaysFinder(requireContext());
         Log.d("##### initTfilahAdapter #####", "is holiday: " + (holidaysFinder.isHoliday() ? "Yes" : "No"));
-
-        TfilahPart.Key currentKey = null;
 
         String str;
         StringBuilder stringBuilder = new StringBuilder();
@@ -192,13 +185,20 @@ public class TfilahFragment extends Fragment {
                     stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()),
                             ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)))
             );
+            if (holidaysFinder.getJewishCalendar().isPurim()) {
+                indexes = new PartIndexes(stringBuilder.toString(), "[megilat ester]");
+                stringBuilder = new StringBuilder(
+                        stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()),
+                                ShachritUtils.getMegilatEster(requireActivity().getResources().openRawResource(R.raw.megilat_esther)))
+                );
+            }
         }
 
-        if (!holidaysFinder.jewishCalendar.isChanukah()) {
+        if (!holidaysFinder.getJewishCalendar().isChanukah()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[c]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
-        if (!holidaysFinder.jewishCalendar.isPurim()) {
+        if (!holidaysFinder.getJewishCalendar().isPurim()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[p]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
@@ -207,7 +207,7 @@ public class TfilahFragment extends Fragment {
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
             Log.d("# PartIndexes #", String.format("startIndex: %s, endIndex: %s", indexes.getStartIndex(), indexes.getEndIndex()));
         }
-        if (!holidaysFinder.jewishCalendar.isRoshChodesh()) {
+        if (!holidaysFinder.getJewishCalendar().isRoshChodesh()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
             indexes = new PartIndexes(stringBuilder.toString(), "[rc]");

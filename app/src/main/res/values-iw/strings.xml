@@ -18,7 +18,10 @@
     <string name="trumot_vmeasrot">הפרשת תרומות ומעשרות</string>
     <string name="asher_yatzar">ברכת אשר יצר</string>
     <string name="tikun_haklali">תיקון הכללי</string>
+    <string name="megilat_esther">מגילת אסתר</string>
     <string name="text_size_indicator">א</string>
     <string name="create_shortcut">צור קיצור דרך</string>
+    <string name="message_new_version">גרסה חדשה זמינה</string>
+    <string name="button_update">עדכון</string>
 
 </resources>
