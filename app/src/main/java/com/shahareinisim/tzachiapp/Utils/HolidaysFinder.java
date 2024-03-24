@@ -57,37 +57,43 @@ public class HolidaysFinder {
         return null;
     }
 
-    public ArrayList<Location> getLocations() {
+    public static ArrayList<Location> getLocations() {
         ArrayList<Location> locations = new ArrayList<>();
         locations.add(new Location("Ramat Gan", 32.0806, 34.8269));
         locations.add(new Location("Bnei Brak", 32.0806, 34.8269));
         locations.add(new Location("Tel Aviv", 32.0667, 34.7833));
         locations.add(new Location("Jerusalem", 31.7833, 35.2167));
         return locations;
-    }
 
-    public void setLocationName(String locationName) {
-        jewCal.getGeoLocation().setLocationName(locationName);
-    }
-
-    public boolean isRoshChodesh() {
-        return jewishCalendar.isRoshChodesh();
+        //        locationsList.add("Haifa");
+//        locationsList.add("Be'er Sheva");
+//        locationsList.add("Eilat");
+//        locationsList.add("Tiberias");
+//        locationsList.add("Safed");
+//        locationsList.add("Ashdod");
+//        locationsList.add("Netanya");
+//        locationsList.add("Rishon LeZion");
+//        locationsList.add("Petah Tikva");
+//        locationsList.add("Holon");
+//        locationsList.add("Rehovot");
+//        locationsList.add("Bat Yam");
+//        locationsList.add("Ashkelon");
+//        locationsList.add("Jaffa");
+//        locationsList.add("Modi'in-Maccabim-Re'ut");
+//        locationsList.add("Herzliya");
+//        locationsList.add("Kfar Saba");
+//        locationsList.add("Ra'anana");
+//        locationsList.add("Bet Shemesh");
+//        locationsList.add("Lod");
+//        locationsList.add("Ramla");
+//        locationsList.add("Nahariya");
+//        locationsList.add("Kiryat Ata");
+//        locationsList.add("Giv'atayim");
+//        locationsList.add("Hadera");
     }
 
     public boolean isPurim() {
         return tr.isAlHanissimRecited(jewishCalendar);
-    }
-
-    public YahalehVeyavoh isYahalehVeyavoRecited(JewishCalendar jewishCalendar) {
-        if (isRoshChodesh()) return YahalehVeyavoh.ROSH_CHODESH;
-        else if (jewishCalendar.isPesach()) return YahalehVeyavoh.PESACH;
-        else if (jewishCalendar.isShavuos()) return YahalehVeyavoh.SHAVUOS;
-        else if (jewishCalendar.isRoshHashana()) return YahalehVeyavoh.ROSH_HASHANA;
-        else if (jewishCalendar.isYomKippur()) return YahalehVeyavoh.YOM_KIPPUR;
-        else if (jewishCalendar.isSuccos()) return YahalehVeyavoh.SUCCOS;
-        else if (jewishCalendar.isShminiAtzeres()) return YahalehVeyavoh.SHMINI_HATZERES;
-        else if (jewishCalendar.isSimchasTorah()) return YahalehVeyavoh.SIMCHAS_TORAH;
-        else return YahalehVeyavoh.NONE;
     }
 
     public boolean isNoTachnunRecited() {
@@ -112,19 +118,8 @@ public class HolidaysFinder {
         jewishCalendar.isSimchasTorah();
     }
 
-    public YahalehVeyavoh getYomTov() {
-        switch (jewishCalendar.getYomTovIndex()) {
-            case 1:
-                return YahalehVeyavoh.PESACH;
-            case 2:
-                return YahalehVeyavoh.SHAVUOS;
-            default:
-                return YahalehVeyavoh.NONE;
-        }
-    }
-
     public JewishCalendar getJewishCalendar() {
         return jewishCalendar;
     }
-    enum YahalehVeyavoh {NONE, PESACH, SHAVUOS, ROSH_HASHANA, YOM_KIPPUR, SUCCOS, SHMINI_HATZERES, SIMCHAS_TORAH, ROSH_CHODESH}
+
 }

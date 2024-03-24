@@ -1,8 +1,5 @@
 package com.shahareinisim.tzachiapp;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -13,12 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
-import com.shahareinisim.tzachiapp.Fragments.TfilahFragment;
 import com.shahareinisim.tzachiapp.Fragments.WebViewFragment;
 import com.shahareinisim.tzachiapp.Views.MainItem;
 
@@ -44,6 +45,14 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(MainActivity.this, TfilonActivity.class)));
         initWVCardView(getString(R.string.title_zmanei_tfilot), R.drawable.banner_tfhilot, ZMANEI_TFILOT_LINK);
         initWVCardView(getString(R.string.title_donations), R.drawable.banner_donations, DONATION_LINK);
+
+        Chip about = findViewById(R.id.about);
+        about.setOnClickListener(v ->
+                new MaterialAlertDialogBuilder(this)
+                .setView(R.layout.dialog_about)
+                .setIcon(R.drawable.app_icon)
+                .setPositiveButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                .show());
 
         checkForUpdate();
     }

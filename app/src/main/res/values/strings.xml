@@ -24,4 +24,17 @@
     <!-- none translatable -->
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="create_shortcut">Create Shortcut</string>
+    <string name="location">Location</string>
+    <string name="tel_aviv">Tel Aviv</string>
+    <string name="bnei_brak">Bnei Brak</string>
+    <string name="ramat_gan">Ramat Gan</string>
+    <string name="jerusalem">Jerusalem</string>
+    <string name="times_of_day">Times Of Day</string>
+    <string name="sunset">Sunset</string>
+    <string name="contact">Contact</string>
+    <string name="developer">Developer</string>
+    <string name="version">version:  %s</string>
+    <string name="app_description">Tzachi App developed to provide info such as new shihurim and time for tfilot for the community of The Kolel Shaharei Nisim who also holds the Tzachi organization.</string>
+    <string name="about">About</string>
+    <string name="close">Close</string>
 </resources>
