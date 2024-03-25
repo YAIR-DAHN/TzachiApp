@@ -185,7 +185,7 @@ public class TfilahFragment extends Fragment {
                     stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()),
                             ShachritUtils.getSongOfCurrentDay(requireActivity().getResources().openRawResource(R.raw.song_of_day)))
             );
-            if (holidaysFinder.getJewishCalendar().isPurim()) {
+            if (holidaysFinder.isPurim()) {
                 indexes = new PartIndexes(stringBuilder.toString(), "[megilat ester]");
                 stringBuilder = new StringBuilder(
                         stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()),
@@ -198,7 +198,7 @@ public class TfilahFragment extends Fragment {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[c]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
-        if (!holidaysFinder.getJewishCalendar().isPurim()) {
+        if (!holidaysFinder.isPurim()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[p]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
@@ -292,8 +292,5 @@ public class TfilahFragment extends Fragment {
         if (popupNav != null) popupNav.dismiss();
         super.onDestroy();
     }
-
-    public Tfilah getTfilah() {
-        return tfilah;
-    }
+    
 }

@@ -21,9 +21,11 @@ public class HolidaysFinder {
     TefilaRules tr;
     JewishCalendar jewishCalendar;
     HebrewDateFormatter hdf;
+
+    SharedPreferences sp;
     public HolidaysFinder(Context context) {
         Calendar calendar = Calendar.getInstance();
-        SharedPreferences sp = context.getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(context), Context.MODE_PRIVATE);
+        sp = context.getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(context), Context.MODE_PRIVATE);
 
         jewCal = new ZmanimCalendar();
         GeoLocation geoLocation = jewCal.getGeoLocation();
@@ -93,7 +95,11 @@ public class HolidaysFinder {
     }
 
     public boolean isPurim() {
-        return tr.isAlHanissimRecited(jewishCalendar);
+        if (sp.getString("location", "Tel Aviv").equals("Jerusalem")) {
+            return new JewishCalendar(calendarMinus(getJewishCalendar().getGregorianCalendar(), Calendar.DAY_OF_MONTH, 1)).isPurim();
+        }
+
+        return getJewishCalendar().isPurim();
     }
 
     public boolean isNoTachnunRecited() {
@@ -116,6 +122,11 @@ public class HolidaysFinder {
         jewishCalendar.isSuccos() ||
         jewishCalendar.isShminiAtzeres() ||
         jewishCalendar.isSimchasTorah();
+    }
+
+    public Calendar calendarMinus(Calendar calendar, int type, int amount) {
+        calendar.set(type, calendar.get(type)-amount);
+        return calendar;
     }
 
     public JewishCalendar getJewishCalendar() {
