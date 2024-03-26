@@ -23,5 +23,18 @@
     <string name="create_shortcut">צור קיצור דרך</string>
     <string name="message_new_version">גרסה חדשה זמינה</string>
     <string name="button_update">עדכון</string>
+    <string name="location">מיקום</string>
+    <string name="tel_aviv">תל אביב</string>
+    <string name="bnei_brak">בני ברק</string>
+    <string name="ramat_gan">רמת גן</string>
+    <string name="jerusalem">ירושלים</string>
+    <string name="times_of_day">זמני היום</string>
+    <string name="sunset">שקיעה</string>
+    <string name="contact">צור קשר</string>
+    <string name="developer">מפתח</string>
+    <string name="version">גרסה:  </string>
+    <string name="app_description">אפליקציית צח"י פותחה על מנת לתת מידע כמו שיעורים חדשים וזמני תפילות לקהילה של הכולל "שערי ניסים" שמחזיק את עמותת צח"י.</string>
+    <string name="about">אודות</string>
+    <string name="close">סגירה</string>
 
 </resources>
