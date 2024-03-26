@@ -3,3 +3,8 @@
 /.gradle/
 /app/build/
 /app/build/intermediates/javac/debug/classes/
+/.idea/deploymentTargetDropDown.xml
+/app/release/app-release.aab
+/app/release/baselineProfiles/0/app-release.dm
+/app/release/output-metadata.json
+/app/release/baselineProfiles/1/app-release.dm
