@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
@@ -168,6 +170,7 @@ public class TfilahFragment extends Fragment {
         return parent;
     }
 
+    @SuppressLint({"ResourceType"})
     public TfilahAdapter initTfilahAdapter(BufferedReader bufferedReader) throws IOException {
         ArrayList<TfilahPart> parts = new ArrayList<>();
         ArrayList<TfilahTitlePart> titleParts = new ArrayList<>();
@@ -233,10 +236,27 @@ public class TfilahFragment extends Fragment {
             parts.add(tfilahPart);
         }
 
-        tfilahAdapter = new TfilahAdapter(parts, getTextSize());
+        tfilahAdapter = new TfilahAdapter(parts, getTextSize(), getFont());
 
         if (popupNav == null) {
             popupNav = new PopupNavigator(requireContext());
+
+            int[] fonts = {R.font.sileot, R.font.times};
+
+            for (int font : fonts) {
+                LayoutInflater inflater = LayoutInflater.from(requireContext());
+                MaterialButton button = (MaterialButton) inflater.inflate(
+                        R.layout.button_material_toogle, popupNav.fontsChooser, false);
+                button.setId(font);
+                button.setTypeface(ResourcesCompat.getFont(requireContext(), font));
+                button.setOnClickListener(view -> {
+                    notifyTextFontChanged(font);
+                    popupNav.fontsChooser.check(font);
+                });
+                popupNav.fontsChooser.addView(button);
+            }
+
+            popupNav.fontsChooser.check(getFont());
 
             popupNav.onShortcutClick(view -> ((TfilonActivity) requireActivity())
                     .createShortcut(tfilah, title.getText().toString()));
@@ -279,12 +299,24 @@ public class TfilahFragment extends Fragment {
         return ((TfilonActivity) requireActivity()).getTextSize();
     }
 
+    public int getFont() {
+        return ((TfilonActivity) requireActivity()).getFont();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     public void notifyTextSizeChanged(int textSize) {
         ((TfilonActivity) requireActivity()).preferences.edit().putInt("textSize", textSize).apply();
         tfilahAdapter.textSize = textSize;
         tfilahAdapter.notifyDataSetChanged();
         Log.d("##### notifyTextSizeChanged #####", "textSize = " + textSize);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void notifyTextFontChanged(int font) {
+        ((TfilonActivity) requireActivity()).preferences.edit().putInt("font", font).apply();
+        tfilahAdapter.font = font;
+        tfilahAdapter.notifyDataSetChanged();
+        Log.d("##### notifyTextFontChanged #####", "textFont = " + font);
     }
 
     @Override

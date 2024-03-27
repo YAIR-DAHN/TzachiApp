@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
 import com.shahareinisim.tzachiapp.R;
@@ -24,6 +25,7 @@ public class PopupNavigator extends PopupWindow {
 
     RecyclerView rvTitles;
     MaterialButton biggerText, smallerText;
+    public MaterialButtonToggleGroup fontsChooser;
 
     @SuppressLint({"UseCompatLoadingForDrawables", "InflateParams"})
     public PopupNavigator(@NonNull Context context) {
@@ -44,6 +46,7 @@ public class PopupNavigator extends PopupWindow {
         rvTitles.setLayoutManager(new LinearLayoutManager(context));
         biggerText = getContentView().findViewById(R.id.bigger_text);
         smallerText = getContentView().findViewById(R.id.smaller_text);
+        fontsChooser = getContentView().findViewById(R.id.fonts_chooser);
     }
 
     public int convertToPX(int dp) {
@@ -91,5 +94,6 @@ public class PopupNavigator extends PopupWindow {
         fixWindowMargins();
         super.showAsDropDown(anchor, xoff, yoff);
     }
+
 }
 
