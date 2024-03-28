@@ -3,6 +3,7 @@ package com.shahareinisim.tzachiapp.Views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ public class PopupNavigator extends PopupWindow {
 
     RecyclerView rvTitles;
     MaterialButton biggerText, smallerText;
+    public boolean isShown = false;
 
     @SuppressLint({"UseCompatLoadingForDrawables", "InflateParams"})
     public PopupNavigator(@NonNull Context context) {
@@ -44,6 +46,10 @@ public class PopupNavigator extends PopupWindow {
         rvTitles.setLayoutManager(new LinearLayoutManager(context));
         biggerText = getContentView().findViewById(R.id.bigger_text);
         smallerText = getContentView().findViewById(R.id.smaller_text);
+
+        setOnDismissListener(() -> {
+            new Handler().postDelayed(() -> isShown = false, 100);
+        });
     }
 
     public int convertToPX(int dp) {
@@ -88,7 +94,9 @@ public class PopupNavigator extends PopupWindow {
 
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
+        if (isShown) return;
         fixWindowMargins();
+        isShown = true;
         super.showAsDropDown(anchor, xoff, yoff);
     }
 }
