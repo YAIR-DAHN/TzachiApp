@@ -324,5 +324,5 @@ public class TfilahFragment extends Fragment {
         if (popupNav != null) popupNav.dismiss();
         super.onDestroy();
     }
-    
+
 }
