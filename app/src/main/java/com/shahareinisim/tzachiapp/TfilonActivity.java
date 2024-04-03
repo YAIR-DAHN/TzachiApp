@@ -32,8 +32,21 @@ public class TfilonActivity extends BaseActivity {
 
         initCardList();
 
+        checkForIntent();
+
         AutoCompleteTextView locations = findViewById(R.id.location_spinner);
         new LocationSpinnerInitializer().initialize(locations, this, this::initCardList);
+    }
+
+    private void checkForIntent() {
+        String tfilahString = getIntent().getStringExtra("TFILAH");
+        if (tfilahString != null) {
+//            if (tfilahString.equals(MainActivity.currentTfilah)) {
+//                finish();
+//                return;
+//            }
+            tfilahFragment(TfilahFragment.Tfilah.valueOf(tfilahString));
+        }
     }
 
     private void initCardList() {
@@ -66,6 +79,8 @@ public class TfilonActivity extends BaseActivity {
     }
 
     public void tfilahFragment(TfilahFragment.Tfilah tfilah) {
+
+        setCurrentTfilah(tfilah.toString());
 
         FragmentManager fm = getSupportFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
@@ -123,9 +138,6 @@ public class TfilonActivity extends BaseActivity {
 
     public void addMostUsedTfilah(TfilahFragment.Tfilah tfilah, String label) {
 
-        setCurrentTfilah(tfilah.toString());
-        if (tfilah.toString().equals(getCurrentTfilah())) return;
-
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
         shortcutIntent.putExtra("TFILAH", tfilah.toString());
@@ -142,12 +154,6 @@ public class TfilonActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        String tfilahString = getIntent().getStringExtra("TFILAH");
-        if (tfilahString != null) {
-            if (tfilahString.equals(MainActivity.currentTfilah)) finish();
-            tfilahFragment(TfilahFragment.Tfilah.valueOf(tfilahString));
-        }
     }
 
     public String getCurrentTfilah() {
