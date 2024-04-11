@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ public class LocationsAdapter extends ArrayAdapter<Location> {
 
     Context context;
     ArrayList<Location> locations;
+    int selectedPosition;
 
     public LocationsAdapter(ArrayList<Location> locations, Context context) {
         super(context, R.layout.item_location, locations);
@@ -55,11 +57,20 @@ public class LocationsAdapter extends ArrayAdapter<Location> {
         Location item = locations.get(position);
         if (item != null) {
             TextView textView = convertView.findViewById(R.id.location_name);
-            if (textView != null)
-                textView.setText(item.getLocationString(getContext()));
+
+            if (textView != null) textView.setText(item.getLocationName());
+
+            ImageView selectedLocation = convertView.findViewById(R.id.selected_location);
+            if (position == selectedPosition) selectedLocation.setVisibility(View.VISIBLE);
+            else selectedLocation.setVisibility(View.GONE);
         }
 
         return convertView;
+    }
+
+    public void setSelectedPosition(int selectedPosition) {
+        this.selectedPosition = selectedPosition;
+        notifyDataSetChanged();
     }
 
     @NonNull

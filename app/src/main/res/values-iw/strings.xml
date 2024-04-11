@@ -6,6 +6,8 @@
     <string name="title_tfilon">סידור תפילה</string>
     <string name="title_zmanei_tfilot">זמני התפילות</string>
     <string name="title_donations">לתרומות</string>
+
+    <!--Tfilot-->
     <string name="shachrit">שחרית</string>
     <string name="mincha">מנחה</string>
     <string name="harvit">ערבית</string>
@@ -19,22 +21,44 @@
     <string name="asher_yatzar">ברכת אשר יצר</string>
     <string name="tikun_haklali">תיקון הכללי</string>
     <string name="megilat_esther">מגילת אסתר</string>
+
     <string name="text_size_indicator">א</string>
     <string name="create_shortcut">צור קיצור דרך</string>
     <string name="message_new_version">גרסה חדשה זמינה</string>
     <string name="button_update">עדכון</string>
-    <string name="location">מיקום</string>
-    <string name="tel_aviv">תל אביב</string>
-    <string name="bnei_brak">בני ברק</string>
-    <string name="ramat_gan">רמת גן</string>
-    <string name="jerusalem">ירושלים</string>
-    <string name="times_of_day">זמני היום</string>
+    <string name="spinner_hint_choose_city">בחר עיר</string>
+
+    <!--Cities-->
+    <string name="tel_aviv">תל אביב, ישראל</string>
+    <string name="bnei_brak">בני ברק, ישראל</string>
+    <string name="ramat_gan">רמת גן, ישראל</string>
+    <string name="jerusalem">ירושלים, ישראל</string>
+    <string name="haifa">חיפה, ישראל</string>
+    <string name="tiberias">טבריה, ישראל</string>
+    <string name="beer_sheva">באר שבע, ישראל</string>
+    <string name="ashkelon">אשקלון, ישראל</string>
+    <string name="eilat">אילת, ישראל</string>
+    <string name="golders_green">גולדרס גרין, לונדון</string>
+    <string name="lakewood">לייקווד, ארה\"ב</string>
+    <string name="new_york">ניו יורק, ארה\"ב</string>
+
+    <string name="near_times_of_day">זמני היום הקרובים</string>
     <string name="sunset">שקיעה</string>
     <string name="contact">צור קשר</string>
     <string name="developer">מפתח</string>
     <string name="version">גרסה:  </string>
-    <string name="app_description">אפליקציית צח"י פותחה על מנת לתת מידע כמו שיעורים חדשים וזמני תפילות לקהילה של הכולל "שערי ניסים" שמחזיק את עמותת צח"י.</string>
     <string name="about">אודות</string>
     <string name="close">סגירה</string>
+    <string name="location_unknown">מיקום לא ידוע</string>
+    <string name="location_settings_not_satisfied">שירותי המיקום כבויים</string>
+    <string name="show_more">הצג עוד</string>
+    <string name="alos_hashachar">עלות השחר  (72)</string>
+    <string name="sunrise">זריחה</string>
+    <string name="sof_zman_shma_gra">סוף זמן שמע גר\"א</string>
+    <string name="sof_zman_shma_mga">סוף זמן שמע מג\"א</string>
+    <string name="chatzos">חצות</string>
+    <string name="tomorrow">מחר</string>
+    <string name="shabbat_candle_lightning">הדלקת נרות</string>
+    <string name="shabbat_exits">צאת שבת</string>
 
 </resources>

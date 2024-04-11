@@ -28,24 +28,4 @@ public class Location {
         return longitude;
     }
 
-    public String getLocationString(Context context) {
-        int resId = 0;
-        switch (getLocationName()) {
-            case "Ramat Gan":
-                resId = R.string.ramat_gan;
-                break;
-            case "Bnei Brak":
-                resId = R.string.bnei_brak;
-                break;
-            case "Tel Aviv":
-                resId = R.string.tel_aviv;
-                break;
-            case "Jerusalem":
-                resId = R.string.jerusalem;
-                break;
-        }
-
-        return context.getString(resId);
-    }
-
 }

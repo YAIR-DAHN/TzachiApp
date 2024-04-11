@@ -17,31 +17,50 @@ public class LocationSpinnerInitializer {
     Runnable onLocationChange;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
+
+    LocationsAdapter adapter;
     ArrayList<Location> locations;
 
     public void initialize(AutoCompleteTextView locationSpinner, Context context, Runnable onLocationChange) {
         this.context = context;
         this.locationSpinner = locationSpinner;
         this.onLocationChange = onLocationChange;
-        this.locations = HolidaysFinder.getLocations();
+        this.locations = HolidaysFinder.getLocations(context);
         this.sp = context.getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(getContext()), Context.MODE_PRIVATE);
         this.editor = sp.edit();
+
+        sp.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
+            assert key != null;
+            if (key.equals("location")) updateCurrentLocation();
+        });
 
         initLocations();
     }
 
+    public void updateCurrentLocation() {
+        locationSpinner.setText(locations.get(getSavedLocation()).getLocationName());
+        locationSpinner.dismissDropDown();
+        adapter.setSelectedPosition(getSavedLocation());
+        onLocationChange.run();
+    }
+
     private void initLocations() {
-        LocationsAdapter adapter = new LocationsAdapter(locations, getContext());
+        adapter = new LocationsAdapter(locations, getContext());
         locationSpinner.setAdapter(adapter);
 
-        locationSpinner.setText(locations.get(getSavedLocation()).getLocationString(getContext()));
+        locationSpinner.setText(locations.get(getSavedLocation()).getLocationName());
 
         locationSpinner.setOnItemClickListener((parent, view, position, id) -> {
-            editor.putString("location", locations.get(position).getLocationName());
-            editor.apply();
-            locationSpinner.setText(locations.get(position).getLocationString(getContext()));
-            onLocationChange.run();
+            saveLocation(editor, locations.get(position));
+            updateCurrentLocation();
         });
+    }
+
+    public static void saveLocation(SharedPreferences.Editor editor, Location location) {
+        editor.putString("location", location.getLocationName());
+        editor.putFloat("latitude", (float) location.getLatitude());
+        editor.putFloat("longitude", (float) location.getLongitude());
+        editor.apply();
     }
 
     private int getSavedLocation() {

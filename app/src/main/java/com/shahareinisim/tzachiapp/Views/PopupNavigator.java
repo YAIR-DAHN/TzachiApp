@@ -47,9 +47,9 @@ public class PopupNavigator extends PopupWindow {
         biggerText = getContentView().findViewById(R.id.bigger_text);
         smallerText = getContentView().findViewById(R.id.smaller_text);
 
-        setOnDismissListener(() -> {
-            new Handler().postDelayed(() -> isShown = false, 100);
-        });
+        setOnDismissListener(() ->
+                new Handler().postDelayed(() ->
+                        isShown = false, 100));
     }
 
     public int convertToPX(int dp) {
@@ -95,8 +95,8 @@ public class PopupNavigator extends PopupWindow {
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
         if (isShown) return;
-        fixWindowMargins();
         isShown = true;
+        fixWindowMargins();
         super.showAsDropDown(anchor, xoff, yoff);
     }
 }

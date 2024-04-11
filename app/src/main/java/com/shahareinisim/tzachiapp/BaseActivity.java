@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.TypedValue;
 
 public class BaseActivity extends AppCompatActivity {
@@ -17,7 +19,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        preferences = getPreferences(MODE_PRIVATE);
+        preferences = getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(this), Context.MODE_PRIVATE);
         enableNightMode(getNightMode());
 
         super.onCreate(savedInstanceState);

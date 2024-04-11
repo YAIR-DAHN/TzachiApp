@@ -14,28 +14,16 @@
         android:padding="15dp"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/app_description"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:padding="8dp" />
-
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="8dp" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:text="@string/developer"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp" />
 
@@ -43,40 +31,37 @@
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:text="J E"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             tools:ignore="HardcodedText" />
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="8dp" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
             android:text="@string/contact"
-            android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:text="Jacobel640@gmail.com"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             tools:ignore="HardcodedText" />
 
-    </FrameLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/app_version"
