@@ -56,4 +56,8 @@ public class BaseActivity extends AppCompatActivity {
     public int getTextSize() {
         return preferences.getInt("textSize", 1);
     }
+
+    public int getFont() {
+        return preferences.getInt("font", 0);
+    }
 }

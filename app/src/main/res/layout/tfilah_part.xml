@@ -26,6 +26,7 @@
         android:breakStrategy="simple"
         android:fontFamily="@font/times"
         android:lineSpacingExtra="4dp"
+        android:justificationMode="inter_word"
         />
 
 </LinearLayout>
