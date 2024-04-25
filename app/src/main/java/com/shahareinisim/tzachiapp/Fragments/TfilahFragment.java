@@ -222,6 +222,27 @@ public class TfilahFragment extends Fragment {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[tachnun]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
+        if (!holidaysFinder.getTefilahRules().isYaalehVeyavoRecited(holidaysFinder.getJewishCalendar())) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+
+        if (!holidaysFinder.getTefilahRules().isMoridHatalRecited(holidaysFinder.getJewishCalendar())) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[summer1]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+        if (!holidaysFinder.getTefilahRules().isMashivHaruachRecited(holidaysFinder.getJewishCalendar())) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[winter1]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+        if (!holidaysFinder.getTefilahRules().isVeseinBerachaRecited(holidaysFinder.getJewishCalendar())) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[summer2]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
+        if (!holidaysFinder.getTefilahRules().isVeseinTalUmatarRecited(holidaysFinder.getJewishCalendar())) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[winter2]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
 
         // iterate over every line in stringBuilder
         for (String part : stringBuilder.toString().split("\n")) {

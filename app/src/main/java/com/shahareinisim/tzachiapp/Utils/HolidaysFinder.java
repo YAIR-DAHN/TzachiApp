@@ -198,4 +198,7 @@ public class HolidaysFinder {
         return jewishCalendar;
     }
 
+    public TefilaRules getTefilahRules() {
+        return tr;
+    }
 }
