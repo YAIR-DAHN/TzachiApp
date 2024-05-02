@@ -33,10 +33,11 @@
                     android:layout_margin="20dp"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    style="@style/Widget.Material3.Button.IconButton.Outlined"
                     app:cardCornerRadius="10dp"
                     app:strokeColor="@color/colorPrimary"
                     app:strokeWidth="2dp"
+                    app:cardElevation="5dp"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
                     >
 
                     <LinearLayout
