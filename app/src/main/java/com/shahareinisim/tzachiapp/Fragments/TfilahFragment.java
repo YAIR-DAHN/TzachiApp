@@ -2,6 +2,7 @@ package com.shahareinisim.tzachiapp.Fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
@@ -27,6 +29,7 @@ import com.shahareinisim.tzachiapp.TfilonActivity;
 import com.shahareinisim.tzachiapp.Utils.Animations;
 import com.shahareinisim.tzachiapp.Utils.DataManager;
 import com.shahareinisim.tzachiapp.Utils.HolidaysFinder;
+import com.shahareinisim.tzachiapp.Utils.SfiratAhomer;
 import com.shahareinisim.tzachiapp.Utils.ShachritUtils;
 import com.shahareinisim.tzachiapp.Views.PopupNavigator;
 
@@ -45,9 +48,13 @@ public class TfilahFragment extends Fragment {
     FloatingActionButton navigator;
     RecyclerView rvTfilah;
     TextView title;
+    CoordinatorLayout topBar;
     PopupNavigator popupNav;
+    Chip titleIndicator;
+    Handler indicatorHandler = new Handler();
 
     TfilahAdapter tfilahAdapter;
+    ArrayList<TfilahTitlePart> titleParts;
 
     public TfilahFragment() {}
 
@@ -67,7 +74,7 @@ public class TfilahFragment extends Fragment {
         View parent = inflater.inflate(R.layout.fragment_tfilah, container, false);
         parent.setFocusable(true);
 
-        CoordinatorLayout topBar = parent.findViewById(R.id.top_bar);
+        topBar = parent.findViewById(R.id.top_bar);
 
         rvTfilah = parent.findViewById(R.id.rv_tfilah);
         rvTfilah.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -76,6 +83,33 @@ public class TfilahFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+                if (titleParts != null) {
+                    for (int i = 0; i < titleParts.size(); i++) {
+                        int currentPosition = ((LinearLayoutManager) Objects.requireNonNull(rvTfilah.getLayoutManager())).findFirstVisibleItemPosition();
+                        if (currentPosition == 0) {
+                            titleIndicator.setVisibility(View.GONE);
+                            return;
+                        }
+                        boolean isBeforeNext;
+                        if (i == titleParts.size()-1) isBeforeNext = true;
+                        else isBeforeNext = currentPosition < titleParts.get(i+1).getPosition();
+                        if (currentPosition >= titleParts.get(i).getPosition() && isBeforeNext) {
+                            titleIndicator.setText(titleParts.get(i).getTitle());
+                            int finalI = i;
+                            titleIndicator.setOnClickListener(v -> {
+                                Animations.show(topBar);
+                                rvTfilah.post(() -> ((LinearLayoutManager) Objects.requireNonNull(
+                                        rvTfilah.getLayoutManager())).scrollToPositionWithOffset(titleParts.get(finalI).getPosition(),0));
+                                indicatorHandler.removeCallbacksAndMessages(null);
+                                indicatorHandler.postDelayed(() -> titleIndicator.setVisibility(View.GONE), 1000);
+                            });
+                            titleIndicator.setVisibility(View.VISIBLE);
+                            indicatorHandler.removeCallbacksAndMessages(null);
+                            indicatorHandler.postDelayed(() -> titleIndicator.setVisibility(View.GONE), 3000);
+                        }
+                    }
+                }
 
                 if (dy > 10) {
                     if (topBar.getVisibility() == View.VISIBLE) Animations.hide(topBar);
@@ -88,6 +122,8 @@ public class TfilahFragment extends Fragment {
         navigator = parent.findViewById(R.id.navigator);
 
         title = parent.findViewById(R.id.title);
+
+        titleIndicator = parent.findViewById(R.id.title_indicator);
 
         int tfilahFileRes = 0;
 
@@ -172,15 +208,14 @@ public class TfilahFragment extends Fragment {
 
     @SuppressLint({"ResourceType"})
     public TfilahAdapter initTfilahAdapter(BufferedReader bufferedReader) throws IOException {
+        titleParts = new ArrayList<>();
         ArrayList<TfilahPart> parts = new ArrayList<>();
-        ArrayList<TfilahTitlePart> titleParts = new ArrayList<>();
         HolidaysFinder holidaysFinder = new HolidaysFinder(requireContext());
         Log.d("##### initTfilahAdapter #####", "is holiday: " + (holidaysFinder.isHoliday() ? "Yes" : "No"));
 
         String str;
         StringBuilder stringBuilder = new StringBuilder();
         while ((str = bufferedReader.readLine()) != null) stringBuilder.append(str).append("\n");
-
 
         if (tfilah.equals(Tfilah.SHACHRIT)) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[sod]");
@@ -252,7 +287,7 @@ public class TfilahFragment extends Fragment {
 
             if (tfilahPart.isEmpty()) {
                 //if crashing here delete empty line at the top of current tfilah
-                if (parts.get(parts.size()-1).isEmpty()) continue;
+                if (!parts.isEmpty() && parts.get(parts.size() - 1).isEmpty()) continue;
             }
             parts.add(tfilahPart);
         }

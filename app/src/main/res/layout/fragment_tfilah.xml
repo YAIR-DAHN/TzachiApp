@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:animateLayoutChanges="true">
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tfilah"
@@ -17,40 +19,60 @@
         android:nestedScrollingEnabled="false"
         />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/top_bar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        >
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/title"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/top_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="100dp"
-            android:ellipsize="marquee"
-            android:gravity="start"
-            android:marqueeRepeatLimit="1"
-            android:singleLine="true"
-            android:text="@string/shachrit"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:background="@color/white"
+            >
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/navigator"
-            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-            android:backgroundTint="@color/white"
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="100dp"
+                android:ellipsize="marquee"
+                android:gravity="start"
+                android:marqueeRepeatLimit="1"
+                android:singleLine="true"
+                android:text="@string/shachrit"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/navigator"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:backgroundTint="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:importantForAccessibility="no"
+                android:layout_margin="15dp"
+                android:src="@drawable/menu"
+                />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/title_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:importantForAccessibility="no"
-            android:layout_margin="15dp"
-            android:src="@drawable/menu"
+            android:layout_gravity="center|top"
+            android:text="title"
+            android:textColor="@color/colorPrimary"
+            android:backgroundTint="@color/background"
+            app:chipStrokeColor="@color/transparent"
+            app:chipCornerRadius="15dp"
+            android:visibility="gone"
             />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
