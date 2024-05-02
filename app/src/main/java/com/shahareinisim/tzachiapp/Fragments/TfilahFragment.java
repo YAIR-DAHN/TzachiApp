@@ -257,12 +257,14 @@ public class TfilahFragment extends Fragment {
             parts.add(tfilahPart);
         }
 
-        tfilahAdapter = new TfilahAdapter(parts, getTextSize(), getFont());
+        Log.d("##### Tfilah Adapter #####", "font: " + getFont());
+
+        tfilahAdapter = new TfilahAdapter(parts, getTextSize(), getFont(), isAlignedBothSides());
 
         if (popupNav == null) {
             popupNav = new PopupNavigator(requireContext());
 
-            int[] fonts = {R.font.sileot, R.font.times};
+            int[] fonts = {R.font.sileotsr, R.font.eft_classic, R.font.californian};
 
             for (int font : fonts) {
                 LayoutInflater inflater = LayoutInflater.from(requireContext());
@@ -272,7 +274,7 @@ public class TfilahFragment extends Fragment {
                 button.setTypeface(ResourcesCompat.getFont(requireContext(), font));
                 button.setOnClickListener(view -> {
                     notifyTextFontChanged(font);
-                    popupNav.fontsChooser.check(font);
+                    button.setChecked(true);
                 });
                 popupNav.fontsChooser.addView(button);
             }
@@ -297,8 +299,16 @@ public class TfilahFragment extends Fragment {
                 if (textSize != 0) textSize--;
 
                 notifyTextSizeChanged(textSize);
-                popupNav.sizeButtonsEnabled(getTextSize());
             });
+
+            popupNav.setAlignJustifyClickListener(() -> notifyAlignmentChanged(true));
+
+            popupNav.setAlignRightClickListener(() -> {
+                notifyAlignmentChanged(false);
+                Log.d("##### onClickAlignBothSides #####", "justifyAlignment = " + isAlignedBothSides());
+            });
+
+            popupNav.setAlignmentButtonSelected(isAlignedBothSides());
 
             TitleAdapter titleAdapter = new TitleAdapter((TfilonActivity) requireActivity(), titleParts);
             titleAdapter.setPostClickListener(position -> {
@@ -324,11 +334,16 @@ public class TfilahFragment extends Fragment {
         return ((TfilonActivity) requireActivity()).getFont();
     }
 
+    public boolean isAlignedBothSides() {
+        return ((TfilonActivity) requireActivity()).isAlienedBothSides();
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     public void notifyTextSizeChanged(int textSize) {
         ((TfilonActivity) requireActivity()).preferences.edit().putInt("textSize", textSize).apply();
         tfilahAdapter.textSize = textSize;
         tfilahAdapter.notifyDataSetChanged();
+        popupNav.sizeButtonsEnabled(textSize);
         Log.d("##### notifyTextSizeChanged #####", "textSize = " + textSize);
     }
 
@@ -338,6 +353,15 @@ public class TfilahFragment extends Fragment {
         tfilahAdapter.font = font;
         tfilahAdapter.notifyDataSetChanged();
         Log.d("##### notifyTextFontChanged #####", "textFont = " + font);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void notifyAlignmentChanged(boolean justifyAlignment) {
+        popupNav.setAlignmentButtonSelected(justifyAlignment);
+        ((TfilonActivity) requireActivity()).preferences.edit().putBoolean("isAlignedBothSides", justifyAlignment).apply();
+        tfilahAdapter.justifyAlignment = justifyAlignment;
+        tfilahAdapter.notifyDataSetChanged();
+        Log.d("##### notifyAlignmentChanged #####", "justifyAlignment = " + justifyAlignment);
     }
 
     @Override

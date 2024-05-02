@@ -62,4 +62,9 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="shabbat_candle_lightning">Candle Lightning</string>
     <string name="shabbat_exits">Shabbat Exits</string>
+    <string name="navigation">Navigation</string>
+    <string name="preferences">Preferences</string>
+    <string name="text_size">Text Size</string>
+    <string name="font">Font</string>
+    <string name="text_layout">Text Layout</string>
 </resources>

@@ -58,6 +58,10 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public int getFont() {
-        return preferences.getInt("font", 0);
+        return preferences.getInt("font", R.font.times);
+    }
+
+    public boolean isAlienedBothSides() {
+        return preferences.getBoolean("isAlignedBothSides", false);
     }
 }

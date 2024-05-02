@@ -60,5 +60,10 @@
     <string name="tomorrow">מחר</string>
     <string name="shabbat_candle_lightning">הדלקת נרות</string>
     <string name="shabbat_exits">צאת שבת</string>
+    <string name="navigation">ניווט</string>
+    <string name="preferences">העדפות</string>
+    <string name="text_size">גודל טקסט</string>
+    <string name="font">פונט</string>
+    <string name="text_layout">פריסת טקסט</string>
 
 </resources>
