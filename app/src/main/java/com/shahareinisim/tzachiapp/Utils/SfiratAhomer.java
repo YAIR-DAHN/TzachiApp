@@ -1,19 +1,6 @@
 package com.shahareinisim.tzachiapp.Utils;
 
-import com.kosherjava.zmanim.hebrewcalendar.JewishCalendar;
-
 public class SfiratAhomer {
-
-    private final int days;
-
-    public SfiratAhomer(JewishCalendar jewishCalendar) {
-        days = jewishCalendar.getDayOfOmer()+1;
-    }
-
-    public String getSfiratAhomer() {
-        if (days == 0) return "null";
-        return getSfiratAhomer(days);
-    }
 
     public static String[] numberOfDays = {"אֶחָד", "שְׁנֵי", "שְׁלֹשָׁה", "אַרְבָּעָה", "חֲמִשָּׁה", "שִׁשָּׁה", "שִׁבְעָה", "שְׁמוֹנָה", "תִּשְׁעָה"};
     public static String[] numberOfDaysTens = {"עֲשָׂרָה", "עֶשְׂרִים", "שְׁלֹשִׁים", "אַרְבָּעִים"};
