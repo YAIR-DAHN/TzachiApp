@@ -368,6 +368,9 @@ public class TfilahFragment extends Fragment {
 
         navigator.setOnClickListener(view -> popupNav.showAsDropDown(navigator, 0, 10));
 
+        tfilahAdapter.setOnItemClickListener(() -> {
+            if (topBar.getVisibility() == View.GONE) Animations.show(topBar);
+        });
         return tfilahAdapter;
     }
 

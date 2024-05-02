@@ -3,6 +3,7 @@ package com.shahareinisim.tzachiapp.Adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.text.LineBreaker;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -28,17 +29,20 @@ import java.util.ArrayList;
 
 public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
+    OnItemClickListener onItemClickListener;
     ArrayList<TfilahPart> tfilahParts;
     Context context;
 
     public static final float[][] textTypes = {{18,21,16},{22,25,20},{25,29,22},{30,34,27}};
     public int textSize;
     public int font;
+    public boolean justifyAlignment;
 
-    public TfilahAdapter(ArrayList<TfilahPart> tfilahParts, int textSize, int font) {
+    public TfilahAdapter(ArrayList<TfilahPart> tfilahParts, int textSize, int font, boolean justifyAlignment) {
         this.tfilahParts = tfilahParts;
         this.textSize = (textSize > textTypes.length-1 || textSize < 0) ? 0 : textSize;
         this.font = font;
+        this.justifyAlignment = justifyAlignment;
     }
 
     @NonNull
@@ -56,6 +60,8 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
         holder.text.setText(tfilahPart.getPart());
 
         holder.text.setTypeface(ResourcesCompat.getFont(context, font));
+
+        holder.text.setJustificationMode(justifyAlignment ? LineBreaker.JUSTIFICATION_MODE_INTER_WORD : LineBreaker.JUSTIFICATION_MODE_NONE);
 
         SpannableString wordToSpan;
 
@@ -87,6 +93,12 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
             }
             holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onClick();
+            }
+        });
     }
 
     private void emptyLineDesign(ViewHolderTPart part) {
@@ -148,5 +160,13 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     public int getItemCount() {
 //        if (tfilahParts == null) return 0;
         return tfilahParts.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onClick();
     }
 }
