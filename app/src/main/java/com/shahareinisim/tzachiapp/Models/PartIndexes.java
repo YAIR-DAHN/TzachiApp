@@ -21,8 +21,9 @@ public class PartIndexes {
             return;
         }
         this.startIndex = text.indexOf(textToFind);
-        this.endIndex = text.indexOf(textToFind, startIndex+1) + textToFind.length() + 1;
+        this.endIndex = text.indexOf(textToFind, startIndex+1) + textToFind.length();
         this.part = text.substring(startIndex, endIndex);
+        Log.d("##### PartIndexes #####", String.format("startIndex: %s, endIndex: %s\npart: %s", startIndex, endIndex, part));
     }
 
     public String getPart() {
