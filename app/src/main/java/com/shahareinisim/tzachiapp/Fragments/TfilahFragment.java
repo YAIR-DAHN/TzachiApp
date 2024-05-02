@@ -254,8 +254,8 @@ public class TfilahFragment extends Fragment {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[p]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
-        if (!holidaysFinder.isHoliday()) {
-            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[h]");
+        if (!holidaysFinder.getJewishCalendar().isCholHamoedPesach()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[pessach]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
             Log.d("# PartIndexes #", String.format("startIndex: %s, endIndex: %s", indexes.getStartIndex(), indexes.getEndIndex()));
         }
