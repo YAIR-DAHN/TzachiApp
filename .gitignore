@@ -1,7 +1,7 @@
 # Project exclude paths
-/local.properties
-/.gradle/
+local.properties
+/app/release/
 /app/build/
 /app/build/intermediates/javac/debug/classes/
-/.idea/
-/app/release/
+*.gradle/
+*.idea/
