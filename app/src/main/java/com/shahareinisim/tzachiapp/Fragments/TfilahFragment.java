@@ -231,6 +231,16 @@ public class TfilahFragment extends Fragment {
                 );
             }
         }
+        if (tfilah.equals(Tfilah.HARVIT)) {
+            if (holidaysFinder.getJewishCalendar().getDayOfOmer() == -1) {
+                PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[sfiratAhomer]");
+                stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+            } else {
+                PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[omer]");
+                stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()),
+                        SfiratAhomer.getSfiratAhomer(holidaysFinder.getJewishCalendar().getDayOfOmer())));
+            }
+        }
 
         if (!holidaysFinder.getJewishCalendar().isChanukah()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[c]");
