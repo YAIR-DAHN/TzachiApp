@@ -22,12 +22,31 @@
             >
 
             <LinearLayout
-                android:id="@+id/dashboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:nestedScrollingEnabled="false">
+                android:nestedScrollingEnabled="false"
+                >
 
+                <LinearLayout
+                    android:id="@+id/dashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:nestedScrollingEnabled="false">
+
+
+                </LinearLayout>
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about"
+                    android:textColor="?attr/colorControlNormal"
+                    app:chipIcon="@drawable/about"
+                    android:layout_gravity="center"
+                    />
 
             </LinearLayout>
 
@@ -60,7 +79,8 @@
                     android:paddingTop="20dp"
                     android:paddingBottom="20dp"
                     app:layout_collapseMode="parallax"
-                    />
+                    android:contentDescription="Banner"
+                    tools:ignore="HardcodedText" />
 
 <!--                <com.google.android.material.appbar.MaterialToolbar-->
 <!--                    android:id="@+id/toolbar"-->

@@ -4,6 +4,8 @@
     <string name="title_tfilon">Sidur Tfilah</string>
     <string name="title_zmanei_tfilot">Zmanei Hatfilot</string>
     <string name="title_donations">Donations</string>
+
+    <!--Tfilot-->
     <string name="shachrit">Shachrit</string>
     <string name="mincha">Mincha</string>
     <string name="harvit">Harvit</string>
@@ -11,14 +13,58 @@
     <string name="bircat_halevana">Bircat Halevana</string>
     <string name="tfilat_hadereh">Tfilat Hadereh</string>
     <string name="kriat_shema">Kriat Sema</string>
-    <string name="birkat_men_shalosh">Birkat mein shalosh and Nefashoy</string>
+    <string name="birkat_men_shalosh">Birkat mein shalosh and Nefashot</string>
     <string name="perek_shira">Perek Shira</string>
     <string name="trumot_vmeasrot">Trumot and Measrot</string>
     <string name="asher_yatzar">Asher Yatzar</string>
     <string name="tikun_haklali">Tikun Haklali</string>
+    <string name="megilat_esther">Megilat Esther</string>
+
     <string name="text_size_indicator">A</string>
+    <string name="message_new_version">New version available</string>
+    <string name="button_update">Update</string>
+    <string name="create_shortcut">Create Shortcut</string>
+    <string name="spinner_hint_choose_city">Choose City</string>
+
+    <!--Cities-->
+    <string name="location_unknown">Location Unknown</string>
+    <string name="tel_aviv">Tel Aviv, Israel</string>
+    <string name="bnei_brak">Bnei Brak, Israel</string>
+    <string name="ramat_gan">Ramat Gan, Israel</string>
+    <string name="jerusalem">Jerusalem, Israel</string>
+    <string name="haifa">Haifa, Israel</string>
+    <string name="tiberias">Tiberias, Israel</string>
+    <string name="beer_sheva">Be\'er-Sheva, Israel</string>
+    <string name="ashkelon">Ashkelon, Israel</string>
+    <string name="eilat">Eilat, Israel</string>
+    <string name="golders_green">Golders Green, London</string>
+    <string name="new_york">New York, United States</string>
+    <string name="lakewood">Lakewood, United States</string>
+
+    <string name="near_times_of_day">Near Times Of Day</string>
+    <string name="sunset">Sunset</string>
+    <string name="contact">Contact</string>
+    <string name="alos_hashachar">Alos Hashachar (72)</string>
+    <string name="sunrise">Sunrise</string>
+    <string name="sof_zman_shma_gra">Sof Zman Shma GRA</string>
+    <string name="sof_zman_shma_mga">Sof Zman Shma MGA</string>
+    <string name="chatzos">Chatzos</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="show_more">Show More</string>
+
+    <string name="developer">Developer</string>
+    <string name="version">version:  %s</string>
+    <string name="about">About</string>
+    <string name="close">Close</string>
+    <string name="location_settings_not_satisfied">Location Services are Off</string>
 
     <!-- none translatable -->
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
-    <string name="create_shortcut">Create Shortcut</string>
+    <string name="shabbat_candle_lightning">Candle Lightning</string>
+    <string name="shabbat_exits">Shabbat Exits</string>
+    <string name="navigation">Navigation</string>
+    <string name="preferences">Preferences</string>
+    <string name="text_size">Text Size</string>
+    <string name="font">Font</string>
+    <string name="text_layout">Text Layout</string>
 </resources>

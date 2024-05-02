@@ -3,3 +3,5 @@
 /.gradle/
 /app/build/
 /app/build/intermediates/javac/debug/classes/
+/.idea/
+/app/release/
