@@ -92,10 +92,12 @@ public class HolidaysFinder {
     public boolean isNoTachnunRecited() {
         return jewishCalendar.isRoshChodesh() ||
                 jewishCalendar.isPesach() ||
+                jewishCalendar.isCholHamoedPesach() ||
                 jewishCalendar.isShavuos() ||
                 jewishCalendar.isRoshHashana() ||
                 jewishCalendar.isYomKippur() ||
                 jewishCalendar.isSuccos() ||
+                jewishCalendar.isCholHamoedSuccos() ||
                 jewishCalendar.isShminiAtzeres() ||
                 jewishCalendar.isSimchasTorah();
     }
@@ -117,7 +119,7 @@ public class HolidaysFinder {
     }
 
     public ArrayList<Zman> zmanimFromNow(Calendar from, int count) {
-        if (from == null) from = jewishCalendar.getGregorianCalendar();
+        if (from == null) from = Calendar.getInstance();
 
         ArrayList<Zman> zmanim = new ArrayList<>();
 
@@ -137,23 +139,14 @@ public class HolidaysFinder {
             from.set(Calendar.MINUTE, 0);
             from.set(Calendar.SECOND, 0);
             from.set(Calendar.MILLISECOND, 0);
+            Log.d("HolidaysFinder", "zmanimFromNow: " + from.getTime());
             // add tomorrow label
-            zmanim.add(new Zman(null, context.getString(R.string.tomorrow), false));
+            zmanim.add(new Zman(from.getTime(), context.getString(R.string.tomorrow), false));
             zmanim.addAll(zmanimFromNow(from, count - zmanim.size()));
         }
 
         Log.d("Holidays Finder", "z: " + (zmanim.size()) + ", c: " + count);
-        zmanim.sort((o1, o2) -> {
-            // specials on top...
-            if (o1.isSpecial() && !o2.isSpecial()) return -1;
-            if (!o1.isSpecial() && o2.isSpecial()) return 1;
-            // sort by date - excluding labels
-            if (o1.getZman() != null && o2.getZman() != null) {
-                if (o1.getZman().before(o2.getZman())) return -1;
-                else if (o1.getZman().after(o2.getZman())) return 1;
-            }
-            return 0;
-        });
+        zmanim.sort(Zman.DATE_ORDER);
         return zmanim;
     }
 
@@ -178,6 +171,7 @@ public class HolidaysFinder {
             zmanim.add(new Zman(getZman().getTzaisGeonim8Point5Degrees(), context.getString(R.string.shabbat_exits), true));
         }
 
+        zmanim.sort(Zman.DATE_ORDER);
         return zmanim;
     }
 

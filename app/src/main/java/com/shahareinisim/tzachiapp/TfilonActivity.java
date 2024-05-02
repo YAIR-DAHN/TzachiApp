@@ -208,6 +208,7 @@ public class TfilonActivity extends BaseActivity {
     @SuppressLint("SimpleDateFormat")
     private void initCardList() {
         ((LinearLayout) findViewById(R.id.dashboard)).removeAllViews();
+        ((LinearLayout) findViewById(R.id.container_zmanim)).removeAllViews();
         if (new HolidaysFinder(this).isPurim()) {
             initCardView(getString(R.string.megilat_esther), view -> tfilahFragment(TfilahFragment.Tfilah.MEGILAT_ESTHER));
         }
@@ -223,6 +224,24 @@ public class TfilonActivity extends BaseActivity {
         initCardView(getString(R.string.trumot_vmeasrot), view -> tfilahFragment(TfilahFragment.Tfilah.TRUMOT_VMEASROT));
         initCardView(getString(R.string.perek_shira), view -> tfilahFragment(TfilahFragment.Tfilah.PEREK_SHIRA));
         initCardView(getString(R.string.tikun_haklali), view -> tfilahFragment(TfilahFragment.Tfilah.TIKUN_HAKLALI));
+
+        ArrayList<Zman> zmanimFromNow = new HolidaysFinder(this).zmanimFromNow(null, 3);
+        addLabel(getString(R.string.near_times_of_day), true);
+        for (Zman zman : zmanimFromNow) {
+            if (zman.isLabelOnly()) addLabel(zman.getLabel(), false);
+            else {
+                String time = new SimpleDateFormat("HH:mm:ss").format(zman.getZman());
+                initTimeItem(zman.getLabel(), time);
+            }
+
+        }
+    }
+
+    private void addLabel(String label, boolean isTop) {
+        TextView tvLabel = new TextView(this);
+        tvLabel.setText(label);
+        tvLabel.setPadding(convertToPX(5), convertToPX(isTop ? 5 : 15), convertToPX(5), convertToPX(10));
+        ((LinearLayout) findViewById(R.id.container_zmanim)).addView(tvLabel);
     }
 
     public void initCardView(String title, View.OnClickListener onClickListener) {
@@ -233,6 +252,16 @@ public class TfilonActivity extends BaseActivity {
 
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tfilonItem.getLayoutParams();
         params.setMargins(convertToPX(20), convertToPX(5), convertToPX(20), convertToPX(5));
+    }
+
+    @SuppressLint("InflateParams")
+    public void initTimeItem(String timeName, String time) {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        MaterialCardView timeItem = (MaterialCardView) inflater.inflate(R.layout.item_zmanim, null);
+        ((TextView) timeItem.findViewById(R.id.time_name)).setText(timeName);
+        ((TextView) timeItem.findViewById(R.id.time)).setText(time);;
+
+        ((LinearLayout) findViewById(R.id.container_zmanim)).addView(timeItem);
     }
 
     public void tfilahFragment(TfilahFragment.Tfilah tfilah) {
