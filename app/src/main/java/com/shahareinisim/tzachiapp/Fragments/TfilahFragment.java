@@ -257,7 +257,6 @@ public class TfilahFragment extends Fragment {
         if (!holidaysFinder.getJewishCalendar().isCholHamoedPesach()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[pessach]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-            Log.d("# PartIndexes #", String.format("startIndex: %s, endIndex: %s", indexes.getStartIndex(), indexes.getEndIndex()));
         }
         if (!holidaysFinder.getJewishCalendar().isRoshChodesh()) {
             while (stringBuilder.toString().contains("[rc]")) {
@@ -275,7 +274,6 @@ public class TfilahFragment extends Fragment {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
-
         if (!holidaysFinder.getTefilahRules().isMoridHatalRecited(holidaysFinder.getJewishCalendar())) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[summer1]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
