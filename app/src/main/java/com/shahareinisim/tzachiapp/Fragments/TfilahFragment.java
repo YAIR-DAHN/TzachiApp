@@ -246,6 +246,10 @@ public class TfilahFragment extends Fragment {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[c]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
+        if (!holidaysFinder.getJewishCalendar().isCholHamoedSuccos()) {
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[succot]");
+            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+        }
         if (!holidaysFinder.isPurim()) {
             PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[p]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
@@ -256,11 +260,11 @@ public class TfilahFragment extends Fragment {
             Log.d("# PartIndexes #", String.format("startIndex: %s, endIndex: %s", indexes.getStartIndex(), indexes.getEndIndex()));
         }
         if (!holidaysFinder.getJewishCalendar().isRoshChodesh()) {
-            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[yv]");
-            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-            indexes = new PartIndexes(stringBuilder.toString(), "[rc]");
-            stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
-            indexes = new PartIndexes(stringBuilder.toString(), "[halel]");
+            while (stringBuilder.toString().contains("[rc]")) {
+                PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[rc]");
+                stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
+            }
+            PartIndexes indexes = new PartIndexes(stringBuilder.toString(), "[halel]");
             stringBuilder = new StringBuilder(stringBuilder.toString().replace(stringBuilder.substring(indexes.getStartIndex(), indexes.getEndIndex()), ""));
         }
         if (holidaysFinder.isNoTachnunRecited()) {
@@ -330,16 +334,13 @@ public class TfilahFragment extends Fragment {
                     .createShortcut(tfilah, title.getText().toString()));
 
             popupNav.setBiggerTextClickListener(() -> {
-                Log.d("##### onclickBig #####", "textSize = " + getTextSize());
                 int textSize = getTextSize();
                 if (textSize != TfilahAdapter.textTypes.length-1) textSize++;
 
                 notifyTextSizeChanged(textSize);
-                popupNav.sizeButtonsEnabled(getTextSize());
             });
 
             popupNav.setSmallerTextClickListener(() -> {
-                Log.d("##### onClickSmall #####", "textSize = " + getTextSize());
                 int textSize = getTextSize();
                 if (textSize != 0) textSize--;
 
