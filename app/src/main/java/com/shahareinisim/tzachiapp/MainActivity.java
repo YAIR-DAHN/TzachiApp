@@ -1,5 +1,8 @@
 package com.shahareinisim.tzachiapp;
 
+import static android.graphics.Color.BLUE;
+import static android.view.Gravity.CENTER;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -9,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -47,14 +51,46 @@ public class MainActivity extends BaseActivity {
         initWVCardView(getString(R.string.title_donations), R.drawable.banner_donations, DONATION_LINK);
 
         Chip about = findViewById(R.id.about);
-        about.setOnClickListener(v ->
-                new MaterialAlertDialogBuilder(this)
-                .setView(R.layout.dialog_about)
-                .setIcon(R.drawable.app_icon)
-                .setPositiveButton(R.string.close, (dialog, which) -> dialog.dismiss())
-                .show());
+        about.setOnClickListener(v -> {
+            LinearLayout dialogRootView = new LinearLayout(this);
+            dialogRootView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            dialogRootView.setPadding(0, convertToPX(20), 0, 0);
+            dialogRootView.setOrientation(LinearLayout.VERTICAL);
+            dialogRootView.addView(getDialogItem(getString(R.string.developer), "יעקב א.", false));
+            dialogRootView.addView(getDialogItem(getString(R.string.contact), "Jacobel640@gmail.com", true));
+            TextView version = new TextView(this);
+            version.setPadding(convertToPX(20), convertToPX(30), convertToPX(20), 0);
+            version.setText(getString(R.string.version, BuildConfig.VERSION_NAME));
+            version.setGravity(CENTER);
+            dialogRootView.addView(version);
+
+            new MaterialAlertDialogBuilder(this)
+                    .setView(dialogRootView)
+                    .setTitle(R.string.app_name)
+                    .setIcon(R.drawable.app_icon)
+                    .setPositiveButton(R.string.close, (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
 
         checkForUpdate();
+    }
+
+    public LinearLayout getDialogItem(String title, String text, boolean contact) {
+        @SuppressLint("InflateParams") LinearLayout dialogItem = (LinearLayout) getLayoutInflater().inflate(R.layout.item_about, null, false);
+        ((TextView) dialogItem.findViewById(R.id.title)).setText(title);
+        TextView textView = dialogItem.findViewById(R.id.text);
+        textView.setText(text);
+
+        if (contact) {
+            textView.setTextColor(BLUE);
+            textView.setOnClickListener(v -> {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(android.net.Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"Jacobel640@gmail.com"});
+                startActivity(intent);
+            });
+        }
+        return dialogItem;
     }
 
     public void initWVCardView(String title, int bannerImg, String url) {

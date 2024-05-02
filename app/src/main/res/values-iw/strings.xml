@@ -46,7 +46,7 @@
     <string name="sunset">שקיעה</string>
     <string name="contact">צור קשר</string>
     <string name="developer">מפתח</string>
-    <string name="version">גרסה:  </string>
+    <string name="version">גרסה:  %s</string>
     <string name="about">אודות</string>
     <string name="close">סגירה</string>
     <string name="location_unknown">מיקום לא ידוע</string>
