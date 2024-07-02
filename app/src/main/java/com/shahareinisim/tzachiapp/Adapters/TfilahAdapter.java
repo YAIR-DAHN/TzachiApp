@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -49,7 +50,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     @Override
     public ViewHolderTPart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        return new ViewHolderTPart(LayoutInflater.from(parent.getContext()).inflate(R.layout.tfilah_part, parent, false));
+        return new ViewHolderTPart(LayoutInflater.from(context).inflate(R.layout.tfilah_part, parent, false));
     }
 
     @Override
@@ -61,7 +62,6 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
         holder.text.setTypeface(ResourcesCompat.getFont(context, font));
 
-        holder.text.setJustificationMode(justifyAlignment ? LineBreaker.JUSTIFICATION_MODE_INTER_WORD : LineBreaker.JUSTIFICATION_MODE_NONE);
 
         SpannableString wordToSpan;
 
@@ -99,6 +99,10 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
                 onItemClickListener.onClick();
             }
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            holder.text.setJustificationMode(justifyAlignment ? LineBreaker.JUSTIFICATION_MODE_INTER_WORD : LineBreaker.JUSTIFICATION_MODE_NONE);
+        }
     }
 
     private void emptyLineDesign(ViewHolderTPart part) {

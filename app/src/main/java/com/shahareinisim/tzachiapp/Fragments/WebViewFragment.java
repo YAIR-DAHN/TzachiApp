@@ -34,6 +34,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.shahareinisim.tzachiapp.R;
 
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -128,7 +129,7 @@ public class WebViewFragment extends Fragment {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = request.getUrl();
                 Log.d("##### WebView URL #####", uri.toString() + "\n" + uri.getScheme());
-                switch (uri.getScheme()) {
+                switch (Objects.requireNonNull(uri.getScheme())) {
                     case "tel":
                         intentDial(uri);
                         return true;
