@@ -10,20 +10,64 @@ android {
         applicationId "com.shahareinisim.tzachiapp"
         minSdk 24
         targetSdk 34
-        versionCode 10 // to release an update increase it by 1
-        versionName "0.1.0" // to release an update increase it by 0.0.1
+         // to release an update increase it by 0.0.1
+        buildTypes {
+            release {
+                versionName "0.1.0"
+                versionCode 10
+            }
+            debug {
+                versionName "0.1.0"
+                versionCode 10
+            }
+            beta {
+                versionName "0.1.1"
+                versionCode 11
+            }
+        }
+    }
 
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = file("../../TzachiAppKeystore.properties");
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+                storeFile = file(keystoreProperties['storeFile'])
+                storePassword = keystoreProperties['storePassword']
+                keyAlias = keystoreProperties['keyAlias']
+                keyPassword = keystoreProperties['keyPassword']
+            } else {
+                keyAlias = "testKey"
+                keyPassword = "testKey"
+                storeFile = file("testKey.jks")
+                storePassword = "testKey"
+            }
+        }
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.release
             minifyEnabled false
+            manifestPlaceholders = [appLabel: "@string/app_name"]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
+        beta {
+            signingConfig = signingConfigs.release
+            minifyEnabled false
+            manifestPlaceholders = [appLabel: "@string/app_name_beta", versionCode: "11", versionName: "0.1.1"]
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            applicationIdSuffix = ".internal_beta"
+        }
+
         debug {
+            manifestPlaceholders = [appLabel: "@string/app_name_debug"]
             applicationIdSuffix = ".debug"
         }
+
     }
 
     buildFeatures {
@@ -40,7 +84,7 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.google.android.material:material:1.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'androidx.compose.material3:material3:1.2.1'

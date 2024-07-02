@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">צח\"י</string>
+    <string name="app_name_debug">צח\"י - Debug</string>
+    <string name="app_name_beta">צח\"י - בטא פנימית</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_main_website">אתר ראשי</string>
     <string name="title_tfilon">סידור תפילה</string>
@@ -22,6 +24,11 @@
     <string name="tikun_haklali">תיקון הכללי</string>
     <string name="megilat_esther">מגילת אסתר</string>
 
+    <string name="navigation">ניווט</string>
+    <string name="preferences">העדפות</string>
+    <string name="text_size">גודל טקסט</string>
+    <string name="font">פונט</string>
+    <string name="text_layout">פריסת טקסט</string>
     <string name="text_size_indicator">א</string>
     <string name="create_shortcut">צור קיצור דרך</string>
     <string name="message_new_version">גרסה חדשה זמינה</string>
@@ -29,6 +36,8 @@
     <string name="spinner_hint_choose_city">בחר עיר</string>
 
     <!--Cities-->
+    <string name="location_unknown">מיקום לא ידוע</string>
+    <string name="location_settings_not_satisfied">שירותי המיקום כבויים</string>
     <string name="tel_aviv">תל אביב, ישראל</string>
     <string name="bnei_brak">בני ברק, ישראל</string>
     <string name="ramat_gan">רמת גן, ישראל</string>
@@ -42,28 +51,27 @@
     <string name="lakewood">לייקווד, ארה\"ב</string>
     <string name="new_york">ניו יורק, ארה\"ב</string>
 
+    <string name="todays_times">זמני היום</string>
     <string name="near_times_of_day">זמני היום הקרובים</string>
+    <string name="tomorrow">מחר</string>
+    <string name="show_more">הצג עוד</string>
+    <string name="alos_hashachar">עלות השחר  (72)</string>
+    <string name="sunrise">זריחה</string>
+    <string name="sof_zman_shma_mga">סוף זמן שמע מג\"א</string>
+    <string name="sof_zman_shma_gra">סוף זמן שמע גר\"א</string>
+    <string name="sof_zman_tfila_mga">סוף זמן תפילה מג\"א</string>
+    <string name="sof_zman_tfila_gra">סוף זמן תפילה גר\"א</string>
+    <string name="chatzos">חצות</string>
+    <string name="shabbat_candle_lightning">הדלקת נרות</string>
     <string name="sunset">שקיעה</string>
+    <string name="tzais">צאת הכוכבים</string>
+    <string name="shabbat_exits">צאת שבת</string>
+
     <string name="contact">צור קשר</string>
     <string name="developer">מפתח</string>
     <string name="version">גרסה:  %s</string>
     <string name="about">אודות</string>
     <string name="close">סגירה</string>
-    <string name="location_unknown">מיקום לא ידוע</string>
-    <string name="location_settings_not_satisfied">שירותי המיקום כבויים</string>
-    <string name="show_more">הצג עוד</string>
-    <string name="alos_hashachar">עלות השחר  (72)</string>
-    <string name="sunrise">זריחה</string>
-    <string name="sof_zman_shma_gra">סוף זמן שמע גר\"א</string>
-    <string name="sof_zman_shma_mga">סוף זמן שמע מג\"א</string>
-    <string name="chatzos">חצות</string>
-    <string name="tomorrow">מחר</string>
-    <string name="shabbat_candle_lightning">הדלקת נרות</string>
-    <string name="shabbat_exits">צאת שבת</string>
-    <string name="navigation">ניווט</string>
-    <string name="preferences">העדפות</string>
-    <string name="text_size">גודל טקסט</string>
-    <string name="font">פונט</string>
-    <string name="text_layout">פריסת טקסט</string>
+    <string name="zmanim_title">יום %s - %s</string>
 
 </resources>

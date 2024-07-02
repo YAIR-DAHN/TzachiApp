@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Tzachi App</string>
+    <string name="app_name_debug">Tzachi App - Debug</string>
+    <string name="app_name_beta">Tzachi App - Beta</string>
     <string name="title_main_website">Main Website</string>
     <string name="title_tfilon">Sidur Tfilah</string>
     <string name="title_zmanei_tfilot">Zmanei Hatfilot</string>
@@ -67,4 +69,9 @@
     <string name="text_size">Text Size</string>
     <string name="font">Font</string>
     <string name="text_layout">Text Layout</string>
+    <string name="todays_times">Zmanei Hayom</string>
+    <string name="tzais">Tzais</string>
+    <string name="sof_zman_tfila_mga">Sof Zman Tfila MGA</string>
+    <string name="sof_zman_tfila_gra">Sof Zman Tfila GRA</string>
+    <string name="zmanim_title">Day %s - %s</string>
 </resources>
