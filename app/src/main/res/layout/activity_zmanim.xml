@@ -14,22 +14,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:clipToPadding="false"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             >
 
-            <androidx.recyclerview.widget.RecyclerView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools1:listitem="@layout/item_zmanim"
-                />
+                android:layout_margin="25dp"
+                android:orientation="vertical">
 
-        </androidx.core.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/zmanim_title"
+                    style="@style/TextAppearance.Material3.TitleLarge"
+                    />
+
+                <TextView
+                    android:id="@+id/specials"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    style="@style/TextAppearance.Material3.ActionBar.Subtitle"
+                    />
+
+            </LinearLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:clipToPadding="false"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_zmanim"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    tools1:listitem="@layout/item_zmanim"
+                    />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -45,7 +82,7 @@
                 app:expandedTitleTextColor="@color/transparent"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 android:background="@color/background"
-                app:title="@string/app_name"
+                app:title="@string/todays_times"
                 >
 
                 <LinearLayout
@@ -58,7 +95,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/near_times_of_day"
+                        android:text="@string/todays_times"
                         android:textSize="50sp"
                         android:textStyle="bold"
                         android:fontFamily="@font/times"
@@ -67,6 +104,8 @@
                         android:paddingBottom="20dp"
                         app:layout_collapseMode="parallax"
                         />
+
+                    <include layout="@layout/location_layout" />
 
                 </LinearLayout>
 

@@ -30,7 +30,7 @@ public class SfiratAhomer {
             String tensString = numberOfDaysTens[tens-1];
 
             if (tens == 1) {
-                tensString = SPACE + TENS_REPLACEMENT + SPACE;
+                tensString = SPACE + TENS_REPLACEMENT;
             } else {
                 tensString = getConnector(tens*10) + tensString;
             }
@@ -45,14 +45,18 @@ public class SfiratAhomer {
     }
 
     public static String getSfiratAhomer(int days) {
+        return getSfiratAhomer(days, true);
+    }
+
+    public static String getSfiratAhomer(int days, boolean withExtension) {
 
         if (days == 1) {
             return String.format(NusachSfiratAhomer, DAY, getDay(days));
         }
-        return String.format(NusachSfiratAhomer, getDay(days), (days > 10 ? DAY : DAYS)) + (days >= 7 ? getExtansion(days) : "");
+        return String.format(NusachSfiratAhomer, getDay(days), (days > 10 ? DAY : DAYS)) + (days >= 7 && withExtension ? getExtension(days) : "");
     }
 
-    public static String getExtansion(int days) {
+    public static String getExtension(int days) {
         String weeks = getWeeks(days);
         return String.format(Extansion, weeks) + getDays(days);
     }

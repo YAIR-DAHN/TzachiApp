@@ -38,6 +38,7 @@ public class HolidaysFinder {
         tr = new TefilaRules();
         jewCal = new ZmanimCalendar();
         hdf = new HebrewDateFormatter();
+        hdf.setHebrewFormat(true);
 
         GeoLocation geoLocation = new GeoLocation();
         Location location = getSavedLocation();
@@ -49,11 +50,16 @@ public class HolidaysFinder {
 
         Log.d("Holidays Finder", "location: " + jewCal.getGeoLocation().getLocationName());
 
-        if (calendar.getTime().after(jewCal.getSunset())) {
+        if (calendar.after(getSunset())) {
             calendar.add(Calendar.DAY_OF_WEEK, 1);
-            jewishCalendar = new JewishCalendar(calendar);
-        } else jewishCalendar = new JewishCalendar(calendar);
+        }
+        jewishCalendar = new JewishCalendar(calendar);
+    }
 
+    public Calendar getSunset() {
+        Calendar sunset = Calendar.getInstance();
+        sunset.setTime(jewCal.getSunset());
+        return sunset;
     }
 
     public Location getSavedLocation() {
@@ -160,15 +166,18 @@ public class HolidaysFinder {
         ArrayList<Zman> zmanim = new ArrayList<>();
         zmanim.add(new Zman(getZman().getAlos72(), context.getString(R.string.alos_hashachar), false));
         zmanim.add(new Zman(getZman().getSunrise(), context.getString(R.string.sunrise), false));
-        zmanim.add(new Zman(getZman().getSofZmanShmaGRA(), context.getString(R.string.sof_zman_shma_gra), false));
         zmanim.add(new Zman(getZman().getSofZmanShmaMGA(), context.getString(R.string.sof_zman_shma_mga), false));
+        zmanim.add(new Zman(getZman().getSofZmanShmaGRA(), context.getString(R.string.sof_zman_shma_gra), false));
+        zmanim.add(new Zman(getZman().getSofZmanTfilaMGA(), context.getString(R.string.sof_zman_tfila_mga), false));
+        zmanim.add(new Zman(getZman().getSofZmanTfilaGRA(), context.getString(R.string.sof_zman_tfila_gra), false));
         zmanim.add(new Zman(getZman().getChatzos(), context.getString(R.string.chatzos), false));
         zmanim.add(new Zman(getZman().getSunset(), context.getString(R.string.sunset), false));
+        zmanim.add(new Zman(getZman().getTzais(), context.getString(R.string.tzais), false));
 
         if (jewishCalendar.getDayOfWeek() == 6) {
             zmanim.add(new Zman(getShabbatEnters(getZman().getSunset()), context.getString(R.string.shabbat_candle_lightning), true));
         } else if (jewishCalendar.getDayOfWeek() == 7) {
-            zmanim.add(new Zman(getZman().getTzaisGeonim8Point5Degrees(), context.getString(R.string.shabbat_exits), true));
+            zmanim.add(new Zman(getZman().getTzais(), context.getString(R.string.shabbat_exits), true));
         }
 
         zmanim.sort(Zman.DATE_ORDER);
@@ -190,6 +199,10 @@ public class HolidaysFinder {
 
     public JewishCalendar getJewishCalendar() {
         return jewishCalendar;
+    }
+
+    public HebrewDateFormatter getHdf() {
+        return hdf;
     }
 
     public TefilaRules getTefilahRules() {

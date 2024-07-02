@@ -47,6 +47,8 @@ public class MainActivity extends BaseActivity {
         initWVCardView(getString(R.string.title_main_website), R.drawable.banner_main_website, MAIN_WEB_LINK);
         initCardView(getString(R.string.title_tfilon), R.drawable.banner_tfhilon, view ->
                 startActivity(new Intent(MainActivity.this, TfilonActivity.class)));
+        initCardView(getString(R.string.todays_times), R.drawable.banner_zmanim, view ->
+                startActivity(new Intent(MainActivity.this, ZmanimActivity.class)));
         initWVCardView(getString(R.string.title_zmanei_tfilot), R.drawable.banner_tfhilot, ZMANEI_TFILOT_LINK);
         initWVCardView(getString(R.string.title_donations), R.drawable.banner_donations, DONATION_LINK);
 
@@ -60,7 +62,9 @@ public class MainActivity extends BaseActivity {
             dialogRootView.addView(getDialogItem(getString(R.string.contact), "Jacobel640@gmail.com", true));
             TextView version = new TextView(this);
             version.setPadding(convertToPX(20), convertToPX(30), convertToPX(20), 0);
-            version.setText(getString(R.string.version, BuildConfig.VERSION_NAME));
+            String versionName = BuildConfig.VERSION_NAME;
+            versionName += " (" + BuildConfig.BUILD_TYPE + ")";
+            version.setText(getString(R.string.version, versionName));
             version.setGravity(CENTER);
             dialogRootView.addView(version);
 

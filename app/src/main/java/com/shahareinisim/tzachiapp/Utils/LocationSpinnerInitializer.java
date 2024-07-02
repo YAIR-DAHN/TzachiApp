@@ -1,5 +1,6 @@
 package com.shahareinisim.tzachiapp.Utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -7,12 +8,13 @@ import android.widget.AutoCompleteTextView;
 
 import com.shahareinisim.tzachiapp.Adapters.LocationsAdapter;
 import com.shahareinisim.tzachiapp.Models.Location;
+import com.shahareinisim.tzachiapp.R;
 
 import java.util.ArrayList;
 
 public class LocationSpinnerInitializer {
 
-    Context context;
+    Activity activity;
     AutoCompleteTextView locationSpinner;
     Runnable onLocationChange;
     SharedPreferences sp;
@@ -21,12 +23,12 @@ public class LocationSpinnerInitializer {
     LocationsAdapter adapter;
     ArrayList<Location> locations;
 
-    public void initialize(AutoCompleteTextView locationSpinner, Context context, Runnable onLocationChange) {
-        this.context = context;
-        this.locationSpinner = locationSpinner;
+    public void initialize(Activity activity, Runnable onLocationChange) {
+        this.activity = activity;
+        this.locationSpinner = activity.findViewById(R.id.location_spinner);
         this.onLocationChange = onLocationChange;
-        this.locations = HolidaysFinder.getLocations(context);
-        this.sp = context.getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(getContext()), Context.MODE_PRIVATE);
+        this.locations = HolidaysFinder.getLocations(activity);
+        this.sp = activity.getSharedPreferences(PreferenceManager.getDefaultSharedPreferencesName(getContext()), Context.MODE_PRIVATE);
         this.editor = sp.edit();
 
         sp.registerOnSharedPreferenceChangeListener((sharedPreferences, key) -> {
@@ -54,6 +56,7 @@ public class LocationSpinnerInitializer {
             saveLocation(editor, locations.get(position));
             updateCurrentLocation();
         });
+        updateCurrentLocation();
     }
 
     public static void saveLocation(SharedPreferences.Editor editor, Location location) {
@@ -74,6 +77,6 @@ public class LocationSpinnerInitializer {
     }
 
     public Context getContext() {
-        return context;
+        return activity;
     }
 }
