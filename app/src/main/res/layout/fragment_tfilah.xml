@@ -15,7 +15,7 @@
         android:paddingTop="80dp"
         android:paddingBottom="20dp"
         android:clipToPadding="false"
-        tools:listitem="@layout/tfilah_part"
+        tools:listitem="@layout/item_tfilah_part"
         android:nestedScrollingEnabled="false"
         />
 

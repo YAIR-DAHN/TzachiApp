@@ -27,7 +27,7 @@ public class TitleAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     @NonNull
     @Override
     public ViewHolderTPart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolderTPart(LayoutInflater.from(parent.getContext()).inflate(R.layout.tfilah_part, parent, false));
+        return new ViewHolderTPart(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tfilah_part, parent, false));
     }
 
     @Override

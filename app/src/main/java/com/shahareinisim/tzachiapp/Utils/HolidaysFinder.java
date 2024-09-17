@@ -45,6 +45,8 @@ public class HolidaysFinder {
         geoLocation.setLocationName(location.getLocationName());
         geoLocation.setLatitude(location.getLatitude());
         geoLocation.setLongitude(location.getLongitude());
+        geoLocation.setElevation(location.getElevation());
+
 
         jewCal.setGeoLocation(geoLocation);
 
@@ -54,6 +56,7 @@ public class HolidaysFinder {
             calendar.add(Calendar.DAY_OF_WEEK, 1);
         }
         jewishCalendar = new JewishCalendar(calendar);
+        jewishCalendar.setIsMukafChoma(location.getLocationName().equals("Jerusalem") || location.getLocationName().equals("ירושלים"));
     }
 
     public Calendar getSunset() {
@@ -64,25 +67,26 @@ public class HolidaysFinder {
 
     public Location getSavedLocation() {
         String locationName = sp.getString("location", "Tel Aviv");
-        double latitude = sp.getFloat("latitude", 32.0667f);
-        double longitude = sp.getFloat("longitude", 34.7833f);
-        return new Location(locationName, latitude, longitude);
+        double latitude = sp.getFloat("latitude", 32.0852f);
+        double longitude = sp.getFloat("longitude", 34.7817f);
+        double elevation = sp.getFloat("elevation", 20.57f);
+        return new Location(locationName, latitude, longitude, elevation);
     }
 
     public static ArrayList<Location> getLocations(Context context) {
         ArrayList<Location> locations = new ArrayList<>();
-        locations.add(new Location(context.getString(R.string.ramat_gan), 32.0806, 34.8269));
-        locations.add(new Location(context.getString(R.string.bnei_brak), 32.0806, 34.8269));
-        locations.add(new Location(context.getString(R.string.tel_aviv), 32.0667, 34.7833));
-        locations.add(new Location(context.getString(R.string.jerusalem), 31.7833, 35.2167));
-        locations.add(new Location(context.getString(R.string.haifa), 32.794044, 34.989571));
-        locations.add(new Location(context.getString(R.string.tiberias), 32.7938522, 35.5328566));
-        locations.add(new Location(context.getString(R.string.beer_sheva), 31.2457442,34.7925181));
-        locations.add(new Location(context.getString(R.string.ashkelon), 31.6738509,34.5752428));
-        locations.add(new Location(context.getString(R.string.eilat), 29.5569348,34.9497949));
-        locations.add(new Location(context.getString(R.string.golders_green),51.629168, -0.155019));
-        locations.add(new Location(context.getString(R.string.new_york), 40.712776, -74.005974));
-        locations.add(new Location(context.getString(R.string.lakewood), 39.711000, -105.088870));
+        locations.add(new Location(context.getString(R.string.ramat_gan), 32.0806, 34.8269, 36));
+        locations.add(new Location(context.getString(R.string.bnei_brak), 32.0806, 34.8269, 26));
+        locations.add(new Location(context.getString(R.string.tel_aviv), 32.0667, 34.7833, 5));
+        locations.add(new Location(context.getString(R.string.jerusalem), 31.7833, 35.2167, 754));
+        locations.add(new Location(context.getString(R.string.haifa), 32.794044, 34.989571, 5));
+        locations.add(new Location(context.getString(R.string.tiberias), 32.7938522, 35.5328566, -210));
+        locations.add(new Location(context.getString(R.string.beer_sheva), 31.2457442,34.7925181, 260));
+        locations.add(new Location(context.getString(R.string.ashkelon), 31.6738509,34.5752428, 60));
+        locations.add(new Location(context.getString(R.string.eilat), 29.5569348,34.9497949, 32.03));
+        locations.add(new Location(context.getString(R.string.golders_green),51.5740013,-0.1987725, 63.71));
+        locations.add(new Location(context.getString(R.string.new_york), 40.7127753, -74.0059728, 13.35));
+        locations.add(new Location(context.getString(R.string.lakewood), 40.082129, -74.2097014, 14.84));
 
         return locations;
     }

@@ -9,8 +9,9 @@ public class Location {
     String locationName;
     double latitude;
     double longitude;
+    double elevation;
 
-    public Location(String locationName, double latitude, double longitude) {
+    public Location(String locationName, double latitude, double longitude, double elevation) {
         this.locationName = locationName;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -26,6 +27,10 @@ public class Location {
 
     public double getLongitude() {
         return longitude;
+    }
+
+    public double getElevation() {
+        return elevation;
     }
 
 }

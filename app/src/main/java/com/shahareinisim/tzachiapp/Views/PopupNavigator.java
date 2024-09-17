@@ -38,7 +38,7 @@ public class PopupNavigator extends PopupWindow {
     public PopupNavigator(@NonNull Context context) {
         super(context);
         mContext = context;
-        setContentView(LayoutInflater.from(context).inflate(R.layout.popup_navigator, null));
+        setContentView(LayoutInflater.from(context).inflate(R.layout.navigator_popup_menu, null));
         getContentView().setClipToOutline(true);
 
         setBackgroundDrawable(context.getDrawable(R.color.transparent));

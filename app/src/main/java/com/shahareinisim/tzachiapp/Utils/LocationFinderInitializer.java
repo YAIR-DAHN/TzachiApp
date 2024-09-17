@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -29,6 +31,7 @@ import com.shahareinisim.tzachiapp.R;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LocationFinderInitializer {
 
@@ -39,6 +42,7 @@ public class LocationFinderInitializer {
     FusedLocationProviderClient fusedLocationClient;
     ActivityResultLauncher<String[]> locationPermissionRequest;
     SharedPreferences preferences;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     public static final int REQUEST_CHECK_SETTINGS = 199;
 
@@ -83,26 +87,40 @@ public class LocationFinderInitializer {
                             if (location == null) return;
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
-                            String locationString = "";
-                            Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
-                            try {
-                                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-                                assert addresses != null;
-                                if (!addresses.isEmpty()) {
-                                    for (Address address : addresses) {
-                                        locationString = address.getAddressLine(0);
-                                        locationString = locationString.substring(locationString.indexOf(",")+2);
+                            AtomicReference<Double> elevation = new AtomicReference<>((double) 0);
+
+                            ElevationFetcher.getElevation(latitude, longitude, elevation::set);
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (elevation.get() == 0) {
+                                        handler.postDelayed(this, 100);
+                                    } else {
+                                        String locationString = "";
+                                        Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
+                                        try {
+                                            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                                            assert addresses != null;
+                                            if (!addresses.isEmpty()) {
+                                                for (Address address : addresses) {
+                                                    locationString = address.getAddressLine(0);
+                                                    locationString = locationString.substring(locationString.indexOf(",")+2);
+                                                }
+                                            }
+                                            if (!locationString.isEmpty()) {
+                                                LocationSpinnerInitializer.saveLocation(preferences.edit(), new Location(locationString.trim(), latitude, longitude, elevation.get()));
+                                                Log.d("LocationFinderInitializer", String.format("Location: %s, lat: %f, long: %f, elev: %f", locationString.trim(), latitude, longitude, elevation.get()));
+                                                locationSpinnerInitializer.updateCurrentLocation();
+                                            }
+                                        } catch (IOException e) {
+                                            locationString = getString(R.string.location_unknown) + "\n" + e.getMessage();
+                                        }
+
+                                        Log.d("TfilonActivity", "location: " + locationString);
                                     }
                                 }
-                                if (!locationString.isEmpty()) {
-                                    LocationSpinnerInitializer.saveLocation(preferences.edit(), new Location(locationString.trim(), latitude, longitude));
-                                    locationSpinnerInitializer.updateCurrentLocation();
-                                }
-                            } catch (IOException e) {
-                                locationString = getString(R.string.location_unknown);
-                            }
-
-                            Log.d("TfilonActivity", "location: " + locationString);
+                            }, 100);
                         });
                     }
                 }

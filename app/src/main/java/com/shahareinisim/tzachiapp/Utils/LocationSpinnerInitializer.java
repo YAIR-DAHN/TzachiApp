@@ -63,6 +63,7 @@ public class LocationSpinnerInitializer {
         editor.putString("location", location.getLocationName());
         editor.putFloat("latitude", (float) location.getLatitude());
         editor.putFloat("longitude", (float) location.getLongitude());
+        editor.putFloat("elevation", (float) location.getElevation());
         editor.apply();
     }
 

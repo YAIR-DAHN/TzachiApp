@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.appupdate.AppUpdateOptions;
 import com.google.android.play.core.install.model.AppUpdateType;
 import com.google.android.play.core.install.model.UpdateAvailability;
 import com.shahareinisim.tzachiapp.Fragments.WebViewFragment;
@@ -124,7 +125,7 @@ public class MainActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         // replace the FrameLayout with new Fragment
-        fragmentTransaction.add(R.id.fragment_container, WebViewFragment.newInstance(url, ""), "tag");
+        fragmentTransaction.add(R.id.fragment_container, WebViewFragment.newInstance(url), "tag");
 //        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.addToBackStack("");
 
@@ -143,11 +144,14 @@ public class MainActivity extends BaseActivity {
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
                 try {
+                    AppUpdateOptions appUpdateOptions = AppUpdateOptions.defaultOptions(AppUpdateType.IMMEDIATE);
+
                     appUpdateManager.startUpdateFlowForResult(
                             appUpdateInfo,
-                            AppUpdateType.IMMEDIATE,
                             this,
-                            100);
+                            appUpdateOptions,
+                            100
+                    );
                 } catch (IntentSender.SendIntentException e) {
                     Log.d("MainActivity", "Update check failed!", e);
                 }

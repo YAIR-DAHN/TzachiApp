@@ -50,7 +50,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     @Override
     public ViewHolderTPart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        return new ViewHolderTPart(LayoutInflater.from(context).inflate(R.layout.tfilah_part, parent, false));
+        return new ViewHolderTPart(LayoutInflater.from(context).inflate(R.layout.item_tfilah_part, parent, false));
     }
 
     @Override
