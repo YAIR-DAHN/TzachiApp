@@ -79,6 +79,10 @@ android {
         buildConfig = true
     }
 
+    viewBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -89,8 +93,8 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.compose.material3:material3:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.compose.material3:material3:1.3.1'
     implementation 'androidx.activity:activity:1.9.2'
     // badge dynamic color from picture
     implementation 'androidx.palette:palette:1.0.0'
@@ -103,6 +107,6 @@ dependencies {
     // For making HTTP requests
     implementation 'org.apache.httpcomponents:httpclient:4.5.14'
     // For JSON parsing
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.11.0'
 
 }

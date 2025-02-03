@@ -116,7 +116,7 @@
                         app:layout_collapseMode="parallax"
                         />
 
-                    <include layout="@layout/layout_location" />
+                    <include android:id="@+id/location_layout" layout="@layout/layout_location" />
 
                 </LinearLayout>
 

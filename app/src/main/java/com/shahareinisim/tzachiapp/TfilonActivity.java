@@ -8,7 +8,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ShortcutManager;
 
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.shahareinisim.tzachiapp.Models.Zman;
 
@@ -16,16 +15,16 @@ import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -34,21 +33,28 @@ import com.shahareinisim.tzachiapp.Utils.HolidaysFinder;
 import com.shahareinisim.tzachiapp.Utils.LocationFinderInitializer;
 import com.shahareinisim.tzachiapp.Utils.LocationSpinnerInitializer;
 import com.shahareinisim.tzachiapp.Views.TfilonItem;
+import com.shahareinisim.tzachiapp.databinding.ActivityTfilonBinding;
+import com.shahareinisim.tzachiapp.databinding.ItemZmanimBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TfilonActivity extends BaseActivity {
 
 
+    ActivityTfilonBinding binding;
+    private final String EXTRA_TFILAH = "TFILAH";
     LocationSpinnerInitializer locationSpinnerInitializer = new LocationSpinnerInitializer();
     LocationFinderInitializer locationFinderInitializer = new LocationFinderInitializer();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tfilon);
+        binding = ActivityTfilonBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initCardList();
+        handleTfilahShortcut();
 
         locationSpinnerInitializer.initialize(this, this::initCardList);
         locationFinderInitializer.initialize(this, locationSpinnerInitializer);
@@ -67,16 +73,18 @@ public class TfilonActivity extends BaseActivity {
             } else {
                 // Location settings are not satisfied.
                 Log.d("TfilonActivity", "onActivityResult: Location settings are not satisfied");
-                Snackbar.make(findViewById(R.id.location_finder), R.string.location_settings_not_satisfied, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(binding.locationLayout.locationFinder, R.string.location_settings_not_satisfied, Snackbar.LENGTH_SHORT).show();
             }
         }
     }
 
     @SuppressLint("SimpleDateFormat")
     private void initCardList() {
-        ((LinearLayout) findViewById(R.id.dashboard)).removeAllViews();
-        ((LinearLayout) findViewById(R.id.container_zmanim)).removeAllViews();
-        if (new HolidaysFinder(this).isPurim()) {
+        binding.dashboard.removeAllViews();
+        binding.containerZmanim.removeAllViews();
+
+        HolidaysFinder holidaysFinder = new HolidaysFinder(this);
+        if (holidaysFinder.isPurim()) {
             initCardView(getString(R.string.megilat_esther), view -> tfilahFragment(TfilahFragment.Tfilah.MEGILAT_ESTHER));
         }
         initCardView(getString(R.string.shachrit), view -> tfilahFragment(TfilahFragment.Tfilah.SHACHRIT));
@@ -92,7 +100,7 @@ public class TfilonActivity extends BaseActivity {
         initCardView(getString(R.string.perek_shira), view -> tfilahFragment(TfilahFragment.Tfilah.PEREK_SHIRA));
         initCardView(getString(R.string.tikun_haklali), view -> tfilahFragment(TfilahFragment.Tfilah.TIKUN_HAKLALI));
 
-        ArrayList<Zman> zmanimFromNow = new HolidaysFinder(this).zmanimFromNow(null, 3);
+        ArrayList<Zman> zmanimFromNow = holidaysFinder.zmanimFromNow(null, 3);
         addLabel(getString(R.string.near_times_of_day), true);
         for (Zman zman : zmanimFromNow) {
             if (zman.isLabelOnly()) addLabel(zman.getLabel(), false);
@@ -103,7 +111,7 @@ public class TfilonActivity extends BaseActivity {
 
         }
 
-        findViewById(R.id.btn_show_more).setOnClickListener(v ->
+        binding.btnShowMore.setOnClickListener(v ->
                 startActivity(new Intent(TfilonActivity.this, ZmanimActivity.class)));
     }
 
@@ -111,14 +119,14 @@ public class TfilonActivity extends BaseActivity {
         TextView tvLabel = new TextView(this);
         tvLabel.setText(label);
         tvLabel.setPadding(convertToPX(5), convertToPX(isTop ? 5 : 15), convertToPX(5), convertToPX(10));
-        ((LinearLayout) findViewById(R.id.container_zmanim)).addView(tvLabel);
+        binding.containerZmanim.addView(tvLabel);
     }
 
     public void initCardView(String title, View.OnClickListener onClickListener) {
 
         TfilonItem tfilonItem = new TfilonItem(0, title, this);
         tfilonItem.setOnClickListener(onClickListener);
-        ((LinearLayout) findViewById(R.id.dashboard)).addView(tfilonItem);
+        binding.dashboard.addView(tfilonItem);
 
         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) tfilonItem.getLayoutParams();
         params.setMargins(convertToPX(20), convertToPX(5), convertToPX(20), convertToPX(5));
@@ -126,12 +134,11 @@ public class TfilonActivity extends BaseActivity {
 
     @SuppressLint("InflateParams")
     public void initTimeItem(String timeName, String time) {
-        LayoutInflater inflater = LayoutInflater.from(this);
-        MaterialCardView timeItem = (MaterialCardView) inflater.inflate(R.layout.item_zmanim, null);
-        ((TextView) timeItem.findViewById(R.id.label)).setText(timeName);
-        ((TextView) timeItem.findViewById(R.id.time)).setText(time);;
+        ItemZmanimBinding izBinding = ItemZmanimBinding.inflate(getLayoutInflater());
+        izBinding.label.setText(timeName);
+        izBinding.time.setText(time);
 
-        ((LinearLayout) findViewById(R.id.container_zmanim)).addView(timeItem);
+        binding.containerZmanim.addView(izBinding.getRoot());
     }
 
     public void tfilahFragment(TfilahFragment.Tfilah tfilah) {
@@ -141,7 +148,7 @@ public class TfilonActivity extends BaseActivity {
         FragmentTransaction fragmentTransaction = fm.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         // replace the FrameLayout with new Fragment
-        fragmentTransaction.add(R.id.fragment_container, new TfilahFragment(tfilah), tfilah.toString());
+        fragmentTransaction.replace(binding.fragmentContainer.getId(), new TfilahFragment(tfilah), tfilah.toString());
 //        fragmentTransaction.setReorderingAllowed(true);
         fragmentTransaction.addToBackStack("");
 
@@ -153,7 +160,8 @@ public class TfilonActivity extends BaseActivity {
 
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
-        shortcutIntent.putExtra("TFILAH", tfilah.toString());
+        shortcutIntent.putExtra(EXTRA_TFILAH, tfilah.toString());
+        shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             ShortcutManager shortcutManager = this.getSystemService(ShortcutManager.class);
@@ -197,7 +205,8 @@ public class TfilonActivity extends BaseActivity {
 
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
-        shortcutIntent.putExtra("TFILAH", tfilah.toString());
+        shortcutIntent.putExtra(EXTRA_TFILAH, tfilah.toString());
+        shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
         ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(this, "most used-shortcut").setShortLabel(label)
                 .setLongLabel("פתח את תפילת " + label.replace("תפילת ", ""))
@@ -209,21 +218,39 @@ public class TfilonActivity extends BaseActivity {
     }
 
     @Override
+    protected void onNewIntent(@NonNull Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra(EXTRA_TFILAH)) {
+            setIntent(intent);
+            handleTfilahShortcut();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-
-        String tfilahString = getIntent().getStringExtra("TFILAH");
-        if (tfilahString != null) {
-            if (tfilahString.equals(MainActivity.currentTfilah)) finish();
-            tfilahFragment(TfilahFragment.Tfilah.valueOf(tfilahString));
-        }
-
         locationFinderInitializer.checkLocationSettings(true);
     }
 
+    private void handleTfilahShortcut() {
+        String tfilahString = getIntent().getStringExtra(EXTRA_TFILAH);
+        if (tfilahString != null) {
+            String currentTfilah = getCurrentTfilah();
+            if (!tfilahString.equals(currentTfilah)) {
+                try {
+                    TfilahFragment.Tfilah tfilah = TfilahFragment.Tfilah.valueOf(tfilahString);
+                    tfilahFragment(tfilah);
+                } catch (IllegalArgumentException e) {
+                    Log.e("TfilonActivity", "Invalid Tfilah value: " + tfilahString, e);
+                }
+            }
+        }
+    }
+
     public String getCurrentTfilah() {
-        if (getSupportFragmentManager().getFragments().isEmpty()) return "null";
-        return getSupportFragmentManager().getFragments().get(0).getTag();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if (fragments.isEmpty()) return "";
+        return fragments.get(0).getTag();
     }
 
 }
