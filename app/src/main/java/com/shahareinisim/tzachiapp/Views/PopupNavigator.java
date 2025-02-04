@@ -9,36 +9,32 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
 import com.shahareinisim.tzachiapp.R;
+import com.shahareinisim.tzachiapp.databinding.LayoutNavigationBinding;
+import com.shahareinisim.tzachiapp.databinding.LayoutPreferencesBinding;
+import com.shahareinisim.tzachiapp.databinding.NavigatorPopupMenuBinding;
 
 public class PopupNavigator extends PopupWindow {
 
-    Context mContext;
-    BottomNavigationView bottomNavigationView;
-    LinearLayout placeHolder, navigationLayout, preferencesLayout;
-    RecyclerView rvTitles;
-    MaterialButton biggerText, smallerText, alignJustify, alignRight;
-    public MaterialButtonToggleGroup fontsChooser;
-    public boolean isShown = false;
     private static final int NAVIGATION = R.id.navigation, PREFERENCES = R.id.preferences;
+    NavigatorPopupMenuBinding binding;
+    LayoutNavigationBinding navigationLayout;
+    LayoutPreferencesBinding preferencesLayout;
+    public boolean isShown = false;
 
     @SuppressLint({"UseCompatLoadingForDrawables", "InflateParams"})
     public PopupNavigator(@NonNull Context context) {
         super(context);
-        mContext = context;
-        setContentView(LayoutInflater.from(context).inflate(R.layout.navigator_popup_menu, null));
+        binding = NavigatorPopupMenuBinding.inflate(LayoutInflater.from(context), null, false);
+        setContentView(binding.getRoot());
         getContentView().setClipToOutline(true);
 
         setBackgroundDrawable(context.getDrawable(R.color.transparent));
@@ -57,30 +53,21 @@ public class PopupNavigator extends PopupWindow {
     }
 
     private void initViews() {
-        placeHolder = getContentView().findViewById(R.id.placeholder);
-        navigationLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_navigation, null, false);
-        preferencesLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.layout_preferences, null, false);
+        navigationLayout = LayoutNavigationBinding.inflate(LayoutInflater.from(getContext()), null, false);
+        preferencesLayout = LayoutPreferencesBinding.inflate(LayoutInflater.from(getContext()), null, false);
 
-        rvTitles = navigationLayout.findViewById(R.id.rv_titles);
-        rvTitles.setLayoutManager(new LinearLayoutManager(getContext()));
-        biggerText = preferencesLayout.findViewById(R.id.bigger_text);
-        smallerText = preferencesLayout.findViewById(R.id.smaller_text);
-        fontsChooser = preferencesLayout.findViewById(R.id.fonts_chooser);
-        alignJustify = preferencesLayout.findViewById(R.id.align_justify);
-        alignRight = preferencesLayout.findViewById(R.id.align_right);
+        navigationLayout.rvTitles.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     public void initBottomNavigation() {
-        bottomNavigationView = getContentView().findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(selectedItem -> {
+        binding.bottomNavigation.setOnItemSelectedListener(selectedItem -> {
 
-            if (placeHolder == null) initViews();
-            placeHolder.removeAllViews();
+            binding.placeholder.removeAllViews();
 
             if (selectedItem.getItemId() == PREFERENCES) {
-                placeHolder.addView(preferencesLayout);
+                binding.placeholder.addView(preferencesLayout.getRoot());
             } else if (selectedItem.getItemId() == NAVIGATION) {
-                placeHolder.addView(navigationLayout);
+                binding.placeholder.addView(navigationLayout.getRoot());
             }
 
             selectedItem.setChecked(true);
@@ -96,37 +83,37 @@ public class PopupNavigator extends PopupWindow {
     }
 
     public void setAdapter(TitleAdapter adapter) {
-        rvTitles.setAdapter(adapter);
+        navigationLayout.rvTitles.setAdapter(adapter);
     }
 
     public void onShortcutClick(View.OnClickListener onClickListener) {
-        preferencesLayout.findViewById(R.id.shortcut).setOnClickListener(onClickListener);
+        preferencesLayout.shortcut.setOnClickListener(onClickListener);
     }
 
     public void setBiggerTextClickListener(Runnable biggerTextClickListener) {
-        biggerText.setOnClickListener(view -> biggerTextClickListener.run());
+        preferencesLayout.biggerText.setOnClickListener(view -> biggerTextClickListener.run());
     }
 
     public void setSmallerTextClickListener(Runnable smallerTextClickListener) {
-        smallerText.setOnClickListener(view -> smallerTextClickListener.run());
+        preferencesLayout.smallerText.setOnClickListener(view -> smallerTextClickListener.run());
     }
 
     public void setAlignJustifyClickListener(Runnable alignJustifyClickListener) {
-        alignJustify.setOnClickListener(view -> alignJustifyClickListener.run());
+        preferencesLayout.alignJustify.setOnClickListener(view -> alignJustifyClickListener.run());
     }
 
     public void setAlignRightClickListener(Runnable alignRightClickListener) {
-        alignRight.setOnClickListener(view -> alignRightClickListener.run());
+        preferencesLayout.alignRight.setOnClickListener(view -> alignRightClickListener.run());
     }
 
     public void setAlignmentButtonSelected(boolean justifyAlignment) {
-        alignJustify.setChecked(justifyAlignment);
-        alignRight.setChecked(!justifyAlignment);
+        preferencesLayout.alignJustify.setChecked(justifyAlignment);
+        preferencesLayout.alignRight.setChecked(!justifyAlignment);
     }
 
     public void sizeButtonsEnabled(int textSize) {
-        biggerText.setEnabled(textSize != TfilahAdapter.textTypes.length-1);
-        smallerText.setEnabled(textSize != 0);
+        preferencesLayout.biggerText.setEnabled(textSize != TfilahAdapter.textTypes.length-1);
+        preferencesLayout.smallerText.setEnabled(textSize != 0);
     }
 
     public void fixWindowMargins() {
@@ -145,14 +132,18 @@ public class PopupNavigator extends PopupWindow {
     @Override
     public void showAsDropDown(View anchor, int xoff, int yoff) {
         if (isShown) return;
-        bottomNavigationView.setSelectedItemId(NAVIGATION);
+        binding.bottomNavigation.setSelectedItemId(NAVIGATION);
         fixWindowMargins();
         isShown = true;
         super.showAsDropDown(anchor, xoff, yoff);
     }
 
+    public MaterialButtonToggleGroup getFontChooser() {
+        return preferencesLayout.fontsChooser;
+    }
+
     public Context getContext() {
-        return mContext;
+        return getContentView().getContext();
     }
 }
 

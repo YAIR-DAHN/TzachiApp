@@ -7,18 +7,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shahareinisim.tzachiapp.Adapters.TfilahAdapter;
 import com.shahareinisim.tzachiapp.Adapters.TitleAdapter;
 import com.shahareinisim.tzachiapp.Models.PartIndexes;
@@ -32,6 +28,7 @@ import com.shahareinisim.tzachiapp.Utils.HolidaysFinder;
 import com.shahareinisim.tzachiapp.Utils.SfiratAhomer;
 import com.shahareinisim.tzachiapp.Utils.ShachritUtils;
 import com.shahareinisim.tzachiapp.Views.PopupNavigator;
+import com.shahareinisim.tzachiapp.databinding.FragmentTfilahBinding;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,13 +41,9 @@ public class TfilahFragment extends Fragment {
     public enum Tfilah {SHACHRIT, MINCHA, HARVIT, BIRCAT_HAMAZON, BIRCAT_HALEVANA, TFILAT_HADEREH,
         KRIAT_SHEMA, BIRCAT_MEN_SHALOSH, ASHER_YATZAR, TRUMOT_VMEASROT, PEREK_SHIRA, TIKUN_HAKLALI, MEGILAT_ESTHER}
 
+    FragmentTfilahBinding binding;
     Tfilah tfilah;
-    FloatingActionButton navigator;
-    RecyclerView rvTfilah;
-    TextView title;
-    CoordinatorLayout topBar;
     PopupNavigator popupNav;
-    Chip titleIndicator;
     Handler indicatorHandler = new Handler();
 
     TfilahAdapter tfilahAdapter;
@@ -68,117 +61,107 @@ public class TfilahFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        binding = FragmentTfilahBinding.inflate(inflater, container, false);
+        binding.getRoot().setFocusable(true);
 
-        View parent = inflater.inflate(R.layout.fragment_tfilah, container, false);
-        parent.setFocusable(true);
+        binding.rvTfilah.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        topBar = parent.findViewById(R.id.top_bar);
-
-        rvTfilah = parent.findViewById(R.id.rv_tfilah);
-        rvTfilah.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        rvTfilah.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.rvTfilah.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (titleParts != null) {
                     for (int i = 0; i < titleParts.size(); i++) {
-                        int currentPosition = ((LinearLayoutManager) Objects.requireNonNull(rvTfilah.getLayoutManager())).findFirstVisibleItemPosition();
+                        int currentPosition = ((LinearLayoutManager) Objects.requireNonNull(binding.rvTfilah.getLayoutManager())).findFirstVisibleItemPosition();
                         if (currentPosition == 0) {
-                            titleIndicator.setVisibility(View.GONE);
+                            binding.titleIndicator.setVisibility(View.GONE);
                             return;
                         }
                         boolean isBeforeNext;
                         if (i == titleParts.size()-1) isBeforeNext = true;
                         else isBeforeNext = currentPosition < titleParts.get(i+1).getPosition();
                         if (currentPosition >= titleParts.get(i).getPosition() && isBeforeNext) {
-                            titleIndicator.setText(titleParts.get(i).getTitle());
+                            binding.titleIndicator.setText(titleParts.get(i).getTitle());
                             int finalI = i;
-                            titleIndicator.setOnClickListener(v -> {
-                                Animations.show(topBar);
-                                rvTfilah.post(() -> ((LinearLayoutManager) Objects.requireNonNull(
-                                        rvTfilah.getLayoutManager())).scrollToPositionWithOffset(titleParts.get(finalI).getPosition(),0));
+                            binding.titleIndicator.setOnClickListener(v -> {
+                                Animations.show(binding.topBar);
+                                binding.rvTfilah.post(() -> ((LinearLayoutManager) Objects.requireNonNull(
+                                        binding.rvTfilah.getLayoutManager())).scrollToPositionWithOffset(titleParts.get(finalI).getPosition(),0));
                                 indicatorHandler.removeCallbacksAndMessages(null);
-                                indicatorHandler.postDelayed(() -> titleIndicator.setVisibility(View.GONE), 1000);
+                                indicatorHandler.postDelayed(() -> binding.titleIndicator.setVisibility(View.GONE), 1000);
                             });
-                            titleIndicator.setVisibility(View.VISIBLE);
+                            binding.titleIndicator.setVisibility(View.VISIBLE);
                             indicatorHandler.removeCallbacksAndMessages(null);
-                            indicatorHandler.postDelayed(() -> titleIndicator.setVisibility(View.GONE), 3000);
+                            indicatorHandler.postDelayed(() -> binding.titleIndicator.setVisibility(View.GONE), 3000);
                         }
                     }
                 }
 
                 if (dy > 10) {
-                    if (topBar.getVisibility() == View.VISIBLE) Animations.hide(topBar);
+                    if (binding.topBar.getVisibility() == View.VISIBLE) Animations.hide(binding.topBar);
                 } else if (dy < -10) {
-                    if (topBar.getVisibility() == View.GONE) Animations.show(topBar);
+                    if (binding.topBar.getVisibility() == View.GONE) Animations.show(binding.topBar);
                 }
             }
         });
-
-        navigator = parent.findViewById(R.id.navigator);
-
-        title = parent.findViewById(R.id.title);
-
-        titleIndicator = parent.findViewById(R.id.title_indicator);
 
         int tfilahFileRes = 0;
 
         switch (tfilah) {
             case SHACHRIT:
                 tfilahFileRes = R.raw.shachrit;
-                title.setText(R.string.shachrit);
+                binding.title.setText(R.string.shachrit);
                 break;
             case MINCHA:
                 tfilahFileRes = R.raw.mincha;
-                title.setText(R.string.mincha);
+                binding.title.setText(R.string.mincha);
                 break;
             case HARVIT:
                 tfilahFileRes = R.raw.harvit;
-                title.setText(R.string.harvit);
+                binding.title.setText(R.string.harvit);
                 break;
             case BIRCAT_HAMAZON:
                 tfilahFileRes = R.raw.bircat_hamazon;
-                title.setText(R.string.bircat_hamazon);
+                binding.title.setText(R.string.bircat_hamazon);
                 break;
             case BIRCAT_HALEVANA:
                 tfilahFileRes = R.raw.bircat_halevana;
-                title.setText(R.string.bircat_halevana);
+                binding.title.setText(R.string.bircat_halevana);
                 break;
             case TFILAT_HADEREH:
                 tfilahFileRes = R.raw.tfilat_hadereh;
-                title.setText(R.string.tfilat_hadereh);
+                binding.title.setText(R.string.tfilat_hadereh);
                 break;
             case KRIAT_SHEMA:
                 tfilahFileRes = R.raw.kriat_shmaa;
-                title.setText(R.string.kriat_shema);
+                binding.title.setText(R.string.kriat_shema);
                 break;
             case BIRCAT_MEN_SHALOSH:
                 tfilahFileRes = R.raw.birkat_men_shalosh;
-                title.setText(R.string.birkat_men_shalosh);
+                binding.title.setText(R.string.bircat_mehein_shalosh);
                 break;
             case ASHER_YATZAR:
                 tfilahFileRes = R.raw.asher_yatzar;
-                title.setText(R.string.asher_yatzar);
+                binding.title.setText(R.string.asher_yatzar);
                 break;
             case TRUMOT_VMEASROT:
                 tfilahFileRes = R.raw.trumot_vmeasrot;
-                title.setText(R.string.trumot_vmeasrot);
+                binding.title.setText(R.string.trumot_vmeasrot);
                 break;
             case PEREK_SHIRA:
                 tfilahFileRes = R.raw.perek_shira;
-                title.setText(R.string.perek_shira);
+                binding.title.setText(R.string.perek_shira);
                 break;
             case TIKUN_HAKLALI:
                 tfilahFileRes = R.raw.tikun_haklali;
-                title.setText(R.string.tikun_haklali);
+                binding.title.setText(R.string.tikun_haklali);
                 break;
             case MEGILAT_ESTHER:
                 tfilahFileRes = R.raw.megilat_esther;
-                title.setText(R.string.megilat_esther);
+                binding.title.setText(R.string.megilat_esther);
                 break;
         }
 
@@ -187,23 +170,23 @@ public class TfilahFragment extends Fragment {
         dataManager.openedTfilah(tfilah.toString());
 
         if (dataManager.getMostUsedTfilah().equals(tfilah.toString())) {
-            ((TfilonActivity) requireActivity()).addMostUsedTfilah(tfilah, title.getText().toString());
+            ((TfilonActivity) requireActivity()).addMostUsedTfilah(tfilah, binding.title.getText().toString());
         }
 
         dataManager.close();
 
-        title.setSelected(true);
+        binding.title.setSelected(true);
 
         try {
             InputStreamReader inputStreamReader = new InputStreamReader(requireActivity().getResources().openRawResource(tfilahFileRes));
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-            rvTfilah.setAdapter(initTfilahAdapter(bufferedReader));
+            binding.rvTfilah.setAdapter(initTfilahAdapter(bufferedReader));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return parent;
+        return binding.getRoot();
     }
 
     @SuppressLint({"ResourceType"})
@@ -316,20 +299,20 @@ public class TfilahFragment extends Fragment {
             for (int font : fonts) {
                 LayoutInflater inflater = LayoutInflater.from(requireContext());
                 MaterialButton button = (MaterialButton) inflater.inflate(
-                        R.layout.button_material_toogle, popupNav.fontsChooser, false);
+                        R.layout.button_material_toogle, popupNav.getFontChooser(), false);
                 button.setId(font);
                 button.setTypeface(ResourcesCompat.getFont(requireContext(), font));
                 button.setOnClickListener(view -> {
                     notifyTextFontChanged(font);
                     button.setChecked(true);
                 });
-                popupNav.fontsChooser.addView(button);
+                popupNav.getFontChooser().addView(button);
             }
 
-            popupNav.fontsChooser.check(getFont());
+            popupNav.getFontChooser().check(getFont());
 
             popupNav.onShortcutClick(view -> ((TfilonActivity) requireActivity())
-                    .createShortcut(tfilah, title.getText().toString()));
+                    .createShortcut(tfilah, binding.title.getText().toString()));
 
             popupNav.setBiggerTextClickListener(() -> {
                 int textSize = getTextSize();
@@ -356,8 +339,8 @@ public class TfilahFragment extends Fragment {
 
             TitleAdapter titleAdapter = new TitleAdapter((TfilonActivity) requireActivity(), titleParts);
             titleAdapter.setPostClickListener(position -> {
-                rvTfilah.post(() -> ((LinearLayoutManager) Objects.requireNonNull(
-                        rvTfilah.getLayoutManager())).scrollToPositionWithOffset(position,0));
+                binding.rvTfilah.post(() -> ((LinearLayoutManager) Objects.requireNonNull(
+                        binding.rvTfilah.getLayoutManager())).scrollToPositionWithOffset(position,0));
                 popupNav.dismiss();
             });
 
@@ -365,10 +348,10 @@ public class TfilahFragment extends Fragment {
             popupNav.sizeButtonsEnabled(getTextSize());
         }
 
-        navigator.setOnClickListener(view -> popupNav.showAsDropDown(navigator, 0, 10));
+        binding.navigator.setOnClickListener(view -> popupNav.showAsDropDown(binding.navigator, 0, 10));
 
         tfilahAdapter.setOnItemClickListener(() -> {
-            if (topBar.getVisibility() == View.GONE) Animations.show(topBar);
+            if (binding.topBar.getVisibility() == View.GONE) Animations.show(binding.topBar);
         });
         return tfilahAdapter;
     }

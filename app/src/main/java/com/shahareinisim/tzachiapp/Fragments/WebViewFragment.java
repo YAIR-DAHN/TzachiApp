@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -23,14 +24,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.shahareinisim.tzachiapp.R;
+import com.shahareinisim.tzachiapp.databinding.FragmentWebViewBinding;
 
 import java.net.URISyntaxException;
 import java.util.Objects;
@@ -41,6 +39,8 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class WebViewFragment extends Fragment {
+
+    FragmentWebViewBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,11 +69,6 @@ public class WebViewFragment extends Fragment {
         return fragment;
     }
 
-    WebView webView;
-    LinearProgressIndicator progressBar;
-    MaterialCardView adView;
-    Button adButton;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,37 +79,30 @@ public class WebViewFragment extends Fragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_web_view, container, false);
+        binding = FragmentWebViewBinding.inflate(inflater, container, false);
 
-        progressBar = root.findViewById(R.id.progress_bar);
-        adView = root.findViewById(R.id.ad_view);
-        adButton = root.findViewById(R.id.ad_button);
-        webView = root.findViewById(R.id.web_view);
-        WebSettings webSettings = webView.getSettings();
+        WebSettings webSettings = binding.webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        webView.setWebViewClient(IntentFilter());
-        webView.loadUrl(mParam1);
+        binding.webView.setWebViewClient(IntentFilter());
+        binding.webView.loadUrl(mParam1);
 
-        root.findViewById(R.id.ad_text).setSelected(true);
-        adButton.setOnClickListener(view -> {
-            if (!mParam1.equals(DONATION_LINK)) webView.loadUrl(DONATION_LINK);
+        binding.adText.setSelected(true);
+        binding.adButton.setOnClickListener(view -> {
+            if (!mParam1.equals(DONATION_LINK)) binding.webView.loadUrl(DONATION_LINK);
         });
 
-        return root;
+        return binding.getRoot();
     }
 
     public boolean canGoBack() {
-
-        if (webView == null) return false;
-        return webView.canGoBack();
+        return binding.webView.canGoBack();
     }
 
     public void goBack() {
-        if (webView != null) webView.goBack();
+        binding.webView.goBack();
     }
 
     public WebViewClient IntentFilter() {
@@ -163,24 +151,22 @@ public class WebViewFragment extends Fragment {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
 
-                if (url.startsWith(MAIN_WEB_LINK))
-                    adView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.VISIBLE);
+                if (url.startsWith(MAIN_WEB_LINK)) binding.adView.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                progressBar.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onPageCommitVisible(WebView view, String url) {
                 super.onPageCommitVisible(view, url);
 
-                if (!url.startsWith(MAIN_WEB_LINK))
-                    adView.setVisibility(View.GONE);
+                if (!url.startsWith(MAIN_WEB_LINK)) binding.adView.setVisibility(View.GONE);
             }
         };
     }
@@ -226,7 +212,7 @@ public class WebViewFragment extends Fragment {
         try {
             intent.setData(uri);
             startActivity(intent);
-            webView.goBack();
+            goBack();
         } catch (ActivityNotFoundException e) {
             String fallbackUrl = "https://play.google.com/store/apps/details?id=com.whatsapp";
             openPlayStore(Uri.parse(fallbackUrl));

@@ -1,6 +1,5 @@
 package com.shahareinisim.tzachiapp;
 
-import static com.shahareinisim.tzachiapp.MainActivity.setCurrentTfilah;
 import static com.shahareinisim.tzachiapp.Utils.LocationFinderInitializer.REQUEST_CHECK_SETTINGS;
 
 import android.annotation.SuppressLint;
@@ -43,7 +42,7 @@ public class TfilonActivity extends BaseActivity {
 
 
     ActivityTfilonBinding binding;
-    private final String EXTRA_TFILAH = "TFILAH";
+    private final String EXTRA_PRAYER = "PRAYER";
     LocationSpinnerInitializer locationSpinnerInitializer = new LocationSpinnerInitializer();
     LocationFinderInitializer locationFinderInitializer = new LocationFinderInitializer();
 
@@ -54,7 +53,7 @@ public class TfilonActivity extends BaseActivity {
         setContentView(binding.getRoot());
 
         initCardList();
-        handleTfilahShortcut();
+        handlePrayerShortcut();
 
         locationSpinnerInitializer.initialize(this, this::initCardList);
         locationFinderInitializer.initialize(this, locationSpinnerInitializer);
@@ -91,7 +90,7 @@ public class TfilonActivity extends BaseActivity {
         initCardView(getString(R.string.mincha), view -> tfilahFragment(TfilahFragment.Tfilah.MINCHA));
         initCardView(getString(R.string.harvit), view -> tfilahFragment(TfilahFragment.Tfilah.HARVIT));
         initCardView(getString(R.string.bircat_hamazon), view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_HAMAZON));
-        initCardView(getString(R.string.birkat_men_shalosh), view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_MEN_SHALOSH));
+        initCardView(getString(R.string.bircat_mehein_shalosh), view -> tfilahFragment(TfilahFragment.Tfilah.BIRCAT_MEN_SHALOSH));
         initCardView(getString(R.string.tfilat_hadereh), view -> tfilahFragment(TfilahFragment.Tfilah.TFILAT_HADEREH));
         initCardView(getString(R.string.kriat_shema), view -> tfilahFragment(TfilahFragment.Tfilah.KRIAT_SHEMA));
         initCardView(getString(R.string.asher_yatzar), view -> tfilahFragment(TfilahFragment.Tfilah.ASHER_YATZAR));
@@ -144,13 +143,15 @@ public class TfilonActivity extends BaseActivity {
     public void tfilahFragment(TfilahFragment.Tfilah tfilah) {
 
         FragmentManager fm = getSupportFragmentManager();
-        // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        // replace the FrameLayout with new Fragment
+        // remove another prayer if already opened (not working...)
+//        if (!fm.getFragments().isEmpty()) {
+//            fragmentTransaction.remove(fm.getFragments().get(0));
+//        }
         fragmentTransaction.replace(binding.fragmentContainer.getId(), new TfilahFragment(tfilah), tfilah.toString());
-//        fragmentTransaction.setReorderingAllowed(true);
-        fragmentTransaction.addToBackStack("");
+        fragmentTransaction.setReorderingAllowed(true);
+        fragmentTransaction.addToBackStack(null);
 
 
         fragmentTransaction.commit();
@@ -160,7 +161,7 @@ public class TfilonActivity extends BaseActivity {
 
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
-        shortcutIntent.putExtra(EXTRA_TFILAH, tfilah.toString());
+        shortcutIntent.putExtra(EXTRA_PRAYER, tfilah.toString());
         shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
@@ -168,7 +169,7 @@ public class TfilonActivity extends BaseActivity {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 if (shortcutManager.isRequestPinShortcutSupported()) {
-                    // Assumes there's already a shortcut with the ID "my-shortcut".
+                    // Assumes there's already a shortcut with the ID tfilah + "-shortcut".
                     // The shortcut must be enabled.
                     ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(this, tfilah + "-shortcut").setShortLabel(label)
                             .setLongLabel("פתח את תפילת " + label.replace("תפילת ", ""))
@@ -190,22 +191,18 @@ public class TfilonActivity extends BaseActivity {
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, label);
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
                     Intent.ShortcutIconResource.fromContext(this, R.drawable.banner_tfhilot));
-
             addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-//        addIntent.putExtra("duplicate" , false);
-//        getApplicationContext().sendBroadcast(addIntent);
             sendBroadcast(addIntent);
         }
     }
 
     public void addMostUsedTfilah(TfilahFragment.Tfilah tfilah, String label) {
 
-        setCurrentTfilah(tfilah.toString());
-        if (tfilah.toString().equals(getCurrentTfilah())) return;
+        if (tfilah.toString().equals(getCurrentPrayer())) return;
 
         Intent shortcutIntent = new Intent(this, TfilonActivity.class);
         shortcutIntent.setAction(Intent.ACTION_VIEW);
-        shortcutIntent.putExtra(EXTRA_TFILAH, tfilah.toString());
+        shortcutIntent.putExtra(EXTRA_PRAYER, tfilah.toString());
         shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
         ShortcutInfoCompat pinShortcutInfo = new ShortcutInfoCompat.Builder(this, "most used-shortcut").setShortLabel(label)
@@ -220,9 +217,9 @@ public class TfilonActivity extends BaseActivity {
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
-        if (intent.hasExtra(EXTRA_TFILAH)) {
+        if (intent.hasExtra(EXTRA_PRAYER)) {
             setIntent(intent);
-            handleTfilahShortcut();
+            handlePrayerShortcut();
         }
     }
 
@@ -232,22 +229,22 @@ public class TfilonActivity extends BaseActivity {
         locationFinderInitializer.checkLocationSettings(true);
     }
 
-    private void handleTfilahShortcut() {
-        String tfilahString = getIntent().getStringExtra(EXTRA_TFILAH);
-        if (tfilahString != null) {
-            String currentTfilah = getCurrentTfilah();
-            if (!tfilahString.equals(currentTfilah)) {
+    private void handlePrayerShortcut() {
+        String prayerName = getIntent().getStringExtra(EXTRA_PRAYER);
+        if (prayerName != null) {
+            String currentPrayer = getCurrentPrayer();
+            if (!prayerName.equals(currentPrayer)) {
                 try {
-                    TfilahFragment.Tfilah tfilah = TfilahFragment.Tfilah.valueOf(tfilahString);
+                    TfilahFragment.Tfilah tfilah = TfilahFragment.Tfilah.valueOf(prayerName);
                     tfilahFragment(tfilah);
                 } catch (IllegalArgumentException e) {
-                    Log.e("TfilonActivity", "Invalid Tfilah value: " + tfilahString, e);
+                    Log.e("TfilonActivity", "Invalid Prayer value: " + prayerName, e);
                 }
             }
         }
     }
 
-    public String getCurrentTfilah() {
+    public String getCurrentPrayer() {
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments.isEmpty()) return "";
         return fragments.get(0).getTag();

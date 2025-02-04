@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shahareinisim.tzachiapp.Models.Note;
 import com.shahareinisim.tzachiapp.Models.TfilahPart;
-import com.shahareinisim.tzachiapp.R;
 import com.shahareinisim.tzachiapp.Views.ViewHolderTPart;
+import com.shahareinisim.tzachiapp.databinding.ItemTfilahPartBinding;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,7 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
     @Override
     public ViewHolderTPart onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        return new ViewHolderTPart(LayoutInflater.from(context).inflate(R.layout.item_tfilah_part, parent, false));
+        return new ViewHolderTPart(ItemTfilahPartBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -58,9 +58,9 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
 
         TfilahPart tfilahPart = tfilahParts.get(position);
 
-        holder.text.setText(tfilahPart.getPart());
+        holder.binding.text.setText(tfilahPart.getPart());
 
-        holder.text.setTypeface(ResourcesCompat.getFont(context, font));
+        holder.binding.text.setTypeface(ResourcesCompat.getFont(context, font));
 
 
         SpannableString wordToSpan;
@@ -87,62 +87,62 @@ public class TfilahAdapter extends RecyclerView.Adapter<ViewHolderTPart> {
         }
 
         if (tfilahPart.isInsideNote()) {
-            wordToSpan = new SpannableString(holder.text.getText());
+            wordToSpan = new SpannableString(holder.binding.text.getText());
             for (Note note : tfilahPart.getNotes()) {
                 setTextToComment(wordToSpan, note);
             }
-            holder.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
+            holder.binding.text.setText(wordToSpan, TextView.BufferType.SPANNABLE);
         }
 
-        holder.itemView.setOnClickListener(v -> {
+        holder.binding.getRoot().setOnClickListener(v -> {
             if (onItemClickListener != null) {
                 onItemClickListener.onClick();
             }
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            holder.text.setJustificationMode(justifyAlignment ? LineBreaker.JUSTIFICATION_MODE_INTER_WORD : LineBreaker.JUSTIFICATION_MODE_NONE);
+            holder.binding.text.setJustificationMode(justifyAlignment ? LineBreaker.JUSTIFICATION_MODE_INTER_WORD : LineBreaker.JUSTIFICATION_MODE_NONE);
         }
     }
 
     private void emptyLineDesign(ViewHolderTPart part) {
-        part.text.setTextColor(Color.RED);
-        part.text.setTextSize(0);
-        part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(0), convertToPX(7), convertToPX(0), convertToPX(7));
-        part.indicator.setVisibility(View.GONE);
+        part.binding.text.setTextColor(Color.RED);
+        part.binding.text.setTextSize(0);
+        part.binding.text.setGravity(View.FOCUS_RIGHT);
+        part.binding.getRoot().setPadding(convertToPX(0), convertToPX(7), convertToPX(0), convertToPX(7));
+        part.binding.indicator.setVisibility(View.GONE);
     }
 
     public void regularDesign(ViewHolderTPart part, boolean insideNote) {
-        part.text.setTextColor(Color.BLACK);
-        part.text.setTextSize(textTypes[textSize][0]);
-        part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));
-        part.indicator.setVisibility(View.GONE);
+        part.binding.text.setTextColor(Color.BLACK);
+        part.binding.text.setTextSize(textTypes[textSize][0]);
+        part.binding.text.setGravity(View.FOCUS_RIGHT);
+        part.binding.getRoot().setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));
+        part.binding.indicator.setVisibility(View.GONE);
     }
 
     private void holidayDesign(ViewHolderTPart part, boolean insideNote) {
-        part.text.setTextColor(Color.RED);
-        part.text.setTextSize(textTypes[textSize][0]);
-        part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));
-        part.indicator.setVisibility(View.GONE);
+        part.binding.text.setTextColor(Color.RED);
+        part.binding.text.setTextSize(textTypes[textSize][0]);
+        part.binding.text.setGravity(View.FOCUS_RIGHT);
+        part.binding.getRoot().setPadding(convertToPX(20), convertToPX(insideNote ? 0 : 3), convertToPX(20), convertToPX(insideNote ? 0 : 3));
+        part.binding.indicator.setVisibility(View.GONE);
     }
 
     public void titleDesign(ViewHolderTPart part) {
-        part.text.setTextColor(Color.BLUE);
-        part.text.setTextSize(textTypes[textSize][1]);
-        part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(30), convertToPX(0), convertToPX(15));
-        part.indicator.setVisibility(View.VISIBLE);
+        part.binding.text.setTextColor(Color.BLUE);
+        part.binding.text.setTextSize(textTypes[textSize][1]);
+        part.binding.text.setGravity(View.FOCUS_RIGHT);
+        part.binding.getRoot().setPadding(convertToPX(20), convertToPX(30), convertToPX(0), convertToPX(15));
+        part.binding.indicator.setVisibility(View.VISIBLE);
     }
 
     private void noteDesign(ViewHolderTPart part) {
-        part.text.setTextColor(Color.GRAY);
-        part.text.setTextSize(textTypes[textSize][2]);
-        part.text.setGravity(View.FOCUS_RIGHT);
-        part.itemView.setPadding(convertToPX(20), convertToPX(5), convertToPX(20), convertToPX(0));
-        part.indicator.setVisibility(View.GONE);
+        part.binding.text.setTextColor(Color.GRAY);
+        part.binding.text.setTextSize(textTypes[textSize][2]);
+        part.binding.text.setGravity(View.FOCUS_RIGHT);
+        part.binding.getRoot().setPadding(convertToPX(20), convertToPX(5), convertToPX(20), convertToPX(0));
+        part.binding.indicator.setVisibility(View.GONE);
     }
 
     public void setTextToComment(SpannableString wordToSpan, Note note) {
