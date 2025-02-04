@@ -3,48 +3,55 @@ package com.shahareinisim.tzachiapp.Views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.LayoutInflater;
 
+import androidx.core.content.ContextCompat;
 import androidx.palette.graphics.Palette;
 
 import com.google.android.material.card.MaterialCardView;
-import com.shahareinisim.tzachiapp.R;
+import com.shahareinisim.tzachiapp.databinding.ItemMainBinding;
 
 @SuppressLint("ViewConstructor")
 public class MainItem extends MaterialCardView {
-    
+
+    ItemMainBinding binding;
     int id;
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public MainItem(int id, String title, int bannerId, Context context) {
+    public MainItem(int id, String title, int bannerDrawableId, Context context) {
         super(context);
-        inflate(context, R.layout.item_main, this);
+        binding = ItemMainBinding.inflate(LayoutInflater.from(context), this, true);
 
         this.id = id;
 
-        ImageView banner = findViewById(R.id.banner);
-        TextView bannerTitle = findViewById(R.id.banner_title);
+        binding.bannerTitle.setText(title);
 
-        bannerTitle.setText(title);
+        Drawable bannerDrawable = ContextCompat.getDrawable(context, bannerDrawableId);
+        // must convert to bitmap to apply palette
+        Bitmap bitmap = drawableToBitmap(bannerDrawable);
+        binding.banner.setImageBitmap(bitmap);
 
-        Bitmap bitmap = drawableToBitmap(getResources().getDrawable(bannerId));
-        banner.setImageBitmap(bitmap);
-
-        Palette.from(bitmap).generate(p -> {
-            if (p != null && p.getVibrantSwatch() != null) {
-                findViewById(R.id.main_item).setBackgroundColor(p.getVibrantSwatch().getRgb());
-                bannerTitle.setTextColor(p.getVibrantSwatch().getTitleTextColor());
-            }
+        Palette.from(bitmap).generate(palette -> {
+            if (palette != null) applyPalette(palette);
+            else applyDefaultColors();
         });
     }
 
-    public int getItemId() {
-        return id;
+    private void applyPalette(Palette palette) {
+        Palette.Swatch vibrantSwatch = palette.getVibrantSwatch();
+        if (vibrantSwatch != null) {
+            binding.bannerTitle.setTextColor(vibrantSwatch.getTitleTextColor());
+            binding.mainItem.setCardBackgroundColor(vibrantSwatch.getRgb());
+        } else applyDefaultColors();
+    }
+
+    private void applyDefaultColors() {
+        binding.bannerTitle.setTextColor(Color.BLACK);
+        binding.mainItem.setCardBackgroundColor(Color.WHITE);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
